@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene Scope="Project" version="2">
+    <Scope Scope="Faces Configuration Only"/>
+    <Scope Scope="Project">
+        <Node id="faces/cadastrosadministrativos/usuario/copiarAcesso.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="faces/*" x="630" y="295" zoom="true"/>
+        <Node id="faces/login.jsf" x="1079" y="211" zoom="true"/>
+        <Node id="faces/cadastrosadministrativos/modulo/Modulo.xhtml" x="150" y="750" zoom="true"/>
+        <Node id="faces/cadastrosadministrativos/usuario/editarUser.xhtml" x="400" y="300" zoom="true"/>
+        <Node id="faces/cadastrosadministrativos/usuario/editAccessUser.xhtml" x="400" y="600" zoom="true"/>
+        <Node id="faces/cadastrosadministrativos/usuario/consultarUser.xhtml" x="150" y="450" zoom="true"/>
+        <Node id="faces/cadastrosadministrativos/modulo/ModuloList.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="faces/login.xhtml" x="150" y="600" zoom="true"/>
+        <Node id="faces/cadastrosadministrativos/usuario/alterarLogin.xhtml" x="900" y="450" zoom="true"/>
+        <Node id="faces/cadastrosadministrativos/funcionalidade/menuList.xhtml" x="400" y="750" zoom="true"/>
+        <Node id="faces/menutop.xhtml" x="650" y="150" zoom="true"/>
+        <Node id="faces/cadastrosadministrativos/modulo/ModuloEdit.xhtml" x="1150" y="150" zoom="true"/>
+        <Node id="faces/cadastrosadministrativos/funcionalidade/menuConsulta.xhtml" x="650" y="450" zoom="true"/>
+        <Node id="faces/cadastrosadministrativos/usuario/cadastroUsuario.xhtml" x="1400" y="150" zoom="true"/>
+        <Node id="faces/cadastrosadministrativos/funcionalidade/menuCreate.xhtml" x="1650" y="150" zoom="true"/>
+        <Node id="faces/cadastrosadministrativos/funcionalidade/menuEdit.xhtml" x="900" y="300" zoom="true"/>
+        <Node id="faces/cadastrosadministrativos/usuario/meusDados.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="faces/cadastrosadministrativos/usuario/usuarioList.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="faces/menuleft.xhtml" x="400" y="450" zoom="true"/>
+        <Node id="faces/index.xhtml" x="150" y="900" zoom="true"/>
+        <Node id="faces/footer.xhtml" x="650" y="600" zoom="true"/>
+    </Scope>
+    <Scope Scope="All Faces Configurations"/>
+</Scene>

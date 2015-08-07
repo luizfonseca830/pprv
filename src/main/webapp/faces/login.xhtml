@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Tela de Login</title>        
+        <h:outputStylesheet name="css/style_login.css"/>
+
+        <style>              
+            .geral{height: 100%; position: absolute; width: 100%; background: linear-gradient(#0070a3, #ffffff);}            
+        </style>
+
+        <script id="script-login" type="text/javascript" language="js">
+            $(document).ready(function () {
+                $('.bordas_login').css({
+                    position: 'absolute',
+                    left: ($(window).width() - $('.bordas_login').outerWidth()) / 2,
+                    top: ($(window).height() - $('.bordas_login').outerHeight()) / 2
+                });
+            });
+
+        </script>
+
+    </h:head>
+    <h:body>                       
+
+        <div id="geral" class="geral">
+
+            <!--trocar cor de fundo do centro-->
+            <div class="bordas_login" style="background: linear-gradient(#ffffff, #aaa8a8); border: transparent;">
+                <div id="login" class="login">
+                    <h:form id="form-login">
+                        <table border="0">
+                            <tr>
+                                <td>
+                                    <table cellspacing="15">
+                                        <tr>
+                                            <td colspan="2" style="padding-bottom: 10px">
+                                                <h:outputText value="Tela de Login" style="float:left;font-weight: bold; color: black;"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <h:outputLabel value="#{field.usuario}:" styleClass="text-bold" style="color: black;"/>
+                                            </td>
+                                            <td>
+                                                <p:inputText id="nmloginusuario" autocomplete="off" 
+                                                             value="#{loginBean.tbusuario.nmloginusuario}" label="Usuário" required="true" />
+                                            </td>                        
+                                        </tr>
+                                        <tr>                            
+                                            <td>
+                                                <h:outputLabel value="#{field.senha}:" styleClass="text-bold" style="color: black;"/>  
+                                            </td>
+                                            <td>
+                                                <p:inputText id="nmsenhausuario" autocomplete="off" type="password" 
+                                                             value="#{loginBean.tbusuario.nmsenhausuario}" label="Senha" required="true"/>  
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+
+                                                <p:commandButton                                    
+                                                    value="#{field.entrar}" ajax="false" 
+                                                    style="margin:0;float: left;" 
+                                                    action="#{loginBean.makeLogin()}" icon="ui-icon-locked" />  
+
+                                            </td>
+                                        </tr>                                        
+                                    </table>
+                                </td>
+                                <td style="padding: 10px;"></td>
+                                <td>
+                                    <p:graphicImage value="#{resource['images/logos/valelogo.png']}" styleClass="logo_top"/>
+                                    <h:outputText value="Versão: #{shareds.version}" styleClass="text-bold" style="color: black;"/>
+                                </td>
+
+                            </tr>                            
+
+                        </table>   
+                    </h:form>
+                </div>                
+
+                <div class="bordas_version">
+
+                </div>
+            </div>
+
+        </div>
+
+    </h:body>
+</html>
