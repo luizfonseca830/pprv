@@ -1,0 +1,25 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jul 30, 2015, 10:53:22 AM
+    Author     : JorgeFonseca
+*/
+
+.bordas_login {
+    color: #fff;
+    width: 500px;
+    border: #000000 1px solid;     
+    border-radius: 10px;
+    padding: 100px;
+}
+
+.logo_top {
+    margin: auto; width: 150px; ;
+
+    border: none;
+}  
+
+.text-bold {font-weight: bold;}
