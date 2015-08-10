@@ -6,7 +6,7 @@ package br.com.pprv.web.faces.constants;
 
 /**
  *
- * @author ioliveira
+ * @author JorgeFonseca
  */
 public final class PagesUrl {
 
@@ -23,4 +23,5 @@ public final class PagesUrl {
     public static final String URL_USER_NOT_AUTHORIZED = "/public/error/errorNotAuthorized" + EXT_URL;
     public static final String URL_USER_PADRAO = "/faces/cadastrosadministrativos/usuario/meusDados" + EXT_URL;
     public static final String URL_MODULO_LIST = "/faces/cadastrosadministrativos/modulo/ModuloList" + EXT_URL;
+    public static final String URL_PERFIL_LIST = "/faces/cadastrosadministrativos/perfil/PerfilList" + EXT_URL;
 }

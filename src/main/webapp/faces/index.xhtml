@@ -7,6 +7,7 @@
       xmlns:f="http://java.sun.com/jsf/core">
     <h:head>
         <title>Pagina inicial</title>
+         <link href="#{resource['images/logos/valelogo.png']}" rel="shortcut icon" type="image/x-icon"/>
         <script type="text/javascript" src="#{resource['js/locate-primefaces.js']}" language="js"/>
         <h:outputStylesheet name="css/style.css" />
 
@@ -90,9 +91,9 @@
         <script type="text/javascript" language="js">
             var pgtitle = $('.page-title').text();
             if (pgtitle === "") {
-                pgtitle = 'PPRV - Sitema Integrado Preditiva';
+                pgtitle = 'PPRV - Sistema Integrado Preditiva';
             } else {
-                pgtitle = $('.page-title').text() + ' - PPRV - Sitema Integrado Preditiva';
+                pgtitle = $('.page-title').text() + ' - PPRV - Sistema Integrado Preditiva';
             }
             document.title = pgtitle;
 

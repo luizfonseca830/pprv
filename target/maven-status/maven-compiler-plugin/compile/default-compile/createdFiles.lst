@@ -33,6 +33,7 @@ br\com\pprv\web\control\beans\cadastrousuario\CadastroUsuarioBean.class
 br\com\pprv\model\entities\Tbsubconjunto_.class
 br\com\pprv\web\faces\utils\AbstractFacesContextUtils.class
 br\com\pprv\model\entities\Tbperfil.class
+br\com\pprv\web\control\beans\perfil\PerfilBean.class
 br\com\pprv\web\control\logic\modulo\ModuloLogic.class
 br\com\pprv\web\faces\utils\Shareds.class
 br\com\pprv\model\daos\TbusuarioFacade.class

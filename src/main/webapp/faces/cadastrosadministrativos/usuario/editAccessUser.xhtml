@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<ui:composition template="/faces/index.xhtml"                
+<ui:composition template="/faces/index.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:f="http://java.sun.com/jsf/core"
@@ -8,6 +9,17 @@
     <ui:define name="context">
         <h:outputText id="page-rule" rendered="#{menuBean.isRule('usuario')}"/>      
 
+        <div class="page-title">#{field.editaracessodeusuario}</div>
+        
+        <style>
+            .ui-picklist .ui-picklist-list {
+                width: 350px;
+                height: 300px;
+            }
+            .ui-picklist .ui-picklist-filter-container .ui-icon {right: 10px;}
+            .ui-picklist .ui-picklist-filter {padding-right: 0;width: 346px;}
+        </style>
+        
         <h:body>
 
             <h:form>

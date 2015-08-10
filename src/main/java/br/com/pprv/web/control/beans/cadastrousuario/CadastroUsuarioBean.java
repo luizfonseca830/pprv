@@ -246,7 +246,7 @@ public class CadastroUsuarioBean implements Serializable {
                         AbstractFacesContextUtils.addMessageWarn(Resources.getMessage("loginjaexiste"));
                     }
                 } else {
-                    AbstractFacesContextUtils.addMessageWarn(Resources.getMessage("camposenhaeobrigatorio"));
+                 
                 }
             } else {
                 AbstractFacesContextUtils.addMessageWarn(Resources.getMessage("campologineobrigatorio"));
