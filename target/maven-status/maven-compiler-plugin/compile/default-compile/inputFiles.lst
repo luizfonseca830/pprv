@@ -10,6 +10,7 @@ C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\custom\MenuItem.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\logic\modulo\ModuloLogic.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\Tbusuario.java
+C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\beans\laudo\Laudobean.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\daos\TbperfilFacade.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\logic\user\UserLogic.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\daos\TbsubconjuntoFacade.java
@@ -17,6 +18,7 @@ C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\Tbinspecao.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\daos\TblaudoFacade.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\Tbtecnica.java
+C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\beans\tecnica\TecnicaBean.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\daos\TbmenuFacade.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\beans\modulo\ModuloBean.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\Tbmodulo.java
@@ -26,11 +28,12 @@ C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\beans\menu\MenuBean.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\beans\cadastrousuario\CadastroUsuarioBean.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\logic\acesso\AcessoLogic.java
-C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\Tbacesso.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\faces\utils\MultiPageMessagesSupport.java
+C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\Tbacesso.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\daos\TbgerenciaFacade.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\daos\TbacessoFacade.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\Tblaudo.java
+C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\logic\tecnica\TecnicaLogic.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\faces\converter\ConverterEntity.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\faces\utils\AbstractFacesContextUtils.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\Tbgerencia.java
@@ -44,6 +47,7 @@ C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\Tbmenu.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\faces\constants\Resources.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\custom\MenuModel.java
+C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\logic\laudo\LaudoLogic.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\module\AbstractModuleCore.java
-C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\daos\TbequipamentoFacade.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\beans\login\LoginBean.java
+C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\daos\TbequipamentoFacade.java

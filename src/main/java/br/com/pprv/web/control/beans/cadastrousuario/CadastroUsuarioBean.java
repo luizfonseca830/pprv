@@ -245,15 +245,9 @@ public class CadastroUsuarioBean implements Serializable {
                     } else {
                         AbstractFacesContextUtils.addMessageWarn(Resources.getMessage("loginjaexiste"));
                     }
-                } else {
-                 
                 }
-            } else {
-                AbstractFacesContextUtils.addMessageWarn(Resources.getMessage("campologineobrigatorio"));
-            }
-        } else {
-            AbstractFacesContextUtils.addMessageWarn(Resources.getMessage("campousuarioeobrigatorio"));
-        }
+            } 
+        } 
     }
 
     public List<Tbusuario> autoComplete(String query) {

@@ -64,6 +64,9 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
     @JoinColumn(name = "idinspecao", referencedColumnName = "idinspecao")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tbinspecao idinspecao;
+    @JoinColumn(name = "idtecnica", referencedColumnName = "idtecnica")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Tbtecnica idtecnica;
 
     public Tbequipamento() {
     }

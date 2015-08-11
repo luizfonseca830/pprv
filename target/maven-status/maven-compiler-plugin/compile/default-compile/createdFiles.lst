@@ -6,6 +6,7 @@ br\com\pprv\model\entities\Tbinspecao.class
 br\com\pprv\model\entities\Tbgerencia_.class
 br\com\pprv\model\daos\TbacessoFacade.class
 br\com\pprv\model\entities\Tblaudo.class
+br\com\pprv\web\control\logic\tecnica\TecnicaLogic.class
 br\com\pprv\web\faces\utils\FaseListener.class
 br\com\pprv\web\control\locale\LocaleController.class
 br\com\pprv\model\entities\Tbacesso.class
@@ -16,6 +17,7 @@ br\com\pprv\web\control\logic\user\UserLogic.class
 br\com\pprv\model\entities\Tbfuncionalidade.class
 br\com\pprv\model\entities\Tbmodulo.class
 br\com\pprv\model\entities\Tbmenu_.class
+br\com\pprv\web\control\beans\laudo\Laudobean.class
 br\com\pprv\model\entities\Tbacesso_.class
 br\com\pprv\model\daos\AbstractFacade.class
 br\com\pprv\web\control\beans\menu\MenuBean.class
@@ -25,8 +27,10 @@ br\com\pprv\model\entities\Tbusuario.class
 br\com\pprv\web\control\beans\login\LoginBean.class
 br\com\pprv\web\faces\converter\ConverterEntity.class
 br\com\pprv\model\entities\custom\MenuItem.class
+br\com\pprv\web\control\beans\tecnica\TecnicaBean.class
 br\com\pprv\model\entities\Tbtecnica.class
 br\com\pprv\model\entities\Tbperfil_.class
+br\com\pprv\web\control\logic\laudo\LaudoLogic.class
 br\com\pprv\model\daos\TbfuncionalidadeFacade.class
 br\com\pprv\model\entities\Tbsubconjunto.class
 br\com\pprv\web\control\beans\cadastrousuario\CadastroUsuarioBean.class
