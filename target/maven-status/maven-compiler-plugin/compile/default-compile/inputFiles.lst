@@ -6,10 +6,12 @@ C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\daos\TbfuncionalidadeFacade.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\daos\TbmoduloFacade.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\beans\perfil\PerfilBean.java
+C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\logic\equipamento\EquipamentoLogic.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\beans\funcionalidade\FuncionalidadeBean.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\custom\MenuItem.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\logic\modulo\ModuloLogic.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\Tbusuario.java
+C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\beans\equipamento\EquipamentoBean.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\beans\laudo\Laudobean.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\daos\TbperfilFacade.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\logic\user\UserLogic.java
@@ -20,8 +22,8 @@ C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\Tbtecnica.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\beans\tecnica\TecnicaBean.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\daos\TbmenuFacade.java
-C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\beans\modulo\ModuloBean.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\Tbmodulo.java
+C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\beans\modulo\ModuloBean.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\web\control\logic\perfil\PerfilLogic.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\Tbequipamento.java
 C:\Users\JorgeFonseca\Documents\NetBeansProjects\pprv\src\main\java\br\com\pprv\model\entities\Tbsubconjunto.java

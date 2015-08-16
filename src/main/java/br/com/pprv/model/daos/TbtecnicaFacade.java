@@ -5,7 +5,6 @@
  */
 package br.com.pprv.model.daos;
 
-
 import br.com.pprv.model.entities.Tbtecnica;
 
 import java.util.List;
@@ -23,6 +22,7 @@ public class TbtecnicaFacade extends AbstractFacade<Tbtecnica> {
     public TbtecnicaFacade() {
         super(Tbtecnica.class);
     }
+
     public List<Tbtecnica> findAll(EntityManager em) {
         return em.createQuery("SELECT t FROM Tbtecnica t").getResultList();
     }
@@ -49,11 +49,13 @@ public class TbtecnicaFacade extends AbstractFacade<Tbtecnica> {
 
     public List<Tbtecnica> listTbtecnicaBynmtecnica(String nmtecnica, EntityManager em) {
         return em.createQuery("SELECT t FROM Tbtecnica t WHERE (t.nmtecnica) LIKE (:nmtecnica)", Tbtecnica.class)
-                .setParameter("nmtecnica", nmtecnica + "%").getResultList();
+                .setParameter("nmtecnica", nmtecnica + "%")
+                .getResultList();
     }
-    
-       public List<Tbtecnica> allTecnica(EntityManager em) {
+
+    public List<Tbtecnica> allTecnica(EntityManager em) {
         return em.createQuery("SELECT t FROM Tbtecnica t ORDER BY t.nmtecnica").getResultList();
     }
 
+    
 }

@@ -1,5 +1,6 @@
 br\com\pprv\web\control\logic\perfil\PerfilLogic.class
 br\com\pprv\web\control\module\AbstractModuleCore.class
+br\com\pprv\web\control\beans\equipamento\EquipamentoBean.class
 br\com\pprv\model\entities\Tbfuncionalidade_.class
 br\com\pprv\model\entities\Tbmodulo_.class
 br\com\pprv\model\entities\Tbinspecao.class
@@ -60,6 +61,7 @@ br\com\pprv\model\daos\TbgerenciaFacade.class
 br\com\pprv\model\daos\TbperfilFacade.class
 br\com\pprv\model\daos\TbmenuFacade.class
 br\com\pprv\model\entities\Tbgerencia.class
+br\com\pprv\web\control\logic\equipamento\EquipamentoLogic.class
 br\com\pprv\web\faces\utils\MultiPageMessagesSupport.class
 br\com\pprv\model\entities\Tbmenu.class
 br\com\pprv\web\control\logic\acesso\AcessoLogic.class

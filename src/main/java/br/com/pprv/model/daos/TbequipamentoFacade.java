@@ -6,9 +6,10 @@
 package br.com.pprv.model.daos;
 
 import br.com.pprv.model.entities.Tbequipamento;
+import br.com.pprv.model.entities.Tbtecnica;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 
 /**
  *
@@ -16,9 +17,17 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class TbequipamentoFacade extends AbstractFacade<Tbequipamento> {
-   
+
     public TbequipamentoFacade() {
         super(Tbequipamento.class);
     }
-    
+
+    public List<Tbequipamento> findTbequipamentoByTbtecnica(Tbtecnica tbtecnica, EntityManager em) {
+
+        return em.createQuery("SELECT t FROM Tbequipamento t WHERE t.idtecnica = :idTecnica",
+                Tbequipamento.class)
+                .setParameter("idTecnica", tbtecnica)
+                .getResultList();
+
+    }
 }

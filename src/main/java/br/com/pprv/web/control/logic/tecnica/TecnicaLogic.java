@@ -6,7 +6,6 @@
 package br.com.pprv.web.control.logic.tecnica;
 
 import br.com.pprv.model.daos.TbtecnicaFacade;
-import br.com.pprv.model.entities.Tbperfil;
 import br.com.pprv.model.entities.Tbtecnica;
 import br.com.pprv.web.control.module.AbstractModuleCore;
 import java.util.List;

@@ -7,9 +7,7 @@ package br.com.pprv.model.entities;
 
 import br.com.pprv.web.faces.converter.Identificador;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,11 +16,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -45,6 +41,10 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
     private String nmequipamenta;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "condicao")
+    private Integer condicao;
+    @Basic(optional = false)
+    @NotNull
     @Column(name = "criticidade")
     private int criticidade;
     @Basic(optional = false)
@@ -52,12 +52,6 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
     @Size(min = 1, max = 80)
     @Column(name = "descequipamento")
     private String descequipamento;
-    @OneToMany(mappedBy = "idequipamento", fetch = FetchType.EAGER)
-    private List<Tbtecnica> tbtecnicaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idequipamento", fetch = FetchType.EAGER)
-    private List<Tblaudo> tblaudoList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idequipamento", fetch = FetchType.EAGER)
-    private List<Tbsubconjunto> tbsubconjuntoList;
     @JoinColumn(name = "idsubconjunto", referencedColumnName = "idsubconjunto")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tbsubconjunto idsubconjunto;
@@ -114,33 +108,6 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
         this.descequipamento = descequipamento;
     }
 
-    @XmlTransient
-    public List<Tbtecnica> getTbtecnicaList() {
-        return tbtecnicaList;
-    }
-
-    public void setTbtecnicaList(List<Tbtecnica> tbtecnicaList) {
-        this.tbtecnicaList = tbtecnicaList;
-    }
-
-    @XmlTransient
-    public List<Tblaudo> getTblaudoList() {
-        return tblaudoList;
-    }
-
-    public void setTblaudoList(List<Tblaudo> tblaudoList) {
-        this.tblaudoList = tblaudoList;
-    }
-
-    @XmlTransient
-    public List<Tbsubconjunto> getTbsubconjuntoList() {
-        return tbsubconjuntoList;
-    }
-
-    public void setTbsubconjuntoList(List<Tbsubconjunto> tbsubconjuntoList) {
-        this.tbsubconjuntoList = tbsubconjuntoList;
-    }
-
     public Tbsubconjunto getIdsubconjunto() {
         return idsubconjunto;
     }
@@ -185,6 +152,34 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
     @Override
     public Integer getPK() {
         return getIdequipamento();
+    }
+
+    /**
+     * @return the idtecnica
+     */
+    public Tbtecnica getIdtecnica() {
+        return idtecnica;
+    }
+
+    /**
+     * @param idtecnica the idtecnica to set
+     */
+    public void setIdtecnica(Tbtecnica idtecnica) {
+        this.idtecnica = idtecnica;
+    }
+
+    /**
+     * @return the condicao
+     */
+    public Integer getCondicao() {
+        return condicao;
+    }
+
+    /**
+     * @param condicao the condicao to set
+     */
+    public void setCondicao(Integer condicao) {
+        this.condicao = condicao;
     }
 
 }
