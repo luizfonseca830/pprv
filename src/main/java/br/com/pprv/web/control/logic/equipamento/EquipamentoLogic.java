@@ -12,6 +12,7 @@ import br.com.pprv.web.control.module.AbstractModuleCore;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -29,5 +30,9 @@ public class EquipamentoLogic extends AbstractModuleCore {
 
     public List<Tbequipamento> findTbequipamentoByTbtecnica(final Tbtecnica tbtecnica) {
         return tbequipamentoFacade.findTbequipamentoByTbtecnica(tbtecnica, super.getEM());
+    }
+
+    public List<Tbequipamento> allEquipamentos() {
+        return tbequipamentoFacade.allEquipamentos(super.getEM());
     }
 }

@@ -1,9 +1,10 @@
-<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+<ui:composition template="/faces/index.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://java.sun.com/jsf/core"
-                template="/faces/index.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml">
+    
     <ui:define name="context">
         <h:outputText id="page-rule" rendered="#{menuBean.isRule('cad_laudo')}"/>
         <h:body>
@@ -30,12 +31,18 @@
                 </h:form>
             </p:panel>
             <div class="space"/>
+            <h:form>
+                <p:panel id="panelResult" header="#{field.resultado}" toggleable="true" toggleSpeed="500">
 
-            <p:panel id="panelResult" header="#{field.resultado}" toggleable="true" toggleSpeed="500">
-                <h:form>
-                    <p:dataTable value="#{tecnicaBean.listTbequipamento}" var="equipamento" id="dataTableResult"   
-                                 paginatorPosition="bottom" paginator="true" rows="10" paginatorTemplate="{PageLinks}"
-                                 emptyMessage="Nenhum resultado">
+                    <p:dataTable id="dataTableResult" styleClass="dttable-list-equipamentos" var="equipamento" 
+                                 rowKey="#{equipamento.idequipamento}" value="#{tecnicaBean.listTbequipamento}"    
+                                 paginator="#{tecnicaBean.listTbequipamento.size() > 30}" paginatorPosition="bottom" 
+                                 rows="18" rendered="#{not empty tecnicaBean.listTbequipamento}"
+                                 emptyMessage="Nenhum resultado" filteredValue="#{tecnicaBean.listTbequipamento}" widgetVar="equipamentoall"
+                                 scrollable="true"                                 
+                                 scrollHeight="100%"
+                                 resizableColumns="true">
+                  
                         <p:column headerText="#{field.condicao}">
                             <h:link>
                                 <h:graphicImage url="#{resource['images/SmileVerde.gif']}" rendered="#{equipamento.condicao==1}"/>
@@ -44,26 +51,36 @@
                             </h:link>
                         </p:column>
 
-                        <p:column headerText="#{field.nome} #{field.equipamento}">
-                            <h:link value="#{equipamento.nmequipamenta}" outcome="Laudo.jsf">
+                        <p:column headerText="#{field.nome} #{field.equipamento}" filterBy="#{equipamento.nmequipamenta}"  
+                                  filterMatchMode="contains" sortBy="#{equipamento.nmequipamenta}">
+                            
+                            <h:link value="#{equipamento.nmequipamenta}" outcome="Laudo.jsf" >
                                 <f:param name="idequipamento" value="#{equipamento.idequipamento}"/>
                             </h:link>
                         </p:column>
-                        <p:column>
-                            <h:link>
 
+                        <p:column headerText="#{field.tecnica}" filterBy="#{equipamento.idtecnica.nmtecnica}"  
+                                  filterMatchMode="contains" sortBy="#{equipamento.idtecnica.nmtecnica}">
+                            <h:link value="#{equipamento.idtecnica.nmtecnica}" outcome="Laudo.jsf">
+                                <f:param name="idequipamento" value="#{equipamento.idequipamento}"/>
                             </h:link>
                         </p:column>
-                        <p:column>
-                            <h:link>
 
-                            </h:link>
+                        <p:column headerText="#{field.criticidade}">
+                            <h:outputText value="#{equipamento.criticidade}"/>
+
+
+                        </p:column>
+
+                        <p:column>
+                            <p:commandButton action="#{tecnica.abridialog}"  icon="ui-icon-search">
+                                <f:param name="idequipamento" value="#{equipamento.idequipamento}"/>
+                            </p:commandButton>
                         </p:column>
 
                     </p:dataTable>
-                </h:form>
-            </p:panel>
-
+                </p:panel>
+            </h:form>
         </h:body>
     </ui:define>
 </ui:composition>

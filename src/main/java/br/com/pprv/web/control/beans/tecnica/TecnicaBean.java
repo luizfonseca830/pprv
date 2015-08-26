@@ -31,17 +31,29 @@ public class TecnicaBean implements Serializable {
     private TecnicaLogic tecnicaLogic;
 
     private Tbtecnica tbtecnica;
+    private Tbequipamento tbequipamento;
     private List<Tbtecnica> listTbtecnica;
     private int idtecnica;
+    private int idequipamento;
     private List<Tbequipamento> listTbequipamento;
 
     @PostConstruct
     public void init() {
-        int idtecnica = AbstractFacesContextUtils.getParamInt("idtecnica");
+        listTbtecnica = tecnicaLogic.listallTecnica();
+       
+
+        idtecnica = AbstractFacesContextUtils.getParamInt("idtecnica");
+
+        idequipamento = AbstractFacesContextUtils.getParamInt("idequipamento");
+
         if (idtecnica > 0) {
             tbtecnica = tecnicaLogic.find(idtecnica);
         }
-        listTbtecnica = tecnicaLogic.listallTecnica();
+
+        if (idequipamento > 0) {
+            tbequipamento = equipamentoLogic.find(idequipamento);
+        }
+
     }
 
     public void search() {
@@ -103,5 +115,47 @@ public class TecnicaBean implements Serializable {
      */
     public void setListTbequipamento(List<Tbequipamento> listTbequipamento) {
         this.listTbequipamento = listTbequipamento;
+    }
+
+    /**
+     * @return the idtecnica
+     */
+    public int getIdtecnica() {
+        return idtecnica;
+    }
+
+    /**
+     * @param idtecnica the idtecnica to set
+     */
+    public void setIdtecnica(int idtecnica) {
+        this.idtecnica = idtecnica;
+    }
+
+    /**
+     * @return the idequipamento
+     */
+    public int getIdequipamento() {
+        return idequipamento;
+    }
+
+    /**
+     * @param idequipamento the idequipamento to set
+     */
+    public void setIdequipamento(int idequipamento) {
+        this.idequipamento = idequipamento;
+    }
+
+    /**
+     * @return the tbequipamento
+     */
+    public Tbequipamento getTbequipamento() {
+        return tbequipamento;
+    }
+
+    /**
+     * @param tbequipamento the tbequipamento to set
+     */
+    public void setTbequipamento(Tbequipamento tbequipamento) {
+        this.tbequipamento = tbequipamento;
     }
 }

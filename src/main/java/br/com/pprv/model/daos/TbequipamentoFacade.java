@@ -30,4 +30,9 @@ public class TbequipamentoFacade extends AbstractFacade<Tbequipamento> {
                 .getResultList();
 
     }
+    
+     public List<Tbequipamento> allEquipamentos(EntityManager em) {
+        return em.createQuery("SELECT t FROM Tbequipamento t").getResultList();
+        
+    }
 }
