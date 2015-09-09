@@ -16,13 +16,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -43,19 +40,14 @@ public class Tbsubconjunto implements Serializable, Identificador<Integer> {
     @Size(min = 1, max = 2147483647)
     @Column(name = "nmsubconjunto")
     private String nmsubconjunto;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "condicao")
-    private int condicao;
+    private Integer condicao;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idsubconjunto", fetch = FetchType.EAGER)
+    private List<TbequipamentoSubconjunto> tbequipamentoSubconjuntoList;
     @OneToMany(mappedBy = "idsubconjunto", fetch = FetchType.EAGER)
     private List<Tbtecnica> tbtecnicaList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idsubconjunto", fetch = FetchType.EAGER)
     private List<Tblaudo> tblaudoList;
-    @JoinColumn(name = "idequipamento", referencedColumnName = "idequipamento")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Tbequipamento idequipamento;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idsubconjunto", fetch = FetchType.EAGER)
-    private List<Tbequipamento> tbequipamentoList;
 
     public Tbsubconjunto() {
     }
@@ -94,41 +86,7 @@ public class Tbsubconjunto implements Serializable, Identificador<Integer> {
         this.condicao = condicao;
     }
 
-    @XmlTransient
-    public List<Tbtecnica> getTbtecnicaList() {
-        return tbtecnicaList;
-    }
-
-    public void setTbtecnicaList(List<Tbtecnica> tbtecnicaList) {
-        this.tbtecnicaList = tbtecnicaList;
-    }
-
-    @XmlTransient
-    public List<Tblaudo> getTblaudoList() {
-        return tblaudoList;
-    }
-
-    public void setTblaudoList(List<Tblaudo> tblaudoList) {
-        this.tblaudoList = tblaudoList;
-    }
-
-    public Tbequipamento getIdequipamento() {
-        return idequipamento;
-    }
-
-    public void setIdequipamento(Tbequipamento idequipamento) {
-        this.idequipamento = idequipamento;
-    }
-
-    @XmlTransient
-    public List<Tbequipamento> getTbequipamentoList() {
-        return tbequipamentoList;
-    }
-
-    public void setTbequipamentoList(List<Tbequipamento> tbequipamentoList) {
-        this.tbequipamentoList = tbequipamentoList;
-    }
-
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -52,9 +52,6 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
     @Size(min = 1, max = 80)
     @Column(name = "descequipamento")
     private String descequipamento;
-    @JoinColumn(name = "idsubconjunto", referencedColumnName = "idsubconjunto")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Tbsubconjunto idsubconjunto;
     @JoinColumn(name = "idinspecao", referencedColumnName = "idinspecao")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tbinspecao idinspecao;
@@ -106,14 +103,6 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
 
     public void setDescequipamento(String descequipamento) {
         this.descequipamento = descequipamento;
-    }
-
-    public Tbsubconjunto getIdsubconjunto() {
-        return idsubconjunto;
-    }
-
-    public void setIdsubconjunto(Tbsubconjunto idsubconjunto) {
-        this.idsubconjunto = idsubconjunto;
     }
 
     public Tbinspecao getIdinspecao() {

@@ -7,10 +7,13 @@ package br.com.pprv.web.control.beans.tecnica;
 
 import br.com.pprv.model.entities.Tbequipamento;
 import br.com.pprv.model.entities.Tbtecnica;
+import br.com.pprv.model.entities.custom.EquipamentoModel;
+import br.com.pprv.model.entities.custom.SubConjuntoModel;
 import br.com.pprv.web.control.logic.equipamento.EquipamentoLogic;
 import br.com.pprv.web.control.logic.tecnica.TecnicaLogic;
 import br.com.pprv.web.faces.utils.AbstractFacesContextUtils;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -36,12 +39,13 @@ public class TecnicaBean implements Serializable {
     private int idtecnica;
     private int idequipamento;
     private List<Tbequipamento> listTbequipamento;
+    private List<Tbequipamento> filterequipamento;
+    private List<EquipamentoModel> listEquipamentos;
 
     @PostConstruct
     public void init() {
         listTbtecnica = tecnicaLogic.listallTecnica();
-       
-
+        listEquipamentos = new ArrayList<>();
         idtecnica = AbstractFacesContextUtils.getParamInt("idtecnica");
 
         idequipamento = AbstractFacesContextUtils.getParamInt("idequipamento");
@@ -57,8 +61,8 @@ public class TecnicaBean implements Serializable {
     }
 
     public void search() {
-        System.out.println("" + tbtecnica);
         listTbequipamento = equipamentoLogic.findTbequipamentoByTbtecnica(tbtecnica);
+
     }
 
     /**
@@ -157,5 +161,33 @@ public class TecnicaBean implements Serializable {
      */
     public void setTbequipamento(Tbequipamento tbequipamento) {
         this.tbequipamento = tbequipamento;
+    }
+
+    /**
+     * @return the filterequipamento
+     */
+    public List<Tbequipamento> getFilterequipamento() {
+        return filterequipamento;
+    }
+
+    /**
+     * @param filterequipamento the filterequipamento to set
+     */
+    public void setFilterequipamento(List<Tbequipamento> filterequipamento) {
+        this.filterequipamento = filterequipamento;
+    }
+
+    /**
+     * @return the listEquipamentos
+     */
+    public List<EquipamentoModel> getListEquipamentos() {
+        return listEquipamentos;
+    }
+
+    /**
+     * @param listEquipamentos the listEquipamentos to set
+     */
+    public void setListEquipamentos(List<EquipamentoModel> listEquipamentos) {
+        this.listEquipamentos = listEquipamentos;
     }
 }

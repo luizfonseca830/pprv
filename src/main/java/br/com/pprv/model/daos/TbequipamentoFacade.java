@@ -24,7 +24,7 @@ public class TbequipamentoFacade extends AbstractFacade<Tbequipamento> {
 
     public List<Tbequipamento> findTbequipamentoByTbtecnica(Tbtecnica tbtecnica, EntityManager em) {
 
-        return em.createQuery("SELECT t FROM Tbequipamento t WHERE t.idtecnica = :idTecnica",
+        return em.createQuery("SELECT t FROM Tbequipamento t WHERE t.idtecnica = :idTecnica GROUP BY t.idequipamento" ,
                 Tbequipamento.class)
                 .setParameter("idTecnica", tbtecnica)
                 .getResultList();
