@@ -6,9 +6,9 @@
 package br.com.pprv.web.control.beans.tecnica;
 
 import br.com.pprv.model.entities.Tbequipamento;
+import br.com.pprv.model.entities.TbequipamentoSubconjunto;
 import br.com.pprv.model.entities.Tbtecnica;
 import br.com.pprv.model.entities.custom.EquipamentoModel;
-import br.com.pprv.model.entities.custom.SubConjuntoModel;
 import br.com.pprv.web.control.logic.equipamento.EquipamentoLogic;
 import br.com.pprv.web.control.logic.tecnica.TecnicaLogic;
 import br.com.pprv.web.faces.utils.AbstractFacesContextUtils;
@@ -34,7 +34,9 @@ public class TecnicaBean implements Serializable {
     private TecnicaLogic tecnicaLogic;
 
     private Tbtecnica tbtecnica;
+    private TbequipamentoSubconjunto tbequipamentoSubconjunto;
     private Tbequipamento tbequipamento;
+    private List<TbequipamentoSubconjunto> listTbequipamentoSubconjuntos;
     private List<Tbtecnica> listTbtecnica;
     private int idtecnica;
     private int idequipamento;
@@ -189,5 +191,33 @@ public class TecnicaBean implements Serializable {
      */
     public void setListEquipamentos(List<EquipamentoModel> listEquipamentos) {
         this.listEquipamentos = listEquipamentos;
+    }
+
+    /**
+     * @return the tbequipamentoSubconjunto
+     */
+    public TbequipamentoSubconjunto getTbequipamentoSubconjunto() {
+        return tbequipamentoSubconjunto;
+    }
+
+    /**
+     * @param tbequipamentoSubconjunto the tbequipamentoSubconjunto to set
+     */
+    public void setTbequipamentoSubconjunto(TbequipamentoSubconjunto tbequipamentoSubconjunto) {
+        this.tbequipamentoSubconjunto = tbequipamentoSubconjunto;
+    }
+
+    /**
+     * @return the listTbequipamentoSubconjuntos
+     */
+    public List<TbequipamentoSubconjunto> getListTbequipamentoSubconjuntos() {
+        return listTbequipamentoSubconjuntos;
+    }
+
+    /**
+     * @param listTbequipamentoSubconjuntos the listTbequipamentoSubconjuntos to set
+     */
+    public void setListTbequipamentoSubconjuntos(List<TbequipamentoSubconjunto> listTbequipamentoSubconjuntos) {
+        this.listTbequipamentoSubconjuntos = listTbequipamentoSubconjuntos;
     }
 }

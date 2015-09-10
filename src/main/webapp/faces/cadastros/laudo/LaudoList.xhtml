@@ -77,12 +77,6 @@
 
                         </p:column>
 
-                        <p:column>
-                            <p:commandButton action="#{tecnica.abridialog}"  icon="ui-icon-search">
-                                <f:param name="idequipamento" value="#{equipamento.idequipamento}"/>
-                            </p:commandButton>
-                        </p:column>
-
                     </p:dataTable>
 
 
@@ -98,8 +92,10 @@
 
                         <p:column headerText="#{field.nome} #{field.equipamento}" >
 
-                            <p:commandLink value="#{equip.nmEquipamento}">
-                                <f:param name="idequipamento" value="#{equip.nmEquipamento}"/>
+                            <p:commandLink process="@this" onclick="PF('dlgLaudo').show();" update=":formEditLaudo">
+                              
+                                   <f:setPropertyActionListener transient="true" for="dataTableOcorrencias"  value="#{ocorrencia}" target="#{producaoDiariaBean.tbocorrencia}"/>
+                                <h:outputText  value="#{equip.nmEquipamento}"/>
                             </p:commandLink> 
                         </p:column>
 
@@ -118,10 +114,19 @@
                 </p:panel>
 
             </h:form>
-            <!--TELA DE DIALOG RESPONSAVEL POR CHAMAR O INSERIR O LAUDO  -->
+          
+            
+            <!--TELA DE DIALOG RESPONSAVEL POR CHAMAR O INSERIR O LAUDO -->
             <p:dialog id="dialog" dynamic="true" widgetVar="dlgLaudo" header="Edição de Laudo">
-
+                <p:outputPanel id="formEditLaudo">
+                    <h:form id="formModeltLaudo">
+                        <h:panelGrid columns="2" cellspacing="10">
+                            <h:outputText value=""/>
+                        </h:panelGrid>
+                    </h:form>
+                </p:outputPanel>  
             </p:dialog>
+             
         </h:body>
     </ui:define>
 </ui:composition>
