@@ -58,8 +58,7 @@
 
                         <p:column headerText="#{field.nome} #{field.equipamento}" filterBy="#{equipamento.nmequipamenta}"  
                                   filterMatchMode="contains" sortBy="#{equipamento.nmequipamenta}">
-
-                            <p:commandLink value="#{equipamento.nmequipamenta}">
+                            <p:commandLink   oncomplete="PF('dlgLaudo').show();" value="#{equipamento.nmequipamenta}" action="#{tecnicaBean.carregarSeleçao}" >
                                 <f:param name="idequipamento" value="#{equipamento.idequipamento}"/>
                             </p:commandLink>
                         </p:column>
@@ -93,8 +92,8 @@
                         <p:column headerText="#{field.nome} #{field.equipamento}" >
 
                             <p:commandLink process="@this" onclick="PF('dlgLaudo').show();" update=":formEditLaudo">
-                              
-                                   <f:setPropertyActionListener transient="true" for="dataTableOcorrencias"  value="#{ocorrencia}" target="#{producaoDiariaBean.tbocorrencia}"/>
+
+                                <f:setPropertyActionListener transient="true" for="dataTableOcorrencias"  value="#{ocorrencia}" target="#{producaoDiariaBean.tbocorrencia}"/>
                                 <h:outputText  value="#{equip.nmEquipamento}"/>
                             </p:commandLink> 
                         </p:column>
@@ -114,19 +113,22 @@
                 </p:panel>
 
             </h:form>
-          
-            
+
+
             <!--TELA DE DIALOG RESPONSAVEL POR CHAMAR O INSERIR O LAUDO -->
-            <p:dialog id="dialog" dynamic="true" widgetVar="dlgLaudo" header="Edição de Laudo">
-                <p:outputPanel id="formEditLaudo">
-                    <h:form id="formModeltLaudo">
-                        <h:panelGrid columns="2" cellspacing="10">
-                            <h:outputText value=""/>
-                        </h:panelGrid>
-                    </h:form>
-                </p:outputPanel>  
+            <p:dialog id="dialog" dynamic="true" widgetVar="dlgLaudo" header="Edição de Laudo" width="700" height="400"  modal="true" resizable="false" draggable="false"> 
+
+                <h:form id="formModeltLaudo">
+
+                    <p:panel>
+                        <h:dataTable>  
+                            <h:outputText value="#{tecnicaBean.tbequipamentoSubconjunto.idequipamento}"/>
+                        </h:dataTable>
+                    </p:panel>
+                </h:form>
+
             </p:dialog>
-             
+
         </h:body>
     </ui:define>
 </ui:composition>

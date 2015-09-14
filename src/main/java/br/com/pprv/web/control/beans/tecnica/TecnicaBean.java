@@ -10,6 +10,7 @@ import br.com.pprv.model.entities.TbequipamentoSubconjunto;
 import br.com.pprv.model.entities.Tbtecnica;
 import br.com.pprv.model.entities.custom.EquipamentoModel;
 import br.com.pprv.web.control.logic.equipamento.EquipamentoLogic;
+import br.com.pprv.web.control.logic.equipamento_subconjunto.EquipamentoSubconjuntoLogic;
 import br.com.pprv.web.control.logic.tecnica.TecnicaLogic;
 import br.com.pprv.web.faces.utils.AbstractFacesContextUtils;
 import java.io.Serializable;
@@ -32,6 +33,8 @@ public class TecnicaBean implements Serializable {
     private EquipamentoLogic equipamentoLogic;
     @EJB
     private TecnicaLogic tecnicaLogic;
+    @EJB
+    private EquipamentoSubconjuntoLogic equimentoSubconjuntoLogic;
 
     private Tbtecnica tbtecnica;
     private TbequipamentoSubconjunto tbequipamentoSubconjunto;
@@ -65,6 +68,10 @@ public class TecnicaBean implements Serializable {
     public void search() {
         listTbequipamento = equipamentoLogic.findTbequipamentoByTbtecnica(tbtecnica);
 
+    }
+
+    public void CarregarSeleçao() {
+        listTbequipamentoSubconjuntos = equimentoSubconjuntoLogic.listTbequipamentoSubconjunto(tbequipamentoSubconjunto);
     }
 
     /**
@@ -215,7 +222,8 @@ public class TecnicaBean implements Serializable {
     }
 
     /**
-     * @param listTbequipamentoSubconjuntos the listTbequipamentoSubconjuntos to set
+     * @param listTbequipamentoSubconjuntos the listTbequipamentoSubconjuntos to
+     * set
      */
     public void setListTbequipamentoSubconjuntos(List<TbequipamentoSubconjunto> listTbequipamentoSubconjuntos) {
         this.listTbequipamentoSubconjuntos = listTbequipamentoSubconjuntos;

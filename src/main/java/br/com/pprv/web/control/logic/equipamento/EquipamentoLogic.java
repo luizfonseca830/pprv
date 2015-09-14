@@ -12,7 +12,6 @@ import br.com.pprv.web.control.module.AbstractModuleCore;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
 
 /**
  *
