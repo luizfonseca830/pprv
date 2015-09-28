@@ -49,17 +49,18 @@
                                  resizableColumns="true">
 
                         <p:column headerText="#{field.condicao}">
-                            <h:link>
-                                <h:graphicImage url="#{resource['images/QUADRADOVERDE.png']}" rendered="#{equipamento.condicao==1}"/>
-                                <h:graphicImage url="#{resource['images/QUADRADOAMARELO.png']}" rendered="#{equipamento.condicao==2}"/>
-                                <h:graphicImage url="#{resource['images/QUADRADOVERMELHO.png']}" rendered="#{equipamento.condicao==3}"/>
-                            </h:link>
+
+                            <h:graphicImage url="#{resource['images/QUADRADOVERDE.png']}" rendered="#{equipamento.condicao==1}"/>
+                            <h:graphicImage url="#{resource['images/QUADRADOAMARELO.png']}" rendered="#{equipamento.condicao==2}"/>
+                            <h:graphicImage url="#{resource['images/QUADRADOVERMELHO.png']}" rendered="#{equipamento.condicao==3}"/>
+
                         </p:column>
 
                         <p:column headerText="#{field.nome} #{field.equipamento}" filterBy="#{equipamento.nmequipamenta}"  
                                   filterMatchMode="contains" sortBy="#{equipamento.nmequipamenta}">
-                            <p:commandLink   oncomplete="PF('dlgLaudo').show();" value="#{equipamento.nmequipamenta}" action="#{tecnicaBean.carregarSeleçao}" >
-                                <f:param name="idequipamento" value="#{equipamento.idequipamento}"/>
+                            <p:commandLink oncomplete="PF('dlgLaudo').show();" value="#{equipamento.nmequipamenta}" update=":dialog">
+                                <f:setPropertyActionListener for="dataTableOcorrencias" value="#{equipamento}" 
+                                                             target="#{tecnicaBean.tbequipamentoSelected}"/> 
                             </p:commandLink>
                         </p:column>
 
@@ -79,52 +80,33 @@
                     </p:dataTable>
 
 
-                    <p:dataTable id="teste" value="#{tecnicaBean.listEquipamentos}" var="equip">
-
-                        <p:column headerText="#{field.condicao}">
-                            <h:link>
-                                <h:graphicImage url="#{resource['images/QUADRADOVERDE.png']}" rendered="#{equip.idCondicao==1}"/>
-                                <h:graphicImage url="#{resource['images/QUADRADOAMARELO.png']}" rendered="#{equip.idCondicao==2}"/>
-                                <h:graphicImage url="#{resource['images/QUADRADOVERMELHO.png']}" rendered="#{equip.idCondicao==3}"/>
-                            </h:link>
-                        </p:column>
-
-                        <p:column headerText="#{field.nome} #{field.equipamento}" >
-
-                            <p:commandLink process="@this" onclick="PF('dlgLaudo').show();" update=":formEditLaudo">
-
-                                <f:setPropertyActionListener transient="true" for="dataTableOcorrencias"  value="#{ocorrencia}" target="#{producaoDiariaBean.tbocorrencia}"/>
-                                <h:outputText  value="#{equip.nmEquipamento}"/>
-                            </p:commandLink> 
-                        </p:column>
-
-                        <p:column headerText="#{field.tecnica}">
-                            <h:link value="#{equip.idTecnica.nmtecnica}" outcome="Laudo.jsf">
-                                <f:param name="idequipamento" value="#{equip.nmEquipamento}"/>
-                            </h:link>
-                        </p:column>
-
-                        <p:column headerText="#{field.criticidade}">
-                            <h:outputText value="#{equip.criticidade}"/>
-                        </p:column>
-
-                    </p:dataTable>
-
                 </p:panel>
 
             </h:form>
 
 
             <!--TELA DE DIALOG RESPONSAVEL POR CHAMAR O INSERIR O LAUDO -->
-            <p:dialog id="dialog" dynamic="true" widgetVar="dlgLaudo" header="Edição de Laudo" width="700" height="400"  modal="true" resizable="false" draggable="false"> 
+            <p:dialog id="dialog" dynamic="true" widgetVar="dlgLaudo" header="Edição de Laudo" width="900" height="500" 
+                      modal="true" resizable="false" draggable="false"> 
 
                 <h:form id="formModeltLaudo">
+                    <h:panelGrid columns="2" cellspacing="15">
+                        <h:outputText value="#{field.equipamento}"/>
+                        <h:outputText value="#{equipamento.nmequipamenta}"/>
+                    </h:panelGrid>
+                    <p:accordionPanel value="#{tecnicaBean.listAllEquipSubByIdEquip}" var="equipamentosubcojunto">
+                        <p:tab title="#{equipamentosubcojunto.idsubconjunto.nmsubconjunto}">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <h:outputText value="#{field.equipamento}"/>
+                                <h:outputText value="#{equipamento.nmequipamenta}"/>
+                                <h:panelGrid>
 
-                    <p:panel>
-                        <h:dataTable>  
-                            <h:outputText value="#{tecnicaBean.tbequipamentoSubconjunto.idequipamento}"/>
-                        </h:dataTable>
-                    </p:panel>
+                                </h:panelGrid>
+
+                            </h:panelGrid>
+                        </p:tab>
+                    </p:accordionPanel>
+
                 </h:form>
 
             </p:dialog>

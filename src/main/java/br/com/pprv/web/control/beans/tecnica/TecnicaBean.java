@@ -43,17 +43,20 @@ public class TecnicaBean implements Serializable {
     private List<Tbtecnica> listTbtecnica;
     private int idtecnica;
     private int idequipamento;
+    private int idequipamentoSubconjunto;
     private List<Tbequipamento> listTbequipamento;
     private List<Tbequipamento> filterequipamento;
     private List<EquipamentoModel> listEquipamentos;
+    private Tbequipamento tbequipamentoSelected;
 
     @PostConstruct
     public void init() {
         listTbtecnica = tecnicaLogic.listallTecnica();
         listEquipamentos = new ArrayList<>();
-        idtecnica = AbstractFacesContextUtils.getParamInt("idtecnica");
 
+        idtecnica = AbstractFacesContextUtils.getParamInt("idtecnica");
         idequipamento = AbstractFacesContextUtils.getParamInt("idequipamento");
+        idequipamentoSubconjunto = AbstractFacesContextUtils.getParamInt("idequipamentosubconjunto");
 
         if (idtecnica > 0) {
             tbtecnica = tecnicaLogic.find(idtecnica);
@@ -62,16 +65,23 @@ public class TecnicaBean implements Serializable {
         if (idequipamento > 0) {
             tbequipamento = equipamentoLogic.find(idequipamento);
         }
+        if (idequipamentoSubconjunto > 0) {
+            tbequipamentoSubconjunto = equimentoSubconjuntoLogic.find(idequipamentoSubconjunto);
+        }
 
     }
 
     public void search() {
         listTbequipamento = equipamentoLogic.findTbequipamentoByTbtecnica(tbtecnica);
 
-    }
+    }   
 
-    public void CarregarSeleçao() {
-        listTbequipamentoSubconjuntos = equimentoSubconjuntoLogic.listTbequipamentoSubconjunto(tbequipamentoSubconjunto);
+    public List<TbequipamentoSubconjunto> getListAllEquipSubByIdEquip() {
+        System.out.println(" testando " + tbequipamentoSelected);
+
+        listTbequipamentoSubconjuntos = equimentoSubconjuntoLogic.listAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamentoSelected);
+      
+        return listTbequipamentoSubconjuntos;
     }
 
     /**
@@ -227,5 +237,33 @@ public class TecnicaBean implements Serializable {
      */
     public void setListTbequipamentoSubconjuntos(List<TbequipamentoSubconjunto> listTbequipamentoSubconjuntos) {
         this.listTbequipamentoSubconjuntos = listTbequipamentoSubconjuntos;
+    }
+
+    /**
+     * @return the idequipamentoSubconjunto
+     */
+    public int getIdequipamentoSubconjunto() {
+        return idequipamentoSubconjunto;
+    }
+
+    /**
+     * @param idequipamentoSubconjunto the idequipamentoSubconjunto to set
+     */
+    public void setIdequipamentoSubconjunto(int idequipamentoSubconjunto) {
+        this.idequipamentoSubconjunto = idequipamentoSubconjunto;
+    }
+
+    /**
+     * @return the tbequipamentoSelected
+     */
+    public Tbequipamento getTbequipamentoSelected() {
+        return tbequipamentoSelected;
+    }
+
+    /**
+     * @param tbequipamentoSelected the tbequipamentoSelected to set
+     */
+    public void setTbequipamentoSelected(Tbequipamento tbequipamentoSelected) {
+        this.tbequipamentoSelected = tbequipamentoSelected;
     }
 }
