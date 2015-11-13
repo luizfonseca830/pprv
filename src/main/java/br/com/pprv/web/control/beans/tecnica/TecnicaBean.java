@@ -7,19 +7,32 @@ package br.com.pprv.web.control.beans.tecnica;
 
 import br.com.pprv.model.entities.Tbequipamento;
 import br.com.pprv.model.entities.TbequipamentoSubconjunto;
+import br.com.pprv.model.entities.Tbgerencia;
+import br.com.pprv.model.entities.Tblaudo;
 import br.com.pprv.model.entities.Tbtecnica;
 import br.com.pprv.model.entities.custom.EquipamentoModel;
+import br.com.pprv.model.entities.custom.LaudoMdl;
 import br.com.pprv.web.control.logic.equipamento.EquipamentoLogic;
 import br.com.pprv.web.control.logic.equipamento_subconjunto.EquipamentoSubconjuntoLogic;
+import br.com.pprv.web.control.logic.laudo.LaudoLogic;
 import br.com.pprv.web.control.logic.tecnica.TecnicaLogic;
 import br.com.pprv.web.faces.utils.AbstractFacesContextUtils;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.text.Normalizer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.apache.commons.io.IOUtils;
+import org.primefaces.model.UploadedFile;
 
 /**
  *
@@ -29,12 +42,16 @@ import javax.faces.bean.ViewScoped;
 @ViewScoped
 public class TecnicaBean implements Serializable {
 
+    private static final String CAMINHO = "/upload/arquivos/";
+
     @EJB
     private EquipamentoLogic equipamentoLogic;
     @EJB
     private TecnicaLogic tecnicaLogic;
     @EJB
     private EquipamentoSubconjuntoLogic equimentoSubconjuntoLogic;
+    @EJB
+    private LaudoLogic laudoLogic;
 
     private Tbtecnica tbtecnica;
     private TbequipamentoSubconjunto tbequipamentoSubconjunto;
@@ -48,6 +65,9 @@ public class TecnicaBean implements Serializable {
     private List<Tbequipamento> filterequipamento;
     private List<EquipamentoModel> listEquipamentos;
     private Tbequipamento tbequipamentoSelected;
+    private List<LaudoMdl> listLaudoMdl;
+
+    private UploadedFile uploadedFile;
 
     @PostConstruct
     public void init() {
@@ -74,14 +94,112 @@ public class TecnicaBean implements Serializable {
     public void search() {
         listTbequipamento = equipamentoLogic.findTbequipamentoByTbtecnica(tbtecnica);
 
-    }   
+    }
 
     public List<TbequipamentoSubconjunto> getListAllEquipSubByIdEquip() {
-        System.out.println(" testando " + tbequipamentoSelected);
 
         listTbequipamentoSubconjuntos = equimentoSubconjuntoLogic.listAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamentoSelected);
-      
+
         return listTbequipamentoSubconjuntos;
+    }
+
+    /**
+     * metodo utilizado para criar os laudos.
+     */
+    public void createLaudos() {
+
+        Tbequipamento equipamento = null;
+
+        for (LaudoMdl laudoMdl : listLaudoMdl) {
+
+            equipamento = laudoMdl.getTbequipamentoSubconjunto().getIdequipamento();
+
+            Tblaudo tblaudo = new Tblaudo();
+            tblaudo.setDataanalise(laudoMdl.getDtDataAnalise());
+            tblaudo.setDatacadastro(laudoMdl.getDtDataCadastro());
+            tblaudo.setDiagnostico(laudoMdl.getNmDiagnostico());
+            tblaudo.setIdsubconjunto(laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
+            tblaudo.setLimiteexecucao(laudoMdl.getDtDatalimiteExecucao());
+            tblaudo.setOrdemmanutencao(laudoMdl.getNmRecomendacao());
+            tblaudo.setStatus("status");
+            tblaudo.setIdgerencia(new Tbgerencia(1));
+            tblaudo.setIdequipamento(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento());
+
+            if (laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto().getCondicao() != 1) {
+                /**
+                 * se for amarelo ou vermelho, criar um novo laudo.
+                 */
+                laudoLogic.createTblaudo(tblaudo);
+            } else {
+                /**
+                 * se for verde, editar o laudo.
+                 */
+
+                Tblaudo laudo = laudoLogic.findTblaudoByEquipamentoAndSubConjunto(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento(), laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
+
+                if (laudo != null) {
+                    laudo.setDataanalise(laudoMdl.getDtDataAnalise());
+                    laudo.setDatacadastro(laudoMdl.getDtDataCadastro());
+                    laudo.setDiagnostico(laudoMdl.getNmDiagnostico());
+                    laudo.setIdsubconjunto(laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
+                    laudo.setLimiteexecucao(laudoMdl.getDtDatalimiteExecucao());
+                    laudo.setOrdemmanutencao(laudoMdl.getNmRecomendacao());
+                    laudo.setStatus("status");
+                    laudo.setIdgerencia(new Tbgerencia(1));
+                    laudo.setIdequipamento(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento());
+                    laudoLogic.editTblaudo(laudo);
+                } else {
+                    laudoLogic.createTblaudo(tblaudo);
+                }
+            }
+
+//            equipamento = laudoMdl.getTbequipamentoSubconjunto().getIdequipamento();
+//            System.out.println(" equip: " + laudoMdl.getTbequipamentoSubconjunto().getIdequipamento().getNmequipamenta());
+//            System.out.println(" sub: " + laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto().getNmsubconjunto());
+        }
+
+        if (uploadedFile != null) {
+            System.out.println(" fileName: " + uploadedFile.getFileName());
+            doUpload(equipamento, uploadedFile);
+        }
+
+        AbstractFacesContextUtils.addMessageInfo("Laudos criado com sucesso.");
+    }
+
+    /**
+     * metodo utilizado para fazer o upload dos arquivos.
+     *
+     * @param tbequipamento
+     * @param uploadedFile
+     * @return
+     */
+    public boolean doUpload(Tbequipamento tbequipamento, UploadedFile uploadedFile) {
+        boolean result = false;
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+
+        String fileExtension = uploadedFile.getFileName();
+
+        String nmDescTemplate = Normalizer.normalize(tbequipamento.getNmequipamenta(), Normalizer.Form.NFD);
+        nmDescTemplate = nmDescTemplate.replaceAll("[^\\p{ASCII}]", "").replace("\"", "");
+        String fileName = nmDescTemplate.toUpperCase() + "_" + sdf.format(new Date()) + fileExtension.substring(fileExtension.lastIndexOf('.'), fileExtension.length());
+
+        File file = new File(CAMINHO, fileName);
+
+        try {
+            try (FileOutputStream fileOutput = new FileOutputStream(file)) {
+                fileOutput.write(IOUtils.toByteArray(uploadedFile.getInputstream()));
+                fileOutput.flush();
+                fileOutput.close();
+            }
+            result = true;
+        } catch (FileNotFoundException ex) {
+            AbstractFacesContextUtils.addMessageError("Falha ao encontrar o arquivo.");
+            ex.printStackTrace(System.err);
+        } catch (IOException ex) {
+            AbstractFacesContextUtils.addMessageError("Falha ao abrir o arquivo.");
+            ex.printStackTrace(System.err);
+        }
+        return result;
     }
 
     /**
@@ -265,5 +383,45 @@ public class TecnicaBean implements Serializable {
      */
     public void setTbequipamentoSelected(Tbequipamento tbequipamentoSelected) {
         this.tbequipamentoSelected = tbequipamentoSelected;
+    }
+
+    /**
+     * @return the uploadedFile
+     */
+    public UploadedFile getUploadedFile() {
+        return uploadedFile;
+    }
+
+    /**
+     * @param uploadedFile the uploadedFile to set
+     */
+    public void setUploadedFile(UploadedFile uploadedFile) {
+        this.uploadedFile = uploadedFile;
+    }
+
+    /**
+     * @return the listLaudoMdl
+     */
+    public List<LaudoMdl> getListLaudoMdl() {
+
+        System.out.println(" testando valores: " + tbequipamentoSelected);
+
+        listLaudoMdl = new ArrayList<>();
+
+        for (TbequipamentoSubconjunto equipamentoSubconjunto : equimentoSubconjuntoLogic.listAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamentoSelected)) {
+            LaudoMdl laudoMdl = new LaudoMdl();
+            laudoMdl.setTbequipamentoSubconjunto(equipamentoSubconjunto);
+            laudoMdl.setIdEquipamentoSubconjunto(equipamentoSubconjunto.getIdequipamentoSubconjunto());
+            listLaudoMdl.add(laudoMdl);
+        }
+
+        return listLaudoMdl;
+    }
+
+    /**
+     * @param listLaudoMdl the listLaudoMdl to set
+     */
+    public void setListLaudoMdl(List<LaudoMdl> listLaudoMdl) {
+        this.listLaudoMdl = listLaudoMdl;
     }
 }

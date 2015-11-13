@@ -89,10 +89,6 @@ body {height: 96%;}
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#eff5fa, endColorstr=#FFFFFF);
 }
 
-/* checkbox e radiobutton modificados */
-.ui-chkbox .ui-chkbox-box, .ui-selection-column, .ui-radiobutton .ui-radiobutton-box {background: none; border:1px solid cornflowerblue;background-color: #fff;}
-.ui-datatable-footer .ui-button-text {border:1px solid #000;}
-.ui-radiobutton {padding-left: 5px;padding-right: 2px;}
 
 /* tooltip Personalizado */
 a.tooltip {outline:none;}

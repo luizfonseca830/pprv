@@ -24,15 +24,15 @@ public class TbequipamentoFacade extends AbstractFacade<Tbequipamento> {
 
     public List<Tbequipamento> findTbequipamentoByTbtecnica(Tbtecnica tbtecnica, EntityManager em) {
 
-        return em.createQuery("SELECT t FROM Tbequipamento t WHERE t.idtecnica = :idTecnica GROUP BY t.idequipamento" ,
+        return em.createQuery("SELECT t FROM Tbequipamento t WHERE t.idtecnica = :idTecnica GROUP BY t.idequipamento ORDER BY t.nmequipamenta",
                 Tbequipamento.class)
                 .setParameter("idTecnica", tbtecnica)
                 .getResultList();
 
     }
-    
-     public List<Tbequipamento> allEquipamentos(EntityManager em) {
+
+    public List<Tbequipamento> allEquipamentos(EntityManager em) {
         return em.createQuery("SELECT t FROM Tbequipamento t").getResultList();
-        
+
     }
 }

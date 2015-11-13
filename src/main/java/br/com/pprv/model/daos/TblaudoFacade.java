@@ -5,8 +5,11 @@
  */
 package br.com.pprv.model.daos;
 
+import br.com.pprv.model.entities.Tbequipamento;
 import br.com.pprv.model.entities.Tblaudo;
+import br.com.pprv.model.entities.Tbsubconjunto;
 import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
 
 /**
  *
@@ -14,10 +17,25 @@ import javax.ejb.Stateless;
  */
 @Stateless
 public class TblaudoFacade extends AbstractFacade<Tblaudo> {
-  
 
     public TblaudoFacade() {
         super(Tblaudo.class);
     }
-    
+
+    public Tblaudo findTblaudoByEquipamentoAndSubConjunto(final Tbequipamento tbequipamento, final Tbsubconjunto tbsubconjunto,
+            final EntityManager entityManager) {
+
+        Tblaudo tblaudoResult = null;
+
+        try {
+            tblaudoResult = entityManager.createQuery("SELECT t FROM Tblaudo t WHERE t.idequipamento = :idEquipamento and t.idsubconjunto = :idSubconjunto", Tblaudo.class)
+                    .setParameter("idEquipamento", tbequipamento)
+                    .setParameter("idSubconjunto", tbsubconjunto)
+                    .setMaxResults(1)
+                    .getSingleResult();
+        } catch (Exception e) {
+        }
+
+        return tblaudoResult;
+    }
 }

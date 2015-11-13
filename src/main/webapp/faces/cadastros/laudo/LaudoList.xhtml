@@ -9,13 +9,17 @@
 
         <h:outputText id="page-rule" rendered="#{menuBean.isRule('cad_laudo')}"/>
 
+        <style>
+            .ui-selectonemenu .ui-selectonemenu-label{width: 250px;}
+            .ui-selectonemenu-trigger{width: auto;}
+        </style>
+
         <h:body>
 
             <div class="page-title">#{field.laudo}</div>
 
             <h:form id="resultLaudo">
                 <p:panel header="#{field.parametrodepesquisa}" toggleable="true" toggleSpeed="500">
-
 
                     <h:panelGrid columns="2" cellspacing="10">
                         <h:outputText value="#{field.tecnica}" class="text-bold"/>
@@ -29,21 +33,22 @@
                     </h:panelGrid>
 
                     <p:commandButton value="#{field.pesquisar}" action="#{tecnicaBean.search()}"
-                                     icon="ui-icon-search" update=":panelResult, :teste" ajax="false"
+                                     icon="ui-icon-search" update=":panelResult" ajax="false"
                                      onclick="PF('statusDialog').show();"
-                                     oncomplete="PF('statusDialog').hide()"/>
+                                     oncomplete="PF('statusDialog').hide();PF('equipamentoall').update();"/>
 
 
                 </p:panel>
                 <div class="space"/>
 
-                <p:panel id="panelResult" header="#{field.resultado}" toggleable="true" toggleSpeed="500">
+                <p:panel id="panelResult" header="#{field.resultado}" toggleable="true" toggleSpeed="500">                                      
 
-                    <p:dataTable id="dataTableResult" styleClass="dttable-list-equipamentos" var="equipamento" 
+                    <p:dataTable id="dataTableResult" var="equipamento" 
                                  rowKey="#{equipamento.idequipamento}" value="#{tecnicaBean.listTbequipamento}"    
                                  paginator="#{tecnicaBean.listTbequipamento.size() > 30}" paginatorPosition="bottom" 
                                  rows="18" rendered="#{not empty tecnicaBean.listTbequipamento}"
-                                 emptyMessage="Nenhum resultado" filteredValue="#{tecnicaBean.filterequipamento}" widgetVar="equipamentoall"
+                                 emptyMessage="Nenhum resultado encontrado para a tecnica selecionada." filteredValue="#{tecnicaBean.filterequipamento}" 
+                                 widgetVar="equipamentoall"
                                  scrollable="true"                                 
                                  scrollHeight="100%"
                                  resizableColumns="true">
@@ -73,12 +78,9 @@
 
                         <p:column headerText="#{field.criticidade}">
                             <h:outputText value="#{equipamento.criticidade}"/>
-
-
                         </p:column>
 
                     </p:dataTable>
-
 
                 </p:panel>
 
@@ -86,26 +88,108 @@
 
 
             <!--TELA DE DIALOG RESPONSAVEL POR CHAMAR O INSERIR O LAUDO -->
-            <p:dialog id="dialog" dynamic="true" widgetVar="dlgLaudo" header="Edição de Laudo" width="900" height="500" 
+            <p:dialog id="dialog" dynamic="true" widgetVar="dlgLaudo" header="Edição de Laudo" width="900" height="550" 
                       modal="true" resizable="false" draggable="false"> 
 
-                <h:form id="formModeltLaudo">
-                    <h:panelGrid columns="2" cellspacing="15">
-                        <h:outputText value="#{field.equipamento}"/>
-                        <h:outputText value="#{equipamento.nmequipamenta}"/>
+                <h:form id="formModeltLaudo" enctype="multipart/form-data">
+                    <h:panelGrid columns="2" cellspacing="10">
+                        <h:outputText value="#{field.equipamento}" class="text-bold"/>
+                        <h:outputText value="#{tecnicaBean.tbequipamentoSelected.nmequipamenta}"/>
                     </h:panelGrid>
-                    <p:accordionPanel value="#{tecnicaBean.listAllEquipSubByIdEquip}" var="equipamentosubcojunto">
-                        <p:tab title="#{equipamentosubcojunto.idsubconjunto.nmsubconjunto}">
-                            <h:panelGrid columns="2" cellpadding="5">
-                                <h:outputText value="#{field.equipamento}"/>
-                                <h:outputText value="#{equipamento.nmequipamenta}"/>
-                                <h:panelGrid>
+                    <p:accordionPanel value="#{tecnicaBean.listLaudoMdl}" var="equipamentosubcojunto"
+                                      activeIndex="-1">                                                
+                        <p:tab title="#{equipamentosubcojunto.tbequipamentoSubconjunto.idsubconjunto.nmsubconjunto}">                            
+                            <h:panelGrid columns="1" cellspacing="5">
 
-                                </h:panelGrid>
+                                <h:outputText id="diagnostico" value="Diagnóstico" class="text-bold"/>
+                                <p:inputTextarea id="textAreaDiagnostico" value="#{equipamentosubcojunto.nmDiagnostico}"
+                                                 cols="110" autoResize="true"/>                                
+
+                                <h:outputText id="recomendacao" value="Recomendação" class="text-bold"/>
+                                <p:inputTextarea id="textAreaRecomendacao" value="#{equipamentosubcojunto.nmRecomendacao}"
+                                                 cols="110" autoResize="true"/>
 
                             </h:panelGrid>
+
+                            <h:panelGrid columns="2" cellspacing="5">
+
+                                <h:outputText id="turmaExectante" value="Turma Executante" class="text-bold"/>
+                                <p:selectOneMenu id="autoComplete" value="#{tecnicaBean.tbtecnica}"
+                                                 filter="true" filterMatchMode="contains" converter="converterEntity">
+                                    <f:selectItems value="#{tecnicaBean.listTbtecnica}" var="tecnica" 
+                                                   itemValue="#{tecnica}" itemLabel="#{tecnica.nmtecnica}" >
+                                    </f:selectItems>
+                                </p:selectOneMenu>                                                                                                                      
+
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="3" cellspacing="5">
+                                <h:outputText id="limiteExecucao" value="Limite Execução:" class="text-bold"/>
+
+                                <div style="width: 11px;"/>
+
+                                <p:calendar id="calendarLimiteExecucao" value="#{equipamentosubcojunto.dtDatalimiteExecucao}"
+                                            mode="popup" showOn="button" 
+                                            navigator="true"/>
+                            </h:panelGrid>    
+
+                            <h:panelGrid columns="6" cellspacing="5">
+                                <h:outputText id="dataAnalise" value="Data Analíse:" class="text-bold"/>
+
+                                <div style="width: 32px;"/>
+
+                                <p:calendar id="calendarDataAnalise" value="#{equipamentosubcojunto.dtDataAnalise}"
+                                            mode="popup" showOn="button" 
+                                            navigator="true"/>                                                                                               
+
+                                <div style="width: 300px;"/>
+
+                                <h:outputText id="osmaximo" value="OS Máximo:" class="text-bold"/>
+                                <p:inputText id="inputOsMaximo" value="#{equipamentosubcojunto.intOsMaximo}"/>
+
+                            </h:panelGrid>
+                            <h:panelGrid columns="6" cellspacing="5">
+                                <h:outputText id="dataCadastro" value="Data Cadastro:" class="text-bold"/>
+
+                                <div style="width: 25px;"/>
+
+                                <h:outputText id="calendarDataCadastro" value="#{equipamentosubcojunto.dtDataCadastro}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-04:00"/>   
+                                </h:outputText>  
+
+                                <div style="width: 470px;"/>
+
+                                <p:selectBooleanCheckbox id="preencherOS" value="#{equipamentosubcojunto.naoPreencherOs}"/>                                    
+                                <h:outputText id="preencherOSText" value="Não preencher OS" class="text-bold"/>
+                            </h:panelGrid>
+                        </p:tab>                         
+
+                    </p:accordionPanel>
+                    <p:accordionPanel activeIndex="-1">
+                        <p:tab title="Sinópticos / Importação de arquivos">
+                            <p:tabView>
+                                <p:tab title="Sinóptico">
+
+                                </p:tab>
+                                <p:tab title="Importação de arquivos">                                    
+                                    <p:fileUpload label="Escolher" uploadLabel="arquivo" value="#{tecnicaBean.uploadedFile}" mode="simple" 
+                                                  required="true" requiredMessage="#{message.selecioneumarquivo}">                                        
+                                    </p:fileUpload>
+                                </p:tab>
+                            </p:tabView>
                         </p:tab>
                     </p:accordionPanel>
+
+                    <div class="space"/>
+
+                    <p:commandButton value="Salvar" ajax="false" 
+                                     icon="ui-icon-check"
+                                     action="#{tecnicaBean.createLaudos()}"
+                                     oncomplete="PF('dlgLaudo').hide();"/>
+
+                    <p:spacer/>
+
+                    <p:commandButton value="Gerar laudos" ajax="false" icon="ui-icon-check"/>
 
                 </h:form>
 

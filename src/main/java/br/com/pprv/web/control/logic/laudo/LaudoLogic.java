@@ -5,10 +5,33 @@
  */
 package br.com.pprv.web.control.logic.laudo;
 
+import br.com.pprv.model.daos.TblaudoFacade;
+import br.com.pprv.model.entities.Tbequipamento;
+import br.com.pprv.model.entities.Tblaudo;
+import br.com.pprv.model.entities.Tbsubconjunto;
+import br.com.pprv.web.control.module.AbstractModuleCore;
+import javax.ejb.EJB;
+import javax.ejb.Stateless;
+
 /**
  *
  * @author JorgeFonseca
  */
-public class LaudoLogic {
-    
+@Stateless
+public class LaudoLogic extends AbstractModuleCore {
+
+    @EJB
+    private TblaudoFacade tblaudoFacade;
+
+    public boolean createTblaudo(final Tblaudo tblaudo) {
+        return tblaudoFacade.create(tblaudo, super.getEM());
+    }
+
+    public boolean editTblaudo(final Tblaudo tblaudo) {
+        return tblaudoFacade.edit(tblaudo, super.getEM());
+    }
+
+    public Tblaudo findTblaudoByEquipamentoAndSubConjunto(final Tbequipamento tbequipamento, final Tbsubconjunto tbsubconjunto) {
+        return tblaudoFacade.findTblaudoByEquipamentoAndSubConjunto(tbequipamento, tbsubconjunto, super.getEM());
+    }
 }
