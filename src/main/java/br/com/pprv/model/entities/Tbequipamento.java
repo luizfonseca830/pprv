@@ -52,6 +52,8 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
     @Size(min = 1, max = 80)
     @Column(name = "descequipamento")
     private String descequipamento;
+    @Column(name = "arquivo_equipamento")
+    private String arquivoEquipamento;
     @JoinColumn(name = "idinspecao", referencedColumnName = "idinspecao")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tbinspecao idinspecao;
@@ -169,6 +171,20 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
      */
     public void setCondicao(Integer condicao) {
         this.condicao = condicao;
+    }
+
+    /**
+     * @return the arquivoEquipamento
+     */
+    public String getArquivoEquipamento() {
+        return arquivoEquipamento;
+    }
+
+    /**
+     * @param arquivoEquipamento the arquivoEquipamento to set
+     */
+    public void setArquivoEquipamento(String arquivoEquipamento) {
+        this.arquivoEquipamento = arquivoEquipamento;
     }
 
 }

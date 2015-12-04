@@ -34,4 +34,8 @@ public class EquipamentoLogic extends AbstractModuleCore {
     public List<Tbequipamento> allEquipamentos() {
         return tbequipamentoFacade.allEquipamentos(super.getEM());
     }
+
+    public boolean editEquipamento(final Tbequipamento tbequipamento) {
+        return tbequipamentoFacade.edit(tbequipamento, super.getEM());
+    }
 }

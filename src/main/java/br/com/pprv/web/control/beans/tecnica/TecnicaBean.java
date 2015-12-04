@@ -92,15 +92,32 @@ public class TecnicaBean implements Serializable {
     }
 
     public void search() {
-        listTbequipamento = equipamentoLogic.findTbequipamentoByTbtecnica(tbtecnica);
-
+        if (tbtecnica != null) {
+            listTbequipamento = equipamentoLogic.findTbequipamentoByTbtecnica(tbtecnica);
+        } else {
+            AbstractFacesContextUtils.addMessageWarn("Nenhuma tecnica selecionada.");
+        }
     }
 
-    public List<TbequipamentoSubconjunto> getListAllEquipSubByIdEquip() {
+    public void updateStatusCondicaoEquipamento() {
 
-        listTbequipamentoSubconjuntos = equimentoSubconjuntoLogic.listAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamentoSelected);
+        if (tbequipamentoSelected != null) {
 
-        return listTbequipamentoSubconjuntos;
+            switch (tbequipamentoSelected.getCondicao()) {
+                case 1:
+                    tbequipamentoSelected.setCondicao(2);
+                    equipamentoLogic.editEquipamento(tbequipamentoSelected);
+                    break;
+                case 2:
+                    tbequipamentoSelected.setCondicao(3);
+                    equipamentoLogic.editEquipamento(tbequipamentoSelected);
+                    break;
+                case 3:
+                    tbequipamentoSelected.setCondicao(1);
+                    equipamentoLogic.editEquipamento(tbequipamentoSelected);
+                    break;
+            }
+        }
     }
 
     /**
@@ -108,24 +125,27 @@ public class TecnicaBean implements Serializable {
      */
     public void createLaudos() {
 
-        Tbequipamento equipamento = null;
-
         for (LaudoMdl laudoMdl : listLaudoMdl) {
 
-            equipamento = laudoMdl.getTbequipamentoSubconjunto().getIdequipamento();
-
             Tblaudo tblaudo = new Tblaudo();
+            tblaudo.setNmdiagnostico(laudoMdl.getNmDiagnostico());
+            tblaudo.setNmrecomendacao(laudoMdl.getNmRecomendacao());
+            tblaudo.setIdgerencia(new Tbgerencia(1));
+            tblaudo.setLimiteexecucao(laudoMdl.getDtDatalimiteExecucao());
             tblaudo.setDataanalise(laudoMdl.getDtDataAnalise());
             tblaudo.setDatacadastro(laudoMdl.getDtDataCadastro());
-            tblaudo.setDiagnostico(laudoMdl.getNmDiagnostico());
-            tblaudo.setIdsubconjunto(laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
-            tblaudo.setLimiteexecucao(laudoMdl.getDtDatalimiteExecucao());
-            tblaudo.setOrdemmanutencao(laudoMdl.getNmRecomendacao());
-            tblaudo.setStatus("status");
-            tblaudo.setIdgerencia(new Tbgerencia(1));
-            tblaudo.setIdequipamento(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento());
+            tblaudo.setBoolos(laudoMdl.isNaoPreencherOs());
 
-            if (laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto().getCondicao() != 1) {
+            if (!laudoMdl.isNaoPreencherOs()) {
+                tblaudo.setOsmaximo(laudoMdl.getIntOsMaximo());
+            }
+
+            tblaudo.setIdsubconjunto(laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
+            tblaudo.setIdequipamento(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento());
+            tblaudo.setDtdatalaudo(new Date());
+            tblaudo.setTmdatalaudo(new Date());
+
+            if (laudoMdl.getTbequipamentoSubconjunto().getIdequipamento().getCondicao() != 1) {
                 /**
                  * se for amarelo ou vermelho, criar um novo laudo.
                  */
@@ -138,15 +158,22 @@ public class TecnicaBean implements Serializable {
                 Tblaudo laudo = laudoLogic.findTblaudoByEquipamentoAndSubConjunto(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento(), laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
 
                 if (laudo != null) {
+                    laudo.setNmdiagnostico(laudoMdl.getNmDiagnostico());
+                    laudo.setNmrecomendacao(laudoMdl.getNmRecomendacao());
+                    laudo.setIdgerencia(new Tbgerencia(1));
+                    laudo.setLimiteexecucao(laudoMdl.getDtDatalimiteExecucao());
                     laudo.setDataanalise(laudoMdl.getDtDataAnalise());
                     laudo.setDatacadastro(laudoMdl.getDtDataCadastro());
-                    laudo.setDiagnostico(laudoMdl.getNmDiagnostico());
+                    laudo.setBoolos(laudoMdl.isNaoPreencherOs());
+
+                    if (!laudoMdl.isNaoPreencherOs()) {
+                        laudo.setOsmaximo(laudoMdl.getIntOsMaximo());
+                    }
+
                     laudo.setIdsubconjunto(laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
-                    laudo.setLimiteexecucao(laudoMdl.getDtDatalimiteExecucao());
-                    laudo.setOrdemmanutencao(laudoMdl.getNmRecomendacao());
-                    laudo.setStatus("status");
-                    laudo.setIdgerencia(new Tbgerencia(1));
                     laudo.setIdequipamento(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento());
+                    laudo.setDtdatalaudo(new Date());
+                    laudo.setTmdatalaudo(new Date());
                     laudoLogic.editTblaudo(laudo);
                 } else {
                     laudoLogic.createTblaudo(tblaudo);
@@ -159,8 +186,8 @@ public class TecnicaBean implements Serializable {
         }
 
         if (uploadedFile != null) {
-            System.out.println(" fileName: " + uploadedFile.getFileName());
-            doUpload(equipamento, uploadedFile);
+            doUpload(tbequipamentoSelected, uploadedFile);
+            equipamentoLogic.editEquipamento(tbequipamentoSelected);
         }
 
         AbstractFacesContextUtils.addMessageInfo("Laudos criado com sucesso.");
@@ -175,7 +202,7 @@ public class TecnicaBean implements Serializable {
      */
     public boolean doUpload(Tbequipamento tbequipamento, UploadedFile uploadedFile) {
         boolean result = false;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
 
         String fileExtension = uploadedFile.getFileName();
 
@@ -184,6 +211,8 @@ public class TecnicaBean implements Serializable {
         String fileName = nmDescTemplate.toUpperCase() + "_" + sdf.format(new Date()) + fileExtension.substring(fileExtension.lastIndexOf('.'), fileExtension.length());
 
         File file = new File(CAMINHO, fileName);
+
+        tbequipamento.setArquivoEquipamento(fileName);
 
         try {
             try (FileOutputStream fileOutput = new FileOutputStream(file)) {
@@ -404,14 +433,29 @@ public class TecnicaBean implements Serializable {
      */
     public List<LaudoMdl> getListLaudoMdl() {
 
-        System.out.println(" testando valores: " + tbequipamentoSelected);
-
         listLaudoMdl = new ArrayList<>();
 
         for (TbequipamentoSubconjunto equipamentoSubconjunto : equimentoSubconjuntoLogic.listAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamentoSelected)) {
             LaudoMdl laudoMdl = new LaudoMdl();
             laudoMdl.setTbequipamentoSubconjunto(equipamentoSubconjunto);
             laudoMdl.setIdEquipamentoSubconjunto(equipamentoSubconjunto.getIdequipamentoSubconjunto());
+
+            Tblaudo tblaudo = laudoLogic.findTblaudoByEquipamentoAndSubConjunto(equipamentoSubconjunto.getIdequipamento(), equipamentoSubconjunto.getIdsubconjunto());
+
+            if (tblaudo != null) {
+
+                laudoMdl.setNmDiagnostico(tblaudo.getNmdiagnostico());
+                laudoMdl.setNmRecomendacao(tblaudo.getNmrecomendacao());
+                laudoMdl.setDtDatalimiteExecucao(tblaudo.getLimiteexecucao());
+                laudoMdl.setDtDataAnalise(tblaudo.getDataanalise());
+                laudoMdl.setDtDataCadastro(tblaudo.getDatacadastro());
+                laudoMdl.setNaoPreencherOs(tblaudo.getBoolos());
+
+                if (!tblaudo.getBoolos()) {
+                    laudoMdl.setIntOsMaximo(tblaudo.getOsmaximo());
+                }
+            }
+
             listLaudoMdl.add(laudoMdl);
         }
 

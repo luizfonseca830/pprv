@@ -17,22 +17,38 @@ import javax.persistence.EntityManager;
  */
 @Stateless
 public class TbequipamentoFacade extends AbstractFacade<Tbequipamento> {
-
+    
     public TbequipamentoFacade() {
         super(Tbequipamento.class);
     }
-
+    
     public List<Tbequipamento> findTbequipamentoByTbtecnica(Tbtecnica tbtecnica, EntityManager em) {
-
+        
         return em.createQuery("SELECT t FROM Tbequipamento t WHERE t.idtecnica = :idTecnica GROUP BY t.idequipamento ORDER BY t.nmequipamenta",
                 Tbequipamento.class)
                 .setParameter("idTecnica", tbtecnica)
                 .getResultList();
-
+        
     }
-
+    
     public List<Tbequipamento> allEquipamentos(EntityManager em) {
         return em.createQuery("SELECT t FROM Tbequipamento t").getResultList();
-
+        
     }
+    
+    public List<Tbequipamento> findAllTbequipamentosComLaudos(final EntityManager entityManager) {
+        
+        StringBuilder sql = new StringBuilder();
+        sql.append("select distinct tbequipamento.*")
+                .append("from tblaudo inner join tbequipamento on (tblaudo.idequipamento = tbequipamento.idequipamento)");
+        
+        return entityManager.createNativeQuery(sql.toString(), Tbequipamento.class).getResultList();
+    }
+    
+    public List<Tbequipamento> findAllTbequipamentosByCondicao(final Integer condicao, final EntityManager entityManager) {        
+        return entityManager.createQuery("SELECT t FROM Tbequipamento t WHERE t.condicao = :condicao", Tbequipamento.class)
+                .setParameter("condicao", condicao)
+                .getResultList();
+    }
+    
 }

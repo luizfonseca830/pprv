@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                template="/faces/index.xhtml"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="context">
+
+        <h:outputText id="page-rule" rendered="#{menuBean.isRule('equipamento_laudo')}"/>
+
+        <h:body>
+
+            <div class="page-title">Relatorio de equipamentos com laudo</div>
+
+            <p:fieldset legend="Lista de equipamentos com laudo">
+
+                <h:form>
+
+                    <h:panelGrid columns="3" rendered="#{not empty relEquipamentosComLaudoBean.listTbequipamentosComLaudos}">                       
+
+                        <h:commandLink styleClass="tooltip" style="padding:5px;" 
+                                       action="#{relEquipamentosComLaudoBean.printToPdf()}">
+                            <span><img class ="callout" src="#{resource['images/callout.gif']}"/>Exportar para PDF</span>
+                            <p:graphicImage value="#{resource['images/pdf.png']}" onclick="target='_blank'"/>                            
+                        </h:commandLink> 
+                        <pe:tooltip global="true" atPosition="top center" myPosition="bottom center" showEffect="fadeIn" hideEffect="fadeIn"/>  
+                    </h:panelGrid>
+
+                    <p:dataTable id="equipamentosComLaudos" value="#{relEquipamentosComLaudoBean.listTbequipamentosComLaudos}" var="equipamento"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20" emptyMessage="#{message.nenhumresultadoencontrado}">
+
+                        <p:columnGroup type="header">
+
+                            <p:row>
+                                <p:column colspan="5" headerText="Lista de equipamentos com laudo"/>
+                            </p:row>
+
+                            <p:row>
+                                <p:column headerText="Condição" exportable="false"/> 
+                                <p:column headerText="Equipamento"/> 
+                                <p:column headerText="Descrição"/>                                
+                                <p:column headerText="Criticidade"/>
+                                <p:column headerText="Técnica"/>
+                            </p:row>
+
+                        </p:columnGroup>
+
+                        <p:column exportable="false">
+
+                            <h:graphicImage url="#{resource['images/QUADRADOVERDE.png']}" rendered="#{equipamento.condicao==1}"/>
+                            <h:graphicImage url="#{resource['images/QUADRADOAMARELO.png']}" rendered="#{equipamento.condicao==2}"/>
+                            <h:graphicImage url="#{resource['images/QUADRADOVERMELHO.png']}" rendered="#{equipamento.condicao==3}"/>
+
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{equipamento.nmequipamenta}"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{equipamento.descequipamento}"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{equipamento.criticidade}"/>
+                        </p:column>                        
+                        
+                        <p:column>
+                            <h:outputText value="#{equipamento.idtecnica.nmtecnica}"/>
+                        </p:column>                        
+
+                    </p:dataTable>
+
+                </h:form>
+
+            </p:fieldset>
+
+        </h:body>
+
+    </ui:define>
+
+</ui:composition>
