@@ -43,7 +43,6 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
     @Column(name = "nmdiagnostico")
     private String nmdiagnostico;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "limiteexecucao")
     @Temporal(TemporalType.DATE)
     private Date limiteexecucao;
