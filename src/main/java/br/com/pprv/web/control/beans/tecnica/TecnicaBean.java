@@ -185,7 +185,8 @@ public class TecnicaBean implements Serializable {
 //            System.out.println(" sub: " + laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto().getNmsubconjunto());
         }
 
-        if (uploadedFile != null) {
+        
+        if (uploadedFile != null && uploadedFile.getFileName() != null && !uploadedFile.getFileName().isEmpty()) {
             doUpload(tbequipamentoSelected, uploadedFile);
             equipamentoLogic.editEquipamento(tbequipamentoSelected);
         }
@@ -435,7 +436,7 @@ public class TecnicaBean implements Serializable {
 
         listLaudoMdl = new ArrayList<>();
 
-        for (TbequipamentoSubconjunto equipamentoSubconjunto : equimentoSubconjuntoLogic.listAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamentoSelected)) {
+        for (TbequipamentoSubconjunto equipamentoSubconjunto : equimentoSubconjuntoLogic.getListAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamentoSelected)) {
             LaudoMdl laudoMdl = new LaudoMdl();
             laudoMdl.setTbequipamentoSubconjunto(equipamentoSubconjunto);
             laudoMdl.setIdEquipamentoSubconjunto(equipamentoSubconjunto.getIdequipamentoSubconjunto());

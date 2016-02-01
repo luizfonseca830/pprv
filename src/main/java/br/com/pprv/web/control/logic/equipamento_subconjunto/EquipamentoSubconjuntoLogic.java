@@ -23,8 +23,8 @@ public class EquipamentoSubconjuntoLogic extends AbstractModuleCore {
     @EJB
     private TbequipamentoSubconjuntoFacade tbequipamentoSubconjuntoFacade;
 
-    public List<TbequipamentoSubconjunto> listAllTbequipamentoSubconjuntoByIdEquipamento(Tbequipamento tbequipamento) {
-        return tbequipamentoSubconjuntoFacade.listAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamento, super.getEM());
+    public List<TbequipamentoSubconjunto> getListAllTbequipamentoSubconjuntoByIdEquipamento(Tbequipamento tbequipamento) {
+        return tbequipamentoSubconjuntoFacade.getListAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamento, super.getEM());
     }
 
     public TbequipamentoSubconjunto find(int id) {

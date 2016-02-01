@@ -20,7 +20,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -29,30 +28,24 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "tblaudo")
 public class Tblaudo implements Serializable, Identificador<Integer> {
-
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idlaudo")
     private Integer idlaudo;
-    @Basic(optional = false)
     @Column(name = "nmrecomendacao")
     private String nmrecomendacao;
-    @Basic(optional = false)
     @Column(name = "nmdiagnostico")
     private String nmdiagnostico;
-    @Basic(optional = false)
     @Column(name = "limiteexecucao")
     @Temporal(TemporalType.DATE)
     private Date limiteexecucao;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "dataanalise")
     @Temporal(TemporalType.DATE)
     private Date dataanalise;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "datacadastro")
     @Temporal(TemporalType.DATE)
     private Date datacadastro;
@@ -85,11 +78,8 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
         this.idlaudo = idlaudo;
     }
 
-    public Tblaudo(Integer idlaudo, String nmrecomendacao, String nmdiagnostico, Date limiteexecucao, Date dataanalise, Date datacadastro, Date dtdatalaudo, Date tmdatalaudo) {
+    public Tblaudo(Integer idlaudo, Date dataanalise, Date datacadastro, Date dtdatalaudo, Date tmdatalaudo) {
         this.idlaudo = idlaudo;
-        this.nmrecomendacao = nmrecomendacao;
-        this.nmdiagnostico = nmdiagnostico;
-        this.limiteexecucao = limiteexecucao;
         this.dataanalise = dataanalise;
         this.datacadastro = datacadastro;
         this.dtdatalaudo = dtdatalaudo;
@@ -102,6 +92,22 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
 
     public void setIdlaudo(Integer idlaudo) {
         this.idlaudo = idlaudo;
+    }
+
+    public String getNmrecomendacao() {
+        return nmrecomendacao;
+    }
+
+    public void setNmrecomendacao(String nmrecomendacao) {
+        this.nmrecomendacao = nmrecomendacao;
+    }
+
+    public String getNmdiagnostico() {
+        return nmdiagnostico;
+    }
+
+    public void setNmdiagnostico(String nmdiagnostico) {
+        this.nmdiagnostico = nmdiagnostico;
     }
 
     public Date getLimiteexecucao() {
@@ -126,6 +132,38 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
 
     public void setDatacadastro(Date datacadastro) {
         this.datacadastro = datacadastro;
+    }
+
+    public Boolean getBoolos() {
+        return boolos;
+    }
+
+    public void setBoolos(Boolean boolos) {
+        this.boolos = boolos;
+    }
+
+    public Integer getOsmaximo() {
+        return osmaximo;
+    }
+
+    public void setOsmaximo(Integer osmaximo) {
+        this.osmaximo = osmaximo;
+    }
+
+    public Date getDtdatalaudo() {
+        return dtdatalaudo;
+    }
+
+    public void setDtdatalaudo(Date dtdatalaudo) {
+        this.dtdatalaudo = dtdatalaudo;
+    }
+
+    public Date getTmdatalaudo() {
+        return tmdatalaudo;
+    }
+
+    public void setTmdatalaudo(Date tmdatalaudo) {
+        this.tmdatalaudo = tmdatalaudo;
     }
 
     public Tbsubconjunto getIdsubconjunto() {
@@ -174,96 +212,12 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
 
     @Override
     public String toString() {
-        return "br.com.pprv.model.entities.Tblaudo[ idlaudo=" + idlaudo + " ]";
+        return "critop.Tblaudo[ idlaudo=" + idlaudo + " ]";
     }
 
     @Override
     public Integer getPK() {
-        return getIdlaudo();
+        return idlaudo;
     }
-
-    /**
-     * @return the nmrecomendacao
-     */
-    public String getNmrecomendacao() {
-        return nmrecomendacao;
-    }
-
-    /**
-     * @param nmrecomendacao the nmrecomendacao to set
-     */
-    public void setNmrecomendacao(String nmrecomendacao) {
-        this.nmrecomendacao = nmrecomendacao;
-    }
-
-    /**
-     * @return the nmdiagnostico
-     */
-    public String getNmdiagnostico() {
-        return nmdiagnostico;
-    }
-
-    /**
-     * @param nmdiagnostico the nmdiagnostico to set
-     */
-    public void setNmdiagnostico(String nmdiagnostico) {
-        this.nmdiagnostico = nmdiagnostico;
-    }
-
-    /**
-     * @return the boolos
-     */
-    public Boolean getBoolos() {
-        return boolos;
-    }
-
-    /**
-     * @param boolos the boolos to set
-     */
-    public void setBoolos(Boolean boolos) {
-        this.boolos = boolos;
-    }
-
-    /**
-     * @return the osmaximo
-     */
-    public Integer getOsmaximo() {
-        return osmaximo;
-    }
-
-    /**
-     * @param osmaximo the osmaximo to set
-     */
-    public void setOsmaximo(Integer osmaximo) {
-        this.osmaximo = osmaximo;
-    }
-
-    /**
-     * @return the tmdatalaudo
-     */
-    public Date getTmdatalaudo() {
-        return tmdatalaudo;
-    }
-
-    /**
-     * @param tmdatalaudo the tmdatalaudo to set
-     */
-    public void setTmdatalaudo(Date tmdatalaudo) {
-        this.tmdatalaudo = tmdatalaudo;
-    }
-
-    /**
-     * @return the dtdatalaudo
-     */
-    public Date getDtdatalaudo() {
-        return dtdatalaudo;
-    }
-
-    /**
-     * @param dtdatalaudo the dtdatalaudo to set
-     */
-    public void setDtdatalaudo(Date dtdatalaudo) {
-        this.dtdatalaudo = dtdatalaudo;
-    }
-
+    
 }
