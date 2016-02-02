@@ -28,6 +28,7 @@ import javax.persistence.TemporalType;
 @Entity
 @Table(name = "tblaudo")
 public class Tblaudo implements Serializable, Identificador<Integer> {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -68,7 +69,7 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tbgerencia idgerencia;
     @JoinColumn(name = "idequipamento", referencedColumnName = "idequipamento")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tbequipamento idequipamento;
 
     public Tblaudo() {
@@ -219,5 +220,5 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
     public Integer getPK() {
         return idlaudo;
     }
-    
+
 }

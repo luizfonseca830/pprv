@@ -6,7 +6,7 @@
 package br.com.pprv.web.control.beans.tecnica;
 
 import br.com.pprv.model.entities.Tbequipamento;
-import br.com.pprv.model.entities.TbequipamentoSubconjunto;
+import br.com.pprv.model.entities.Tbequipamentosubconjunto;
 import br.com.pprv.model.entities.Tbgerencia;
 import br.com.pprv.model.entities.Tblaudo;
 import br.com.pprv.model.entities.Tbtecnica;
@@ -54,9 +54,9 @@ public class TecnicaBean implements Serializable {
     private LaudoLogic laudoLogic;
 
     private Tbtecnica tbtecnica;
-    private TbequipamentoSubconjunto tbequipamentoSubconjunto;
+    private Tbequipamentosubconjunto tbequipamentoSubconjunto;
     private Tbequipamento tbequipamento;
-    private List<TbequipamentoSubconjunto> listTbequipamentoSubconjuntos;
+    private List<Tbequipamentosubconjunto> listTbequipamentoSubconjuntos;
     private List<Tbtecnica> listTbtecnica;
     private int idtecnica;
     private int idequipamento;
@@ -185,7 +185,6 @@ public class TecnicaBean implements Serializable {
 //            System.out.println(" sub: " + laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto().getNmsubconjunto());
         }
 
-        
         if (uploadedFile != null && uploadedFile.getFileName() != null && !uploadedFile.getFileName().isEmpty()) {
             doUpload(tbequipamentoSelected, uploadedFile);
             equipamentoLogic.editEquipamento(tbequipamentoSelected);
@@ -361,21 +360,21 @@ public class TecnicaBean implements Serializable {
     /**
      * @return the tbequipamentoSubconjunto
      */
-    public TbequipamentoSubconjunto getTbequipamentoSubconjunto() {
+    public Tbequipamentosubconjunto getTbequipamentoSubconjunto() {
         return tbequipamentoSubconjunto;
     }
 
     /**
      * @param tbequipamentoSubconjunto the tbequipamentoSubconjunto to set
      */
-    public void setTbequipamentoSubconjunto(TbequipamentoSubconjunto tbequipamentoSubconjunto) {
+    public void setTbequipamentoSubconjunto(Tbequipamentosubconjunto tbequipamentoSubconjunto) {
         this.tbequipamentoSubconjunto = tbequipamentoSubconjunto;
     }
 
     /**
      * @return the listTbequipamentoSubconjuntos
      */
-    public List<TbequipamentoSubconjunto> getListTbequipamentoSubconjuntos() {
+    public List<Tbequipamentosubconjunto> getListTbequipamentoSubconjuntos() {
         return listTbequipamentoSubconjuntos;
     }
 
@@ -383,7 +382,7 @@ public class TecnicaBean implements Serializable {
      * @param listTbequipamentoSubconjuntos the listTbequipamentoSubconjuntos to
      * set
      */
-    public void setListTbequipamentoSubconjuntos(List<TbequipamentoSubconjunto> listTbequipamentoSubconjuntos) {
+    public void setListTbequipamentoSubconjuntos(List<Tbequipamentosubconjunto> listTbequipamentoSubconjuntos) {
         this.listTbequipamentoSubconjuntos = listTbequipamentoSubconjuntos;
     }
 
@@ -435,29 +434,32 @@ public class TecnicaBean implements Serializable {
     public List<LaudoMdl> getListLaudoMdl() {
 
         listLaudoMdl = new ArrayList<>();
+        List<Tbequipamentosubconjunto> listResult = equimentoSubconjuntoLogic.getListAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamentoSelected);
 
-        for (TbequipamentoSubconjunto equipamentoSubconjunto : equimentoSubconjuntoLogic.getListAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamentoSelected)) {
-            LaudoMdl laudoMdl = new LaudoMdl();
-            laudoMdl.setTbequipamentoSubconjunto(equipamentoSubconjunto);
-            laudoMdl.setIdEquipamentoSubconjunto(equipamentoSubconjunto.getIdequipamentoSubconjunto());
+        if (listResult != null) {
+            for (Tbequipamentosubconjunto equipamentoSubconjunto : listResult) {
+                LaudoMdl laudoMdl = new LaudoMdl();
+                laudoMdl.setTbequipamentoSubconjunto(equipamentoSubconjunto);
+                laudoMdl.setIdEquipamentoSubconjunto(equipamentoSubconjunto.getIdequipamentosubconjunto());
 
-            Tblaudo tblaudo = laudoLogic.findTblaudoByEquipamentoAndSubConjunto(equipamentoSubconjunto.getIdequipamento(), equipamentoSubconjunto.getIdsubconjunto());
+                Tblaudo tblaudo = laudoLogic.findTblaudoByEquipamentoAndSubConjunto(equipamentoSubconjunto.getIdequipamento(), equipamentoSubconjunto.getIdsubconjunto());
 
-            if (tblaudo != null) {
+                if (tblaudo != null) {
 
-                laudoMdl.setNmDiagnostico(tblaudo.getNmdiagnostico());
-                laudoMdl.setNmRecomendacao(tblaudo.getNmrecomendacao());
-                laudoMdl.setDtDatalimiteExecucao(tblaudo.getLimiteexecucao());
-                laudoMdl.setDtDataAnalise(tblaudo.getDataanalise());
-                laudoMdl.setDtDataCadastro(tblaudo.getDatacadastro());
-                laudoMdl.setNaoPreencherOs(tblaudo.getBoolos());
+                    laudoMdl.setNmDiagnostico(tblaudo.getNmdiagnostico());
+                    laudoMdl.setNmRecomendacao(tblaudo.getNmrecomendacao());
+                    laudoMdl.setDtDatalimiteExecucao(tblaudo.getLimiteexecucao());
+                    laudoMdl.setDtDataAnalise(tblaudo.getDataanalise());
+                    laudoMdl.setDtDataCadastro(tblaudo.getDatacadastro());
+                    laudoMdl.setNaoPreencherOs(tblaudo.getBoolos());
 
-                if (!tblaudo.getBoolos()) {
-                    laudoMdl.setIntOsMaximo(tblaudo.getOsmaximo());
+                    if (!tblaudo.getBoolos()) {
+                        laudoMdl.setIntOsMaximo(tblaudo.getOsmaximo());
+                    }
                 }
-            }
 
-            listLaudoMdl.add(laudoMdl);
+                listLaudoMdl.add(laudoMdl);
+            }
         }
 
         return listLaudoMdl;

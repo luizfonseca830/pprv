@@ -5,7 +5,6 @@
  */
 package br.com.pprv.model.entities;
 
-
 import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -20,37 +19,38 @@ import javax.persistence.Table;
 
 /**
  *
- * @author JorgeFonseca
+ * @author ioliveira
  */
 @Entity
-@Table(name = "tbequipamento_subconjunto")
-public class TbequipamentoSubconjunto implements Serializable {
+@Table(name = "tbequipamentosubconjunto")
+public class Tbequipamentosubconjunto implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idequipamento_subconjunto")
+    @Column(name = "idequipamentosubconjunto")
     private Integer idequipamentoSubconjunto;
     @JoinColumn(name = "idsubconjunto", referencedColumnName = "idsubconjunto")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tbsubconjunto idsubconjunto;
     @JoinColumn(name = "idequipamento", referencedColumnName = "idequipamento")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tbequipamento idequipamento;
 
-    public TbequipamentoSubconjunto() {
+    public Tbequipamentosubconjunto() {
     }
 
-    public TbequipamentoSubconjunto(Integer idequipamentoSubconjunto) {
+    public Tbequipamentosubconjunto(Integer idequipamentoSubconjunto) {
         this.idequipamentoSubconjunto = idequipamentoSubconjunto;
     }
 
-    public Integer getIdequipamentoSubconjunto() {
+    public Integer getIdequipamentosubconjunto() {
         return idequipamentoSubconjunto;
     }
 
-    public void setIdequipamentoSubconjunto(Integer idequipamentoSubconjunto) {
-        this.idequipamentoSubconjunto = idequipamentoSubconjunto;
+    public void setIdequipamentosubconjunto(Integer idequipamentosubconjunto) {
+        this.idequipamentoSubconjunto = idequipamentosubconjunto;
     }
 
     public Tbsubconjunto getIdsubconjunto() {
@@ -79,10 +79,10 @@ public class TbequipamentoSubconjunto implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof TbequipamentoSubconjunto)) {
+        if (!(object instanceof Tbequipamentosubconjunto)) {
             return false;
         }
-        TbequipamentoSubconjunto other = (TbequipamentoSubconjunto) object;
+        Tbequipamentosubconjunto other = (Tbequipamentosubconjunto) object;
         if ((this.idequipamentoSubconjunto == null && other.idequipamentoSubconjunto != null) || (this.idequipamentoSubconjunto != null && !this.idequipamentoSubconjunto.equals(other.idequipamentoSubconjunto))) {
             return false;
         }
@@ -91,7 +91,7 @@ public class TbequipamentoSubconjunto implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.TbequipamentoSubconjunto[ idequipamentoSubconjunto=" + idequipamentoSubconjunto + " ]";
+        return "br.com.entities.Tbequipamentosubconjunto[ idequipamentosubconjunto=" + idequipamentoSubconjunto + " ]";
     }
-    
+
 }

@@ -5,7 +5,7 @@
  */
 package br.com.pprv.model.entities.custom;
 
-import br.com.pprv.model.entities.TbequipamentoSubconjunto;
+import br.com.pprv.model.entities.Tbequipamentosubconjunto;
 import br.com.pprv.model.entities.Tbgerencia;
 import java.io.Serializable;
 import java.util.Date;
@@ -25,7 +25,7 @@ public class LaudoMdl implements Serializable {
     private Date dtDataCadastro;
     private Integer intOsMaximo;
     private boolean naoPreencherOs;
-    private TbequipamentoSubconjunto tbequipamentoSubconjunto;
+    private Tbequipamentosubconjunto Tbequipamentosubconjunto;
 
     public LaudoMdl() {
         dtDataCadastro = new Date();
@@ -148,15 +148,15 @@ public class LaudoMdl implements Serializable {
     /**
      * @return the tbequipamentoSubconjunto
      */
-    public TbequipamentoSubconjunto getTbequipamentoSubconjunto() {
-        return tbequipamentoSubconjunto;
+    public Tbequipamentosubconjunto getTbequipamentoSubconjunto() {
+        return Tbequipamentosubconjunto;
     }
 
     /**
-     * @param tbequipamentoSubconjunto the tbequipamentoSubconjunto to set
+     * @param Tbequipamentosubconjunto the tbequipamentoSubconjunto to set
      */
-    public void setTbequipamentoSubconjunto(TbequipamentoSubconjunto tbequipamentoSubconjunto) {
-        this.tbequipamentoSubconjunto = tbequipamentoSubconjunto;
+    public void setTbequipamentoSubconjunto(Tbequipamentosubconjunto Tbequipamentosubconjunto) {
+        this.Tbequipamentosubconjunto = Tbequipamentosubconjunto;
     }
 
     /**
