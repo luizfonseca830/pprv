@@ -22,14 +22,14 @@ import javax.persistence.Table;
  * @author ioliveira
  */
 @Entity
-@Table(name = "tbequipamentosubconjunto")
+@Table(name = "tbequipamento_subconjunto")
 public class Tbequipamentosubconjunto implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idequipamentosubconjunto")
+    @Column(name = "idequipamento_subconjunto")
     private Integer idequipamentoSubconjunto;
     @JoinColumn(name = "idsubconjunto", referencedColumnName = "idsubconjunto")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
