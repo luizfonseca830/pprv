@@ -28,7 +28,7 @@ public class TblaudoFacade extends AbstractFacade<Tblaudo> {
         Tblaudo tblaudoResult = null;
 
         try {
-            tblaudoResult = entityManager.createQuery("SELECT t FROM Tblaudo t WHERE t.idequipamento = :idEquipamento and t.idsubconjunto = :idSubconjunto ORDER BY t.tmdatalaudo", Tblaudo.class)
+            tblaudoResult = entityManager.createQuery("SELECT t FROM Tblaudo t WHERE t.idequipamento = :idEquipamento and t.idsubconjunto = :idSubconjunto ORDER BY t.tmdatalaudo DESC", Tblaudo.class)
                     .setParameter("idEquipamento", tbequipamento)
                     .setParameter("idSubconjunto", tbsubconjunto)
                     .setMaxResults(1)

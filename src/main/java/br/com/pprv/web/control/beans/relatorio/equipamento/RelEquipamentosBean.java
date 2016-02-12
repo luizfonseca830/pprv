@@ -38,6 +38,9 @@ public class RelEquipamentosBean implements Serializable {
     public void searchEquipamento() {
         if (condicaoEquipamento != null) {
             listTbequipamentosComLaudos = reportEquipamentos.findAllTbequipamentosByCondicao(condicaoEquipamento);
+            if (listTbequipamentosComLaudos == null || listTbequipamentosComLaudos.isEmpty()) {
+                AbstractFacesContextUtils.addMessageInfo("Nenhum equipamento encontrado.");
+            }
         } else {
             AbstractFacesContextUtils.addMessageWarn("Nenhuma condição selecionada para pesquisar.");
         }

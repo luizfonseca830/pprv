@@ -29,11 +29,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author JorgeFonseca
+ * @author ioliveira
  */
 @Entity
 @Table(name = "tbusuario")
 public class Tbusuario implements Serializable, Identificador<Integer> {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario", fetch = FetchType.EAGER)
+    private List<TbarquivosEquipamento> tbarquivosEquipamentoList;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -68,8 +71,6 @@ public class Tbusuario implements Serializable, Identificador<Integer> {
     private Date tmdataultimoacesso;
     @Column(name = "bolativo")
     private Boolean bolativo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idusuario", fetch = FetchType.EAGER)
-    private List<Tbacesso> tbacessoList;
     @JoinColumn(name = "idperfil", referencedColumnName = "idperfil")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tbperfil idperfil;
@@ -160,15 +161,6 @@ public class Tbusuario implements Serializable, Identificador<Integer> {
         this.bolativo = bolativo;
     }
 
-    @XmlTransient
-    public List<Tbacesso> getTbacessoList() {
-        return tbacessoList;
-    }
-
-    public void setTbacessoList(List<Tbacesso> tbacessoList) {
-        this.tbacessoList = tbacessoList;
-    }
-
     public Tbperfil getIdperfil() {
         return idperfil;
     }
@@ -204,7 +196,16 @@ public class Tbusuario implements Serializable, Identificador<Integer> {
 
     @Override
     public Integer getPK() {
-        return getIdusuario();
+        return idusuario;
+    }
+
+    @XmlTransient
+    public List<TbarquivosEquipamento> getTbarquivosEquipamentoList() {
+        return tbarquivosEquipamentoList;
+    }
+
+    public void setTbarquivosEquipamentoList(List<TbarquivosEquipamento> tbarquivosEquipamentoList) {
+        this.tbarquivosEquipamentoList = tbarquivosEquipamentoList;
     }
 
 }

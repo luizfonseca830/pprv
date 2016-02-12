@@ -7,28 +7,24 @@ package br.com.pprv.model.entities;
 
 import br.com.pprv.web.faces.converter.Identificador;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author JorgeFonseca
+ * @author ioliveira
  */
 @Entity
 @Table(name = "tbinspecao")
-public class Tbinspecao implements Serializable,Identificador<Integer> {
+public class Tbinspecao implements Serializable, Identificador<Integer> {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,12 +36,6 @@ public class Tbinspecao implements Serializable,Identificador<Integer> {
     @Size(min = 1, max = 80)
     @Column(name = "nminspecao")
     private String nminspecao;
-    @OneToMany(mappedBy = "idinspecao", fetch = FetchType.EAGER)
-    private List<Tbtecnica> tbtecnicaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idinspecao", fetch = FetchType.EAGER)
-    private List<Tbgerencia> tbgerenciaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idinspecao", fetch = FetchType.EAGER)
-    private List<Tbequipamento> tbequipamentoList;
 
     public Tbinspecao() {
     }
@@ -75,33 +65,6 @@ public class Tbinspecao implements Serializable,Identificador<Integer> {
         this.nminspecao = nminspecao;
     }
 
-    @XmlTransient
-    public List<Tbtecnica> getTbtecnicaList() {
-        return tbtecnicaList;
-    }
-
-    public void setTbtecnicaList(List<Tbtecnica> tbtecnicaList) {
-        this.tbtecnicaList = tbtecnicaList;
-    }
-
-    @XmlTransient
-    public List<Tbgerencia> getTbgerenciaList() {
-        return tbgerenciaList;
-    }
-
-    public void setTbgerenciaList(List<Tbgerencia> tbgerenciaList) {
-        this.tbgerenciaList = tbgerenciaList;
-    }
-
-    @XmlTransient
-    public List<Tbequipamento> getTbequipamentoList() {
-        return tbequipamentoList;
-    }
-
-    public void setTbequipamentoList(List<Tbequipamento> tbequipamentoList) {
-        this.tbequipamentoList = tbequipamentoList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -129,6 +92,7 @@ public class Tbinspecao implements Serializable,Identificador<Integer> {
 
     @Override
     public Integer getPK() {
-   return getIdinspecao();    }
-    
+        return idinspecao;
+    }
+
 }

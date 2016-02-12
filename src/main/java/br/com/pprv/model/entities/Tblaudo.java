@@ -20,10 +20,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
- * @author JorgeFonseca
+ * @author ioliveira
  */
 @Entity
 @Table(name = "tblaudo")
@@ -35,18 +37,22 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
     @Basic(optional = false)
     @Column(name = "idlaudo")
     private Integer idlaudo;
+    @Size(max = 2147483647)
     @Column(name = "nmrecomendacao")
     private String nmrecomendacao;
+    @Size(max = 2147483647)
     @Column(name = "nmdiagnostico")
     private String nmdiagnostico;
     @Column(name = "limiteexecucao")
     @Temporal(TemporalType.DATE)
     private Date limiteexecucao;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "dataanalise")
     @Temporal(TemporalType.DATE)
     private Date dataanalise;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "datacadastro")
     @Temporal(TemporalType.DATE)
     private Date datacadastro;
@@ -55,10 +61,12 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
     @Column(name = "osmaximo")
     private Integer osmaximo;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "dtdatalaudo")
     @Temporal(TemporalType.DATE)
     private Date dtdatalaudo;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "tmdatalaudo")
     @Temporal(TemporalType.TIMESTAMP)
     private Date tmdatalaudo;
@@ -69,7 +77,7 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tbgerencia idgerencia;
     @JoinColumn(name = "idequipamento", referencedColumnName = "idequipamento")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tbequipamento idequipamento;
 
     public Tblaudo() {
@@ -213,7 +221,7 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
 
     @Override
     public String toString() {
-        return "critop.Tblaudo[ idlaudo=" + idlaudo + " ]";
+        return "br.com.pprv.model.entities.Tblaudo[ idlaudo=" + idlaudo + " ]";
     }
 
     @Override

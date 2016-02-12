@@ -20,7 +20,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author JorgeFonseca
+ * @author ioliveira
  */
 @Entity
 @Table(name = "tbacesso")
@@ -119,7 +119,7 @@ public class Tbacesso implements Serializable, Identificador<Integer> {
 
     @Override
     public Integer getPK() {
-        return getIdacesso();
+        return idacesso;
     }
 
 }

@@ -17,67 +17,41 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
  * @author ioliveira
  */
 @Entity
-@Table(name = "tbtecnica")
-public class Tbtecnica implements Serializable, Identificador<Integer> {
+@Table(name = "tbequipamento_subconjunto")
+public class TbequipamentoSubconjunto implements Serializable, Identificador<Integer> {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "idtecnica")
-    private Integer idtecnica;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 80)
-    @Column(name = "nmtecnica")
-    private String nmtecnica;
+    @Column(name = "idequipamento_subconjunto")
+    private Integer idequipamentoSubconjunto;
     @JoinColumn(name = "idsubconjunto", referencedColumnName = "idsubconjunto")
     @ManyToOne(fetch = FetchType.EAGER)
     private Tbsubconjunto idsubconjunto;
-    @JoinColumn(name = "idinspecao", referencedColumnName = "idinspecao")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Tbinspecao idinspecao;
-    @JoinColumn(name = "idgerencia", referencedColumnName = "idgerencia")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Tbgerencia idgerencia;
     @JoinColumn(name = "idequipamento", referencedColumnName = "idequipamento")
     @ManyToOne(fetch = FetchType.EAGER)
     private Tbequipamento idequipamento;
 
-    public Tbtecnica() {
+    public TbequipamentoSubconjunto() {
     }
 
-    public Tbtecnica(Integer idtecnica) {
-        this.idtecnica = idtecnica;
+    public TbequipamentoSubconjunto(Integer idequipamentoSubconjunto) {
+        this.idequipamentoSubconjunto = idequipamentoSubconjunto;
     }
 
-    public Tbtecnica(Integer idtecnica, String nmtecnica) {
-        this.idtecnica = idtecnica;
-        this.nmtecnica = nmtecnica;
+    public Integer getIdequipamentoSubconjunto() {
+        return idequipamentoSubconjunto;
     }
 
-    public Integer getIdtecnica() {
-        return idtecnica;
-    }
-
-    public void setIdtecnica(Integer idtecnica) {
-        this.idtecnica = idtecnica;
-    }
-
-    public String getNmtecnica() {
-        return nmtecnica;
-    }
-
-    public void setNmtecnica(String nmtecnica) {
-        this.nmtecnica = nmtecnica;
+    public void setIdequipamentoSubconjunto(Integer idequipamentoSubconjunto) {
+        this.idequipamentoSubconjunto = idequipamentoSubconjunto;
     }
 
     public Tbsubconjunto getIdsubconjunto() {
@@ -86,22 +60,6 @@ public class Tbtecnica implements Serializable, Identificador<Integer> {
 
     public void setIdsubconjunto(Tbsubconjunto idsubconjunto) {
         this.idsubconjunto = idsubconjunto;
-    }
-
-    public Tbinspecao getIdinspecao() {
-        return idinspecao;
-    }
-
-    public void setIdinspecao(Tbinspecao idinspecao) {
-        this.idinspecao = idinspecao;
-    }
-
-    public Tbgerencia getIdgerencia() {
-        return idgerencia;
-    }
-
-    public void setIdgerencia(Tbgerencia idgerencia) {
-        this.idgerencia = idgerencia;
     }
 
     public Tbequipamento getIdequipamento() {
@@ -115,18 +73,18 @@ public class Tbtecnica implements Serializable, Identificador<Integer> {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idtecnica != null ? idtecnica.hashCode() : 0);
+        hash += (idequipamentoSubconjunto != null ? idequipamentoSubconjunto.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Tbtecnica)) {
+        if (!(object instanceof TbequipamentoSubconjunto)) {
             return false;
         }
-        Tbtecnica other = (Tbtecnica) object;
-        if ((this.idtecnica == null && other.idtecnica != null) || (this.idtecnica != null && !this.idtecnica.equals(other.idtecnica))) {
+        TbequipamentoSubconjunto other = (TbequipamentoSubconjunto) object;
+        if ((this.idequipamentoSubconjunto == null && other.idequipamentoSubconjunto != null) || (this.idequipamentoSubconjunto != null && !this.idequipamentoSubconjunto.equals(other.idequipamentoSubconjunto))) {
             return false;
         }
         return true;
@@ -134,12 +92,12 @@ public class Tbtecnica implements Serializable, Identificador<Integer> {
 
     @Override
     public String toString() {
-        return "br.com.pprv.model.entities.Tbtecnica[ idtecnica=" + idtecnica + " ]";
+        return "br.com.pprv.model.entities.TbequipamentoSubconjunto[ idequipamentoSubconjunto=" + idequipamentoSubconjunto + " ]";
     }
 
     @Override
     public Integer getPK() {
-        return idtecnica;
+        return idequipamentoSubconjunto;
     }
 
 }

@@ -7,6 +7,7 @@ package br.com.pprv.model.entities;
 
 import br.com.pprv.web.faces.converter.Identificador;
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,13 +17,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author JorgeFonseca
+ * @author ioliveira
  */
 @Entity
 @Table(name = "tbequipamento")
@@ -34,32 +37,26 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
     @Basic(optional = false)
     @Column(name = "idequipamento")
     private Integer idequipamento;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2147483647)
+    @Size(max = 2147483647)
     @Column(name = "nmequipamenta")
     private String nmequipamenta;
     @Basic(optional = false)
     @NotNull
-    @Column(name = "condicao")
-    private Integer condicao;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "criticidade")
     private int criticidade;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 80)
+    @Size(max = 80)
     @Column(name = "descequipamento")
     private String descequipamento;
-    @Column(name = "arquivo_equipamento")
-    private String arquivoEquipamento;
-    @JoinColumn(name = "idinspecao", referencedColumnName = "idinspecao")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
-    private Tbinspecao idinspecao;
+    @Column(name = "condicao")
+    private Integer condicao;
+    @OneToMany(mappedBy = "tbequipamento", fetch = FetchType.EAGER)
+    private List<TbarquivosEquipamento> tbarquivosEquipamentoList;
     @JoinColumn(name = "idtecnica", referencedColumnName = "idtecnica")
     @ManyToOne(fetch = FetchType.EAGER)
     private Tbtecnica idtecnica;
+    @JoinColumn(name = "idinspecao", referencedColumnName = "idinspecao")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Tbinspecao idinspecao;
 
     public Tbequipamento() {
     }
@@ -68,11 +65,9 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
         this.idequipamento = idequipamento;
     }
 
-    public Tbequipamento(Integer idequipamento, String nmequipamenta, int criticidade, String descequipamento) {
+    public Tbequipamento(Integer idequipamento, int criticidade) {
         this.idequipamento = idequipamento;
-        this.nmequipamenta = nmequipamenta;
         this.criticidade = criticidade;
-        this.descequipamento = descequipamento;
     }
 
     public Integer getIdequipamento() {
@@ -105,6 +100,22 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
 
     public void setDescequipamento(String descequipamento) {
         this.descequipamento = descequipamento;
+    }
+
+    public Integer getCondicao() {
+        return condicao;
+    }
+
+    public void setCondicao(Integer condicao) {
+        this.condicao = condicao;
+    }
+
+    public Tbtecnica getIdtecnica() {
+        return idtecnica;
+    }
+
+    public void setIdtecnica(Tbtecnica idtecnica) {
+        this.idtecnica = idtecnica;
     }
 
     public Tbinspecao getIdinspecao() {
@@ -142,49 +153,16 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
 
     @Override
     public Integer getPK() {
-        return getIdequipamento();
+        return idequipamento;
     }
 
-    /**
-     * @return the idtecnica
-     */
-    public Tbtecnica getIdtecnica() {
-        return idtecnica;
+    @XmlTransient
+    public List<TbarquivosEquipamento> getTbarquivosEquipamentoList() {
+        return tbarquivosEquipamentoList;
     }
 
-    /**
-     * @param idtecnica the idtecnica to set
-     */
-    public void setIdtecnica(Tbtecnica idtecnica) {
-        this.idtecnica = idtecnica;
-    }
-
-    /**
-     * @return the condicao
-     */
-    public Integer getCondicao() {
-        return condicao;
-    }
-
-    /**
-     * @param condicao the condicao to set
-     */
-    public void setCondicao(Integer condicao) {
-        this.condicao = condicao;
-    }
-
-    /**
-     * @return the arquivoEquipamento
-     */
-    public String getArquivoEquipamento() {
-        return arquivoEquipamento;
-    }
-
-    /**
-     * @param arquivoEquipamento the arquivoEquipamento to set
-     */
-    public void setArquivoEquipamento(String arquivoEquipamento) {
-        this.arquivoEquipamento = arquivoEquipamento;
+    public void setTbarquivosEquipamentoList(List<TbarquivosEquipamento> tbarquivosEquipamentoList) {
+        this.tbarquivosEquipamentoList = tbarquivosEquipamentoList;
     }
 
 }

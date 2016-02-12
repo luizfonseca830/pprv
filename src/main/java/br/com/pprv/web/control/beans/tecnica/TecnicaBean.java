@@ -5,18 +5,22 @@
  */
 package br.com.pprv.web.control.beans.tecnica;
 
+import br.com.pprv.model.entities.TbarquivosEquipamento;
+import br.com.pprv.model.entities.TbarquivosEquipamentoPK;
 import br.com.pprv.model.entities.Tbequipamento;
-import br.com.pprv.model.entities.Tbequipamentosubconjunto;
+import br.com.pprv.model.entities.TbequipamentoSubconjunto;
 import br.com.pprv.model.entities.Tbgerencia;
 import br.com.pprv.model.entities.Tblaudo;
 import br.com.pprv.model.entities.Tbtecnica;
 import br.com.pprv.model.entities.custom.EquipamentoModel;
 import br.com.pprv.model.entities.custom.LaudoMdl;
+import br.com.pprv.web.control.logic.arquivos_equipamento.ArquivosEquipamentoLogic;
 import br.com.pprv.web.control.logic.equipamento.EquipamentoLogic;
 import br.com.pprv.web.control.logic.equipamento_subconjunto.EquipamentoSubconjuntoLogic;
 import br.com.pprv.web.control.logic.laudo.LaudoLogic;
 import br.com.pprv.web.control.logic.tecnica.TecnicaLogic;
 import br.com.pprv.web.faces.utils.AbstractFacesContextUtils;
+import br.com.pprv.web.faces.utils.Shareds;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -52,11 +56,13 @@ public class TecnicaBean implements Serializable {
     private EquipamentoSubconjuntoLogic equimentoSubconjuntoLogic;
     @EJB
     private LaudoLogic laudoLogic;
+    @EJB
+    private ArquivosEquipamentoLogic arquivosEquipamentoLogic;
 
     private Tbtecnica tbtecnica;
-    private Tbequipamentosubconjunto tbequipamentoSubconjunto;
+    private TbequipamentoSubconjunto tbequipamentoSubconjunto;
     private Tbequipamento tbequipamento;
-    private List<Tbequipamentosubconjunto> listTbequipamentoSubconjuntos;
+    private List<TbequipamentoSubconjunto> listTbequipamentoSubconjuntos;
     private List<Tbtecnica> listTbtecnica;
     private int idtecnica;
     private int idequipamento;
@@ -66,6 +72,7 @@ public class TecnicaBean implements Serializable {
     private List<EquipamentoModel> listEquipamentos;
     private Tbequipamento tbequipamentoSelected;
     private List<LaudoMdl> listLaudoMdl;
+    private TbarquivosEquipamento tbarquivosEquipamentoSelected;
 
     private UploadedFile uploadedFile;
 
@@ -94,8 +101,11 @@ public class TecnicaBean implements Serializable {
     public void search() {
         if (tbtecnica != null) {
             listTbequipamento = equipamentoLogic.findTbequipamentoByTbtecnica(tbtecnica);
+            if (listTbequipamento == null || listTbequipamento.isEmpty()) {
+                AbstractFacesContextUtils.addMessageWarn("Nenhum resultado encontrado.");
+            }
         } else {
-            AbstractFacesContextUtils.addMessageWarn("Nenhuma tecnica selecionada.");
+            AbstractFacesContextUtils.addMessageWarn("Nenhuma técnica selecionada.");
         }
     }
 
@@ -179,14 +189,10 @@ public class TecnicaBean implements Serializable {
                     laudoLogic.createTblaudo(tblaudo);
                 }
             }
-
-//            equipamento = laudoMdl.getTbequipamentoSubconjunto().getIdequipamento();
-//            System.out.println(" equip: " + laudoMdl.getTbequipamentoSubconjunto().getIdequipamento().getNmequipamenta());
-//            System.out.println(" sub: " + laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto().getNmsubconjunto());
         }
 
         if (uploadedFile != null && uploadedFile.getFileName() != null && !uploadedFile.getFileName().isEmpty()) {
-            doUpload(tbequipamentoSelected, uploadedFile);
+            doUpload(uploadedFile);
             equipamentoLogic.editEquipamento(tbequipamentoSelected);
         }
 
@@ -196,23 +202,30 @@ public class TecnicaBean implements Serializable {
     /**
      * metodo utilizado para fazer o upload dos arquivos.
      *
-     * @param tbequipamento
      * @param uploadedFile
      * @return
      */
-    public boolean doUpload(Tbequipamento tbequipamento, UploadedFile uploadedFile) {
+    public boolean doUpload(UploadedFile uploadedFile) {
         boolean result = false;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
 
         String fileExtension = uploadedFile.getFileName();
 
-        String nmDescTemplate = Normalizer.normalize(tbequipamento.getNmequipamenta(), Normalizer.Form.NFD);
+        String nmDescTemplate = Normalizer.normalize(tbequipamentoSelected.getNmequipamenta(), Normalizer.Form.NFD);
         nmDescTemplate = nmDescTemplate.replaceAll("[^\\p{ASCII}]", "").replace("\"", "");
         String fileName = nmDescTemplate.toUpperCase() + "_" + sdf.format(new Date()) + fileExtension.substring(fileExtension.lastIndexOf('.'), fileExtension.length());
 
         File file = new File(CAMINHO, fileName);
 
-        tbequipamento.setArquivoEquipamento(fileName);
+        final TbarquivosEquipamentoPK tbarquivosEquipamentoPK = new TbarquivosEquipamentoPK();
+        tbarquivosEquipamentoPK.setIdequipamento(tbequipamentoSelected.getIdequipamento());
+        tbarquivosEquipamentoPK.setTmdataupload(new Date());
+
+        final TbarquivosEquipamento tbarquivosEquipamento = new TbarquivosEquipamento();
+        tbarquivosEquipamento.setIdusuario(Shareds.getUser());
+        tbarquivosEquipamento.setNmarquivo(fileName);
+        tbarquivosEquipamento.setTbarquivosEquipamentoPK(tbarquivosEquipamentoPK);
+        tbarquivosEquipamento.setTbequipamento(tbequipamentoSelected);
 
         try {
             try (FileOutputStream fileOutput = new FileOutputStream(file)) {
@@ -221,6 +234,9 @@ public class TecnicaBean implements Serializable {
                 fileOutput.close();
             }
             result = true;
+            if (arquivosEquipamentoLogic.createTbarquivosEquipamento(tbarquivosEquipamento)) {
+                tbequipamentoSelected.getTbarquivosEquipamentoList().add(tbarquivosEquipamento);
+            }
         } catch (FileNotFoundException ex) {
             AbstractFacesContextUtils.addMessageError("Falha ao encontrar o arquivo.");
             ex.printStackTrace(System.err);
@@ -229,6 +245,19 @@ public class TecnicaBean implements Serializable {
             ex.printStackTrace(System.err);
         }
         return result;
+    }
+
+    public void deleteTbarquivosEquipamento() {
+
+        if (tbarquivosEquipamentoSelected != null) {
+
+            if (tbequipamentoSelected.getTbarquivosEquipamentoList().remove(tbarquivosEquipamentoSelected)) {
+                arquivosEquipamentoLogic.deleteTbarquivosEquipamento(tbarquivosEquipamentoSelected);
+                AbstractFacesContextUtils.addMessageInfo("Arquivo removido com sucesso.");
+            } else {
+                AbstractFacesContextUtils.addMessageWarn("Erro ao remover arquivo.");
+            }
+        }
     }
 
     /**
@@ -360,21 +389,21 @@ public class TecnicaBean implements Serializable {
     /**
      * @return the tbequipamentoSubconjunto
      */
-    public Tbequipamentosubconjunto getTbequipamentoSubconjunto() {
+    public TbequipamentoSubconjunto getTbequipamentoSubconjunto() {
         return tbequipamentoSubconjunto;
     }
 
     /**
      * @param tbequipamentoSubconjunto the tbequipamentoSubconjunto to set
      */
-    public void setTbequipamentoSubconjunto(Tbequipamentosubconjunto tbequipamentoSubconjunto) {
+    public void setTbequipamentoSubconjunto(TbequipamentoSubconjunto tbequipamentoSubconjunto) {
         this.tbequipamentoSubconjunto = tbequipamentoSubconjunto;
     }
 
     /**
      * @return the listTbequipamentoSubconjuntos
      */
-    public List<Tbequipamentosubconjunto> getListTbequipamentoSubconjuntos() {
+    public List<TbequipamentoSubconjunto> getListTbequipamentoSubconjuntos() {
         return listTbequipamentoSubconjuntos;
     }
 
@@ -382,7 +411,7 @@ public class TecnicaBean implements Serializable {
      * @param listTbequipamentoSubconjuntos the listTbequipamentoSubconjuntos to
      * set
      */
-    public void setListTbequipamentoSubconjuntos(List<Tbequipamentosubconjunto> listTbequipamentoSubconjuntos) {
+    public void setListTbequipamentoSubconjuntos(List<TbequipamentoSubconjunto> listTbequipamentoSubconjuntos) {
         this.listTbequipamentoSubconjuntos = listTbequipamentoSubconjuntos;
     }
 
@@ -434,13 +463,13 @@ public class TecnicaBean implements Serializable {
     public List<LaudoMdl> getListLaudoMdl() {
 
         listLaudoMdl = new ArrayList<>();
-        List<Tbequipamentosubconjunto> listResult = equimentoSubconjuntoLogic.getListAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamentoSelected);
+        List<TbequipamentoSubconjunto> listResult = equimentoSubconjuntoLogic.getListAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamentoSelected);
 
         if (listResult != null) {
-            for (Tbequipamentosubconjunto equipamentoSubconjunto : listResult) {
+            for (TbequipamentoSubconjunto equipamentoSubconjunto : listResult) {
                 LaudoMdl laudoMdl = new LaudoMdl();
                 laudoMdl.setTbequipamentoSubconjunto(equipamentoSubconjunto);
-                laudoMdl.setIdEquipamentoSubconjunto(equipamentoSubconjunto.getIdequipamentosubconjunto());
+                laudoMdl.setIdEquipamentoSubconjunto(equipamentoSubconjunto.getIdequipamentoSubconjunto());
 
                 Tblaudo tblaudo = laudoLogic.findTblaudoByEquipamentoAndSubConjunto(equipamentoSubconjunto.getIdequipamento(), equipamentoSubconjunto.getIdsubconjunto());
 
@@ -470,5 +499,20 @@ public class TecnicaBean implements Serializable {
      */
     public void setListLaudoMdl(List<LaudoMdl> listLaudoMdl) {
         this.listLaudoMdl = listLaudoMdl;
+    }
+
+    /**
+     * @return the tbarquivosEquipamentoSelected
+     */
+    public TbarquivosEquipamento getTbarquivosEquipamentoSelected() {
+        return tbarquivosEquipamentoSelected;
+    }
+
+    /**
+     * @param tbarquivosEquipamentoSelected the tbarquivosEquipamentoSelected to
+     * set
+     */
+    public void setTbarquivosEquipamentoSelected(TbarquivosEquipamento tbarquivosEquipamentoSelected) {
+        this.tbarquivosEquipamentoSelected = tbarquivosEquipamentoSelected;
     }
 }

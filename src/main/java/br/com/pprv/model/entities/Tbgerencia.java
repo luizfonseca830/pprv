@@ -7,9 +7,7 @@ package br.com.pprv.model.entities;
 
 import br.com.pprv.web.faces.converter.Identificador;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,15 +16,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author JorgeFonseca
+ * @author ioliveira
  */
 @Entity
 @Table(name = "tbgerencia")
@@ -43,12 +39,8 @@ public class Tbgerencia implements Serializable, Identificador<Integer> {
     @Size(min = 1, max = 2147483647)
     @Column(name = "nmgerencia")
     private String nmgerencia;
-    @OneToMany(mappedBy = "idgerencia", fetch = FetchType.EAGER)
-    private List<Tbtecnica> tbtecnicaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idgerencia", fetch = FetchType.EAGER)
-    private List<Tblaudo> tblaudoList;
     @JoinColumn(name = "idinspecao", referencedColumnName = "idinspecao")
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Tbinspecao idinspecao;
 
     public Tbgerencia() {
@@ -77,24 +69,6 @@ public class Tbgerencia implements Serializable, Identificador<Integer> {
 
     public void setNmgerencia(String nmgerencia) {
         this.nmgerencia = nmgerencia;
-    }
-
-    @XmlTransient
-    public List<Tbtecnica> getTbtecnicaList() {
-        return tbtecnicaList;
-    }
-
-    public void setTbtecnicaList(List<Tbtecnica> tbtecnicaList) {
-        this.tbtecnicaList = tbtecnicaList;
-    }
-
-    @XmlTransient
-    public List<Tblaudo> getTblaudoList() {
-        return tblaudoList;
-    }
-
-    public void setTblaudoList(List<Tblaudo> tblaudoList) {
-        this.tblaudoList = tblaudoList;
     }
 
     public Tbinspecao getIdinspecao() {
@@ -132,7 +106,7 @@ public class Tbgerencia implements Serializable, Identificador<Integer> {
 
     @Override
     public Integer getPK() {
-       return getIdgerencia();
+        return idgerencia;
     }
 
 }

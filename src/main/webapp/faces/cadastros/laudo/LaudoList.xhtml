@@ -8,7 +8,7 @@
     <ui:define name="context">
 
         <h:outputText id="page-rule" rendered="#{menuBean.isRule('cad_laudo')}"/>                
-        
+
         <style>
             .ui-selectonemenu .ui-selectonemenu-label{width: 250px;}
             .ui-selectonemenu-trigger{width: auto;}
@@ -41,7 +41,8 @@
                 </p:panel>
                 <div class="space"/>
 
-                <p:panel id="panelResult" header="#{field.resultado}" toggleable="true" toggleSpeed="500">                                      
+                <p:panel id="panelResult" header="#{field.resultado}" toggleable="true" toggleSpeed="500"
+                         rendered="#{not empty tecnicaBean.listTbequipamento}">                                      
 
                     <p:dataTable id="dataTableResult" var="equipamento" 
                                  rowKey="#{equipamento.idequipamento}" value="#{tecnicaBean.listTbequipamento}"    
@@ -54,7 +55,7 @@
                                  resizableColumns="true">
 
                         <p:column headerText="#{field.condicao}">
-                            
+
                             <h:graphicImage url="#{resource['images/QUADRADOVERDE.png']}" rendered="#{equipamento.condicao==1}"/>
                             <h:graphicImage url="#{resource['images/QUADRADOAMARELO.png']}" rendered="#{equipamento.condicao==2}"/>
                             <h:graphicImage url="#{resource['images/QUADRADOVERMELHO.png']}" rendered="#{equipamento.condicao==3}"/>
@@ -88,7 +89,7 @@
 
 
             <!--TELA DE DIALOG RESPONSAVEL POR CHAMAR O INSERIR O LAUDO -->
-            <p:dialog id="dialog" dynamic="true" widgetVar="dlgLaudo" header="Edição de Laudo" width="900" height="550" 
+            <p:dialog id="dialog" dynamic="true" widgetVar="dlgLaudo" header="Edição de Laudo" width="1000" height="550" 
                       modal="true" resizable="false" draggable="false"> 
 
                 <h:form id="formModeltLaudo" enctype="multipart/form-data">
@@ -104,8 +105,9 @@
 
                         <h:outputText value="#{tecnicaBean.tbequipamentoSelected.nmequipamenta}" class="text-bold"/>
                     </h:panelGrid>
+                    
                     <p:accordionPanel value="#{tecnicaBean.listLaudoMdl}" var="equipamentosubcojunto"
-                                      activeIndex="-1">                                                
+                                      activeIndex="-1">
                         <p:tab title="#{equipamentosubcojunto.tbequipamentoSubconjunto.idsubconjunto.nmsubconjunto}">                            
                             <h:panelGrid columns="1" cellspacing="5">
 
@@ -144,13 +146,13 @@
                             <h:panelGrid columns="6" cellspacing="5">
                                 <h:outputText id="dataAnalise" value="Data Analíse:" class="text-bold"/>
 
-                                <div style="width: 32px;"/>
+                                <div style="width: 20px;"/>
 
                                 <p:calendar id="calendarDataAnalise" value="#{equipamentosubcojunto.dtDataAnalise}"
                                             mode="popup" showOn="button" 
                                             navigator="true"/>                                                                                               
 
-                                <div style="width: 300px;"/>
+                                <div style="width: 250px;"/>
 
                                 <h:outputText id="osmaximo" value="OS Máximo:" class="text-bold"/>
                                 <p:inputText id="inputOsMaximo" value="#{equipamentosubcojunto.intOsMaximo}"/>
@@ -165,33 +167,53 @@
                                     <f:convertDateTime pattern="dd/MM/yyyy" timeZone="GMT-04:00"/>   
                                 </h:outputText>  
 
-                                <div style="width: 470px;"/>
+                                <div style="width: 400px;"/>
 
                                 <p:selectBooleanCheckbox id="preencherOS" value="#{equipamentosubcojunto.naoPreencherOs}"/>                                    
                                 <h:outputText id="preencherOSText" value="Não preencher OS" class="text-bold"/>
-                            </h:panelGrid>
-                        </p:tab>                         
+                            </h:panelGrid>                                                                                   
+                        </p:tab>                                                                                           
+                    </p:accordionPanel>    
 
-                    </p:accordionPanel>
-                    <p:accordionPanel activeIndex="-1">
-                        <p:tab title="Sinópticos / Importação de arquivos">
-                            <p:tabView>
-                                <p:tab title="Sinóptico">
+                    <p:tab title="Arquivos">
 
-                                </p:tab>
-                                <p:tab title="Importação de arquivos">                                    
-                                    <p:fileUpload label="Escolher" uploadLabel="arquivo" value="#{tecnicaBean.uploadedFile}" mode="simple" 
-                                                  required="true" requiredMessage="#{message.selecioneumarquivo}">                                        
-                                    </p:fileUpload>
-                                </p:tab>
-                            </p:tabView>
-                        </p:tab>
-                    </p:accordionPanel>
+                        <p:tabView>
+                            <p:tab title="Sinóptico">
+
+                            </p:tab>
+                            <p:tab title="Importação de arquivos">                                    
+                                <p:fileUpload label="Escolher" uploadLabel="arquivo" 
+                                              value="#{tecnicaBean.uploadedFile}" mode="simple">
+                                    <f:validator validatorId="uploadValidatorPDF"/>
+                                </p:fileUpload>
+                            </p:tab>
+                            <p:tab title="Arquivos importados">                                
+                                <p:dataGrid id="arquivosList" value="#{tecnicaBean.tbequipamentoSelected.tbarquivosEquipamentoList}" var="arquivo" 
+                                            columns="3" layout="grid" rows="12" paginator="true"
+                                            paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}">
+
+                                    <f:facet name="header">
+                                        Arquivos importados
+                                    </f:facet>
+
+                                    <p:panel header="#{arquivo.nmarquivo}" style="text-align:center">
+                                        <h:panelGrid columns="1" style="width:100%">
+                                            <p:commandLink action="#{tecnicaBean.deleteTbarquivosEquipamento()}" update="arquivosList">
+                                                <p:graphicImage id="delete" value="#{resource['images/delete.gif']}"/>
+                                                <f:setPropertyActionListener value="#{arquivo}" target="#{tecnicaBean.tbarquivosEquipamentoSelected}"/>
+                                            </p:commandLink>
+                                        </h:panelGrid>
+                                    </p:panel>
+
+                                </p:dataGrid>
+                            </p:tab>
+                        </p:tabView>
+                    </p:tab> 
 
                     <div class="space"/>
 
                     <p:commandButton value="Salvar" ajax="false" 
-                                     icon="ui-icon-check"
+                                     icon="ui-icon-check" update=":resultLaudo"
                                      action="#{tecnicaBean.createLaudos()}"
                                      oncomplete="PF('dlgLaudo').hide();"/>
 

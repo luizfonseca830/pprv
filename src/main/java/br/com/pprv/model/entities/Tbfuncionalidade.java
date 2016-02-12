@@ -7,7 +7,6 @@ package br.com.pprv.model.entities;
 
 import br.com.pprv.web.faces.converter.Identificador;
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,15 +16,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author JorgeFonseca
+ * @author ioliveira
  */
 @Entity
 @Table(name = "tbfuncionalidade")
@@ -53,8 +50,6 @@ public class Tbfuncionalidade implements Serializable, Identificador<Integer> {
     @JoinColumn(name = "idmodulo", referencedColumnName = "idmodulo")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tbmodulo idmodulo;
-    @OneToMany(mappedBy = "idfuncionalidade", fetch = FetchType.EAGER)
-    private List<Tbacesso> tbacessoList;
 
     public Tbfuncionalidade() {
     }
@@ -116,15 +111,6 @@ public class Tbfuncionalidade implements Serializable, Identificador<Integer> {
         this.idmodulo = idmodulo;
     }
 
-    @XmlTransient
-    public List<Tbacesso> getTbacessoList() {
-        return tbacessoList;
-    }
-
-    public void setTbacessoList(List<Tbacesso> tbacessoList) {
-        this.tbacessoList = tbacessoList;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -152,7 +138,7 @@ public class Tbfuncionalidade implements Serializable, Identificador<Integer> {
 
     @Override
     public Integer getPK() {
-        return getIdfuncionalidade();
+        return idfuncionalidade;
     }
 
 }

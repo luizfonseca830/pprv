@@ -5,9 +5,9 @@
  */
 package br.com.pprv.web.control.logic.equipamento_subconjunto;
 
-import br.com.pprv.model.daos.TbequipamentosubconjuntoFacade;
+import br.com.pprv.model.daos.TbequipamentoSubconjuntoFacade;
 import br.com.pprv.model.entities.Tbequipamento;
-import br.com.pprv.model.entities.Tbequipamentosubconjunto;
+import br.com.pprv.model.entities.TbequipamentoSubconjunto;
 import br.com.pprv.web.control.module.AbstractModuleCore;
 import java.util.List;
 import javax.ejb.EJB;
@@ -21,14 +21,14 @@ import javax.ejb.Stateless;
 public class EquipamentoSubconjuntoLogic extends AbstractModuleCore {
 
     @EJB
-    private TbequipamentosubconjuntoFacade tbequipamentosubconjuntoFacade;   
-    
-    public List<Tbequipamentosubconjunto> getListAllTbequipamentoSubconjuntoByIdEquipamento(Tbequipamento tbequipamento) {
-        return tbequipamentosubconjuntoFacade.getListAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamento, super.getEM());
+    private TbequipamentoSubconjuntoFacade tbequipamentoSubconjuntoFacade;
+
+    public List<TbequipamentoSubconjunto> getListAllTbequipamentoSubconjuntoByIdEquipamento(Tbequipamento tbequipamento) {
+        return tbequipamentoSubconjuntoFacade.getListAllTbequipamentoSubconjuntoByIdEquipamento(tbequipamento, super.getEM());
     }
 
-    public Tbequipamentosubconjunto find(int id) {
-        return tbequipamentosubconjuntoFacade.find(id, super.getEM());
+    public TbequipamentoSubconjunto find(int id) {
+        return tbequipamentoSubconjuntoFacade.find(id, super.getEM());
     }
 
 }

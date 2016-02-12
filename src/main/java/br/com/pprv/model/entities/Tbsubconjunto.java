@@ -19,7 +19,7 @@ import javax.validation.constraints.Size;
 
 /**
  *
- * @author JorgeFonseca
+ * @author ioliveira
  */
 @Entity
 @Table(name = "tbsubconjunto")
@@ -46,10 +46,9 @@ public class Tbsubconjunto implements Serializable, Identificador<Integer> {
         this.idsubconjunto = idsubconjunto;
     }
 
-    public Tbsubconjunto(Integer idsubconjunto, String nmsubconjunto, int condicao) {
+    public Tbsubconjunto(Integer idsubconjunto, String nmsubconjunto) {
         this.idsubconjunto = idsubconjunto;
         this.nmsubconjunto = nmsubconjunto;
-        this.condicao = condicao;
     }
 
     public Integer getIdsubconjunto() {
@@ -68,15 +67,14 @@ public class Tbsubconjunto implements Serializable, Identificador<Integer> {
         this.nmsubconjunto = nmsubconjunto;
     }
 
-    public int getCondicao() {
+    public Integer getCondicao() {
         return condicao;
     }
 
-    public void setCondicao(int condicao) {
+    public void setCondicao(Integer condicao) {
         this.condicao = condicao;
     }
 
-    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -104,7 +102,7 @@ public class Tbsubconjunto implements Serializable, Identificador<Integer> {
 
     @Override
     public Integer getPK() {
-        return getIdsubconjunto();
+        return idsubconjunto;
     }
 
 }
