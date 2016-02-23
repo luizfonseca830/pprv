@@ -25,6 +25,9 @@ public class LaudoMdl implements Serializable {
     private Date dtDataCadastro;
     private Integer intOsMaximo;
     private boolean naoPreencherOs;
+    private Integer prazoExecucao;
+    private String nmObservacao;
+    private String nmRisco;
     private TbequipamentoSubconjunto Tbequipamentosubconjunto;
 
     public LaudoMdl() {
@@ -171,6 +174,48 @@ public class LaudoMdl implements Serializable {
      */
     public void setNaoPreencherOs(boolean naoPreencherOs) {
         this.naoPreencherOs = naoPreencherOs;
+    }
+
+    /**
+     * @return the nmObservacao
+     */
+    public String getNmObservacao() {
+        return nmObservacao;
+    }
+
+    /**
+     * @param nmObservacao the nmObservacao to set
+     */
+    public void setNmObservacao(String nmObservacao) {
+        this.nmObservacao = nmObservacao;
+    }
+
+    /**
+     * @return the nmRisco
+     */
+    public String getNmRisco() {
+        return nmRisco;
+    }
+
+    /**
+     * @param nmRisco the nmRisco to set
+     */
+    public void setNmRisco(String nmRisco) {
+        this.nmRisco = nmRisco;
+    }
+
+    /**
+     * @return the prazoExecucao
+     */
+    public Integer getPrazoExecucao() {
+        return prazoExecucao;
+    }
+
+    /**
+     * @param prazoExecucao the prazoExecucao to set
+     */
+    public void setPrazoExecucao(Integer prazoExecucao) {
+        this.prazoExecucao = prazoExecucao;
     }
 
 }

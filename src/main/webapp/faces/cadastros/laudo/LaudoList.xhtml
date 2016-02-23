@@ -89,11 +89,11 @@
 
 
             <!--TELA DE DIALOG RESPONSAVEL POR CHAMAR O INSERIR O LAUDO -->
-            <p:dialog id="dialog" dynamic="true" widgetVar="dlgLaudo" header="Edição de Laudo" width="1000" height="550" 
-                      modal="true" resizable="false" draggable="false"> 
+            <p:dialog id="dialog" dynamic="true" widgetVar="dlgLaudo" header="Edição de Laudo" width="1000" height="600" 
+                      modal="true" resizable="true" draggable="true"> 
 
                 <h:form id="formModeltLaudo" enctype="multipart/form-data">
-                    <h:panelGrid columns="2" cellspacing="10">                        
+                    <h:panelGrid columns="4" cellspacing="10">                        
                         <h:commandLink actionListener="#{tecnicaBean.updateStatusCondicaoEquipamento()}">
                             <p:graphicImage value="#{resource['images/QUADRADOVERDE.png']}"
                                             rendered="#{tecnicaBean.tbequipamentoSelected.condicao==1}"/>
@@ -104,8 +104,11 @@
                         </h:commandLink>                        
 
                         <h:outputText value="#{tecnicaBean.tbequipamentoSelected.nmequipamenta}" class="text-bold"/>
+
+                        <h:outputText value="Gerência :" class="text-bold"/>
+                        <h:outputText value="#{tecnicaBean.tbequipamentoSelected.idtecnica.idgerencia == null ? 'Sem gerência':tecnicaBean.tbequipamentoSelected.idtecnica.idgerencia.nmgerencia}" class="text-bold"/>
                     </h:panelGrid>
-                    
+
                     <p:accordionPanel value="#{tecnicaBean.listLaudoMdl}" var="equipamentosubcojunto"
                                       activeIndex="-1">
                         <p:tab title="#{equipamentosubcojunto.tbequipamentoSubconjunto.idsubconjunto.nmsubconjunto}">                            
@@ -119,12 +122,20 @@
                                 <p:inputTextarea id="textAreaRecomendacao" value="#{equipamentosubcojunto.nmRecomendacao}"
                                                  cols="110" autoResize="true"/>
 
+                                <h:outputText id="observacao" value="Observação" class="text-bold"/>
+                                <p:inputTextarea id="textAreaObservacao" value="#{equipamentosubcojunto.nmObservacao}"
+                                                 cols="110" autoResize="true"/>
+
+                                <h:outputText id="risco" value="Risco" class="text-bold"/>
+                                <p:inputTextarea id="textAreaRisco" value="#{equipamentosubcojunto.nmRisco}"
+                                                 cols="110" autoResize="true"/>
+
                             </h:panelGrid>
 
                             <h:panelGrid columns="2" cellspacing="5">
 
                                 <h:outputText id="turmaExectante" value="Turma Executante" class="text-bold"/>
-                                <p:selectOneMenu id="autoComplete" value="#{tecnicaBean.tbtecnica}"
+                                <p:selectOneMenu id="autoComplete" value="#{equipamentosubcojunto.tbgerencia}"
                                                  filter="true" filterMatchMode="contains" converter="converterEntity">
                                     <f:selectItems value="#{tecnicaBean.listTbtecnica}" var="tecnica" 
                                                    itemValue="#{tecnica}" itemLabel="#{tecnica.nmtecnica}" >
@@ -134,27 +145,33 @@
                             </h:panelGrid>
 
                             <h:panelGrid columns="3" cellspacing="5">
-                                <h:outputText id="limiteExecucao" value="Limite Execução:" class="text-bold"/>
+                                <h:outputText id="prazoExecucao" value="Prazo de  Execução:" class="text-bold"/>                               
 
-                                <div style="width: 11px;"/>
-
-                                <p:calendar id="calendarLimiteExecucao" value="#{equipamentosubcojunto.dtDatalimiteExecucao}"
-                                            mode="popup" showOn="button" 
-                                            navigator="true"/>
+                                <p:selectOneMenu id="autoCompletePrazo" value="#{equipamentosubcojunto.prazoExecucao}"
+                                                 filter="true" filterMatchMode="contains">
+                                    <f:selectItem itemLabel="7" itemValue="7"/>
+                                    <f:selectItem itemLabel="15" itemValue="15"/>
+                                    <f:selectItem itemLabel="30" itemValue="30"/>
+                                    <f:selectItem itemLabel="45" itemValue="45"/>
+                                    <f:selectItem itemLabel="60" itemValue="60"/>
+                                    <f:selectItem itemLabel="90" itemValue="90"/>
+                                    <f:selectItem itemLabel="120" itemValue="120"/>
+                                    <f:selectItem itemLabel="180" itemValue="180"/>
+                                </p:selectOneMenu>
                             </h:panelGrid>    
 
                             <h:panelGrid columns="6" cellspacing="5">
-                                <h:outputText id="dataAnalise" value="Data Analíse:" class="text-bold"/>
+                                <h:outputText id="limiteExecucao" value="Limite Execução:" class="text-bold"/>
 
                                 <div style="width: 20px;"/>
 
-                                <p:calendar id="calendarDataAnalise" value="#{equipamentosubcojunto.dtDataAnalise}"
+                                <p:calendar id="calendarLimiteExecucao" value="#{equipamentosubcojunto.dtDatalimiteExecucao}"
                                             mode="popup" showOn="button" 
                                             navigator="true"/>                                                                                               
 
                                 <div style="width: 250px;"/>
 
-                                <h:outputText id="osmaximo" value="OS Máximo:" class="text-bold"/>
+                                <h:outputText id="osmaximo" value="OM SAP:" class="text-bold"/>
                                 <p:inputText id="inputOsMaximo" value="#{equipamentosubcojunto.intOsMaximo}"/>
 
                             </h:panelGrid>
@@ -170,7 +187,7 @@
                                 <div style="width: 400px;"/>
 
                                 <p:selectBooleanCheckbox id="preencherOS" value="#{equipamentosubcojunto.naoPreencherOs}"/>                                    
-                                <h:outputText id="preencherOSText" value="Não preencher OS" class="text-bold"/>
+                                <h:outputText id="preencherOSText" value="Não preencher OM" class="text-bold"/>
                             </h:panelGrid>                                                                                   
                         </p:tab>                                                                                           
                     </p:accordionPanel>    
