@@ -29,6 +29,15 @@
                                            itemValue="#{tecnica}" itemLabel="#{tecnica.nmtecnica}" >
                             </f:selectItems>
                         </p:selectOneMenu>
+                        
+                        <h:outputText value="Gerência" class="text-bold"/>
+                        <p:selectOneMenu id="autoCompleteGerencia" value="#{tecnicaBean.tbgerencia}"
+                                         filter="true" filterMatchMode="contains" converter="converterEntity">
+                            <f:selectItem itemLabel="Selecione uma gerência"/>
+                            <f:selectItems value="#{tecnicaBean.listTbtecnica}" var="tecnica" 
+                                           itemValue="#{tecnica}" itemLabel="#{tecnica.nmtecnica}" >
+                            </f:selectItems>
+                        </p:selectOneMenu>
 
                     </h:panelGrid>
 

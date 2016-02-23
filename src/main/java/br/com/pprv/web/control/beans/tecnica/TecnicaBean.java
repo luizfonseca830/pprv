@@ -17,6 +17,7 @@ import br.com.pprv.model.entities.custom.LaudoMdl;
 import br.com.pprv.web.control.logic.arquivos_equipamento.ArquivosEquipamentoLogic;
 import br.com.pprv.web.control.logic.equipamento.EquipamentoLogic;
 import br.com.pprv.web.control.logic.equipamento_subconjunto.EquipamentoSubconjuntoLogic;
+import br.com.pprv.web.control.logic.gerencia.GerenciaLogic;
 import br.com.pprv.web.control.logic.laudo.LaudoLogic;
 import br.com.pprv.web.control.logic.tecnica.TecnicaLogic;
 import br.com.pprv.web.faces.utils.AbstractFacesContextUtils;
@@ -58,6 +59,8 @@ public class TecnicaBean implements Serializable {
     private LaudoLogic laudoLogic;
     @EJB
     private ArquivosEquipamentoLogic arquivosEquipamentoLogic;
+    @EJB
+    private GerenciaLogic gerenciaLogic;
 
     private Tbtecnica tbtecnica;
     private TbequipamentoSubconjunto tbequipamentoSubconjunto;
@@ -73,6 +76,8 @@ public class TecnicaBean implements Serializable {
     private Tbequipamento tbequipamentoSelected;
     private List<LaudoMdl> listLaudoMdl;
     private TbarquivosEquipamento tbarquivosEquipamentoSelected;
+    private Tbgerencia tbgerencia;
+    private List<Tbgerencia> listTbgerencias;
 
     private UploadedFile uploadedFile;
 
@@ -80,6 +85,7 @@ public class TecnicaBean implements Serializable {
     public void init() {
         listTbtecnica = tecnicaLogic.listallTecnica();
         listEquipamentos = new ArrayList<>();
+        listTbgerencias = gerenciaLogic.findAllTbgerencia();
 
         idtecnica = AbstractFacesContextUtils.getParamInt("idtecnica");
         idequipamento = AbstractFacesContextUtils.getParamInt("idequipamento");
@@ -514,5 +520,33 @@ public class TecnicaBean implements Serializable {
      */
     public void setTbarquivosEquipamentoSelected(TbarquivosEquipamento tbarquivosEquipamentoSelected) {
         this.tbarquivosEquipamentoSelected = tbarquivosEquipamentoSelected;
+    }
+
+    /**
+     * @return the tbgerencia
+     */
+    public Tbgerencia getTbgerencia() {
+        return tbgerencia;
+    }
+
+    /**
+     * @param tbgerencia the tbgerencia to set
+     */
+    public void setTbgerencia(Tbgerencia tbgerencia) {
+        this.tbgerencia = tbgerencia;
+    }
+
+    /**
+     * @return the listTbgerencias
+     */
+    public List<Tbgerencia> getListTbgerencias() {
+        return listTbgerencias;
+    }
+
+    /**
+     * @param listTbgerencias the listTbgerencias to set
+     */
+    public void setListTbgerencias(List<Tbgerencia> listTbgerencias) {
+        this.listTbgerencias = listTbgerencias;
     }
 }
