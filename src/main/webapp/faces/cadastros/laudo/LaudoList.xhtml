@@ -25,17 +25,18 @@
                         <h:outputText value="#{field.tecnica}" class="text-bold"/>
                         <p:selectOneMenu id="autoComplete" value="#{tecnicaBean.tbtecnica}"
                                          filter="true" filterMatchMode="contains" converter="converterEntity">
+                            <f:selectItem itemLabel="Selecione uma técnica"/>
                             <f:selectItems value="#{tecnicaBean.listTbtecnica}" var="tecnica" 
                                            itemValue="#{tecnica}" itemLabel="#{tecnica.nmtecnica}" >
                             </f:selectItems>
                         </p:selectOneMenu>
-                        
+
                         <h:outputText value="Gerência" class="text-bold"/>
                         <p:selectOneMenu id="autoCompleteGerencia" value="#{tecnicaBean.tbgerencia}"
                                          filter="true" filterMatchMode="contains" converter="converterEntity">
                             <f:selectItem itemLabel="Selecione uma gerência"/>
-                            <f:selectItems value="#{tecnicaBean.listTbtecnica}" var="tecnica" 
-                                           itemValue="#{tecnica}" itemLabel="#{tecnica.nmtecnica}" >
+                            <f:selectItems value="#{tecnicaBean.listTbgerencias}" var="gerencia" 
+                                           itemValue="#{gerencia}" itemLabel="#{gerencia.nmgerencia}" >
                             </f:selectItems>
                         </p:selectOneMenu>
 
@@ -50,7 +51,7 @@
                 </p:panel>
                 <div class="space"/>
 
-                <p:panel id="panelResult" header="#{field.resultado}" toggleable="true" toggleSpeed="500"
+                <p:panel id="panelResult" header="#{field.resultado} #{tecnicaBean.listTbequipamento.size()} encontrado(s)" toggleable="true" toggleSpeed="500"
                          rendered="#{not empty tecnicaBean.listTbequipamento}">                                      
 
                     <p:dataTable id="dataTableResult" var="equipamento" 
@@ -115,7 +116,7 @@
                         <h:outputText value="#{tecnicaBean.tbequipamentoSelected.nmequipamenta}" class="text-bold"/>
 
                         <h:outputText value="Gerência :" class="text-bold"/>
-                        <h:outputText value="#{tecnicaBean.tbequipamentoSelected.idtecnica.idgerencia == null ? 'Sem gerência':tecnicaBean.tbequipamentoSelected.idtecnica.idgerencia.nmgerencia}" class="text-bold"/>
+                        <h:outputText value="#{tecnicaBean.tbequipamentoSelected.idgerencia.nmgerencia == null ? 'Sem gerência':tecnicaBean.tbequipamentoSelected.idgerencia.nmgerencia}" class="text-bold"/>
                     </h:panelGrid>
 
                     <p:accordionPanel value="#{tecnicaBean.listLaudoMdl}" var="equipamentosubcojunto"
@@ -146,8 +147,8 @@
                                 <h:outputText id="turmaExectante" value="Turma Executante" class="text-bold"/>
                                 <p:selectOneMenu id="autoComplete" value="#{equipamentosubcojunto.tbgerencia}"
                                                  filter="true" filterMatchMode="contains" converter="converterEntity">
-                                    <f:selectItems value="#{tecnicaBean.listTbtecnica}" var="tecnica" 
-                                                   itemValue="#{tecnica}" itemLabel="#{tecnica.nmtecnica}" >
+                                    <f:selectItems value="#{tecnicaBean.listTbgerencias}" var="gerencia" 
+                                                   itemValue="#{gerencia}" itemLabel="#{gerencia.nmgerencia}" >
                                     </f:selectItems>
                                 </p:selectOneMenu>                                                                                                                      
 
@@ -181,7 +182,7 @@
                                 <div style="width: 250px;"/>
 
                                 <h:outputText id="osmaximo" value="OM SAP:" class="text-bold"/>
-                                <p:inputText id="inputOsMaximo" value="#{equipamentosubcojunto.intOsMaximo}"/>
+                                <p:inputText id="inputOsMaximo" value="#{equipamentosubcojunto.intOmSap}"/>
 
                             </h:panelGrid>
                             <h:panelGrid columns="6" cellspacing="5">
@@ -195,7 +196,7 @@
 
                                 <div style="width: 400px;"/>
 
-                                <p:selectBooleanCheckbox id="preencherOS" value="#{equipamentosubcojunto.naoPreencherOs}"/>                                    
+                                <p:selectBooleanCheckbox id="preencherOS" value="#{equipamentosubcojunto.naoPreencherOmSap}"/>                                    
                                 <h:outputText id="preencherOSText" value="Não preencher OM" class="text-bold"/>
                             </h:panelGrid>                                                                                   
                         </p:tab>                                                                                           

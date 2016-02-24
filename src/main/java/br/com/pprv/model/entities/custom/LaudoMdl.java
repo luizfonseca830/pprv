@@ -21,10 +21,9 @@ public class LaudoMdl implements Serializable {
     private String nmRecomendacao;
     private Tbgerencia tbgerencia;
     private Date dtDatalimiteExecucao;
-    private Date dtDataAnalise;
     private Date dtDataCadastro;
-    private Integer intOsMaximo;
-    private boolean naoPreencherOs;
+    private Integer intOmSap;
+    private boolean naoPreencherOmSap;
     private Integer prazoExecucao;
     private String nmObservacao;
     private String nmRisco;
@@ -32,8 +31,7 @@ public class LaudoMdl implements Serializable {
 
     public LaudoMdl() {
         dtDataCadastro = new Date();
-        dtDataAnalise = new Date();
-        naoPreencherOs = false;
+        naoPreencherOmSap = false;
     }
 
     /**
@@ -107,20 +105,6 @@ public class LaudoMdl implements Serializable {
     }
 
     /**
-     * @return the dtDataAnalise
-     */
-    public Date getDtDataAnalise() {
-        return dtDataAnalise;
-    }
-
-    /**
-     * @param dtDataAnalise the dtDataAnalise to set
-     */
-    public void setDtDataAnalise(Date dtDataAnalise) {
-        this.dtDataAnalise = dtDataAnalise;
-    }
-
-    /**
      * @return the dtDataCadastro
      */
     public Date getDtDataCadastro() {
@@ -135,20 +119,6 @@ public class LaudoMdl implements Serializable {
     }
 
     /**
-     * @return the intOsMaximo
-     */
-    public Integer getIntOsMaximo() {
-        return intOsMaximo;
-    }
-
-    /**
-     * @param intOsMaximo the intOsMaximo to set
-     */
-    public void setIntOsMaximo(Integer intOsMaximo) {
-        this.intOsMaximo = intOsMaximo;
-    }
-
-    /**
      * @return the tbequipamentoSubconjunto
      */
     public TbequipamentoSubconjunto getTbequipamentoSubconjunto() {
@@ -160,20 +130,6 @@ public class LaudoMdl implements Serializable {
      */
     public void setTbequipamentoSubconjunto(TbequipamentoSubconjunto Tbequipamentosubconjunto) {
         this.Tbequipamentosubconjunto = Tbequipamentosubconjunto;
-    }
-
-    /**
-     * @return the naoPreencherOs
-     */
-    public boolean isNaoPreencherOs() {
-        return naoPreencherOs;
-    }
-
-    /**
-     * @param naoPreencherOs the naoPreencherOs to set
-     */
-    public void setNaoPreencherOs(boolean naoPreencherOs) {
-        this.naoPreencherOs = naoPreencherOs;
     }
 
     /**
@@ -216,6 +172,34 @@ public class LaudoMdl implements Serializable {
      */
     public void setPrazoExecucao(Integer prazoExecucao) {
         this.prazoExecucao = prazoExecucao;
+    }
+
+    /**
+     * @return the intOmSap
+     */
+    public Integer getIntOmSap() {
+        return intOmSap;
+    }
+
+    /**
+     * @param intOmSap the intOmSap to set
+     */
+    public void setIntOmSap(Integer intOmSap) {
+        this.intOmSap = intOmSap;
+    }
+
+    /**
+     * @return the naoPreencherOmSap
+     */
+    public boolean isNaoPreencherOmSap() {
+        return naoPreencherOmSap;
+    }
+
+    /**
+     * @param naoPreencherOmSap the naoPreencherOmSap to set
+     */
+    public void setNaoPreencherOmSap(boolean naoPreencherOmSap) {
+        this.naoPreencherOmSap = naoPreencherOmSap;
     }
 
 }

@@ -105,13 +105,15 @@ public class TecnicaBean implements Serializable {
     }
 
     public void search() {
-        if (tbtecnica != null) {
-            listTbequipamento = equipamentoLogic.findTbequipamentoByTbtecnica(tbtecnica);
+
+        if (tbtecnica == null && tbgerencia == null) {
+            AbstractFacesContextUtils.addMessageWarn("Nenhum dos filtros selecionado.");
+        } else {
+            listTbequipamento = equipamentoLogic.findTbequipamentoByTbtecnicaAndTbgerencia(tbtecnica, tbgerencia);
             if (listTbequipamento == null || listTbequipamento.isEmpty()) {
+                listTbequipamento = null;
                 AbstractFacesContextUtils.addMessageWarn("Nenhum resultado encontrado.");
             }
-        } else {
-            AbstractFacesContextUtils.addMessageWarn("Nenhuma técnica selecionada.");
         }
     }
 
@@ -146,14 +148,16 @@ public class TecnicaBean implements Serializable {
             Tblaudo tblaudo = new Tblaudo();
             tblaudo.setNmdiagnostico(laudoMdl.getNmDiagnostico());
             tblaudo.setNmrecomendacao(laudoMdl.getNmRecomendacao());
-            tblaudo.setIdgerencia(new Tbgerencia(1));
+            tblaudo.setNmobservacao(laudoMdl.getNmObservacao());
+            tblaudo.setNmrisco(laudoMdl.getNmRisco());
+            tblaudo.setIdgerencia(laudoMdl.getTbgerencia());
             tblaudo.setLimiteexecucao(laudoMdl.getDtDatalimiteExecucao());
-            tblaudo.setDataanalise(laudoMdl.getDtDataAnalise());
-            tblaudo.setDatacadastro(laudoMdl.getDtDataCadastro());
-            tblaudo.setBoolos(laudoMdl.isNaoPreencherOs());
+            tblaudo.setDtdatacadastro(laudoMdl.getDtDataCadastro());
+            tblaudo.setBoolomsap(laudoMdl.isNaoPreencherOmSap());
+            tblaudo.setPrazoexecucao(laudoMdl.getPrazoExecucao());
 
-            if (!laudoMdl.isNaoPreencherOs()) {
-                tblaudo.setOsmaximo(laudoMdl.getIntOsMaximo());
+            if (!laudoMdl.isNaoPreencherOmSap()) {
+                tblaudo.setOmsap(laudoMdl.getIntOmSap());
             }
 
             tblaudo.setIdsubconjunto(laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
@@ -176,14 +180,16 @@ public class TecnicaBean implements Serializable {
                 if (laudo != null) {
                     laudo.setNmdiagnostico(laudoMdl.getNmDiagnostico());
                     laudo.setNmrecomendacao(laudoMdl.getNmRecomendacao());
-                    laudo.setIdgerencia(new Tbgerencia(1));
+                    tblaudo.setNmobservacao(laudoMdl.getNmObservacao());
+                    tblaudo.setNmrisco(laudoMdl.getNmRisco());
+                    laudo.setIdgerencia(laudoMdl.getTbgerencia());
                     laudo.setLimiteexecucao(laudoMdl.getDtDatalimiteExecucao());
-                    laudo.setDataanalise(laudoMdl.getDtDataAnalise());
-                    laudo.setDatacadastro(laudoMdl.getDtDataCadastro());
-                    laudo.setBoolos(laudoMdl.isNaoPreencherOs());
+                    laudo.setDtdatacadastro(laudoMdl.getDtDataCadastro());
+                    laudo.setBoolomsap(laudoMdl.isNaoPreencherOmSap());
+                    laudo.setPrazoexecucao(laudoMdl.getPrazoExecucao());
 
-                    if (!laudoMdl.isNaoPreencherOs()) {
-                        laudo.setOsmaximo(laudoMdl.getIntOsMaximo());
+                    if (!laudoMdl.isNaoPreencherOmSap()) {
+                        laudo.setOmsap(laudoMdl.getIntOmSap());
                     }
 
                     laudo.setIdsubconjunto(laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
@@ -483,13 +489,16 @@ public class TecnicaBean implements Serializable {
 
                     laudoMdl.setNmDiagnostico(tblaudo.getNmdiagnostico());
                     laudoMdl.setNmRecomendacao(tblaudo.getNmrecomendacao());
+                    laudoMdl.setNmObservacao(tblaudo.getNmobservacao());
+                    laudoMdl.setNmRisco(tblaudo.getNmrisco());
                     laudoMdl.setDtDatalimiteExecucao(tblaudo.getLimiteexecucao());
-                    laudoMdl.setDtDataAnalise(tblaudo.getDataanalise());
-                    laudoMdl.setDtDataCadastro(tblaudo.getDatacadastro());
-                    laudoMdl.setNaoPreencherOs(tblaudo.getBoolos());
+                    laudoMdl.setDtDataCadastro(tblaudo.getDtdatacadastro());
+                    laudoMdl.setNaoPreencherOmSap(tblaudo.getBoolomsap());
+                    laudoMdl.setPrazoExecucao(tblaudo.getPrazoexecucao());
+                    laudoMdl.setTbgerencia(tblaudo.getIdgerencia());
 
-                    if (!tblaudo.getBoolos()) {
-                        laudoMdl.setIntOsMaximo(tblaudo.getOsmaximo());
+                    if (!tblaudo.getBoolomsap()) {
+                        laudoMdl.setIntOmSap(tblaudo.getOmsap());
                     }
                 }
 

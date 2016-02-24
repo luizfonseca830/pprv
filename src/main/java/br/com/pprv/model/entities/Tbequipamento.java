@@ -57,6 +57,9 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
     @JoinColumn(name = "idinspecao", referencedColumnName = "idinspecao")
     @ManyToOne(fetch = FetchType.EAGER)
     private Tbinspecao idinspecao;
+    @JoinColumn(name = "idgerencia", referencedColumnName = "idgerencia")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Tbgerencia idgerencia;
 
     public Tbequipamento() {
     }
@@ -124,6 +127,20 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
 
     public void setIdinspecao(Tbinspecao idinspecao) {
         this.idinspecao = idinspecao;
+    }
+
+    /**
+     * @return the idgerencia
+     */
+    public Tbgerencia getIdgerencia() {
+        return idgerencia;
+    }
+
+    /**
+     * @param idgerencia the idgerencia to set
+     */
+    public void setIdgerencia(Tbgerencia idgerencia) {
+        this.idgerencia = idgerencia;
     }
 
     @Override

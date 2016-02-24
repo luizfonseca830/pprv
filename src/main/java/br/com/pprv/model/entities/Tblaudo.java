@@ -47,21 +47,14 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
     @Temporal(TemporalType.DATE)
     private Date limiteexecucao;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "dataanalise")
+    @Column(name = "dtdatacadastro")
     @Temporal(TemporalType.DATE)
-    private Date dataanalise;
+    private Date dtdatacadastro;
+    @Column(name = "boolomsap")
+    private Boolean boolomsap;
+    @Column(name = "omsap")
+    private Integer omsap;
     @Basic(optional = false)
-    @NotNull
-    @Column(name = "datacadastro")
-    @Temporal(TemporalType.DATE)
-    private Date datacadastro;
-    @Column(name = "boolos")
-    private Boolean boolos;
-    @Column(name = "osmaximo")
-    private Integer osmaximo;
-    @Basic(optional = false)
-    @NotNull
     @Column(name = "dtdatalaudo")
     @Temporal(TemporalType.DATE)
     private Date dtdatalaudo;
@@ -70,6 +63,13 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
     @Column(name = "tmdatalaudo")
     @Temporal(TemporalType.TIMESTAMP)
     private Date tmdatalaudo;
+    @Column(name = "nmobservacao")
+    private String nmobservacao;
+    @Column(name = "nmrisco")
+    private String nmrisco;
+    @Basic(optional = false)
+    @Column(name = "prazoexecucao")
+    private Integer prazoexecucao;
     @JoinColumn(name = "idsubconjunto", referencedColumnName = "idsubconjunto")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tbsubconjunto idsubconjunto;
@@ -87,12 +87,12 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
         this.idlaudo = idlaudo;
     }
 
-    public Tblaudo(Integer idlaudo, Date dataanalise, Date datacadastro, Date dtdatalaudo, Date tmdatalaudo) {
+    public Tblaudo(Integer idlaudo, Date dtdatacadastro, Date dtdatalaudo, Date tmdatalaudo, int prazoexecucao) {
         this.idlaudo = idlaudo;
-        this.dataanalise = dataanalise;
-        this.datacadastro = datacadastro;
+        this.dtdatacadastro = dtdatacadastro;
         this.dtdatalaudo = dtdatalaudo;
         this.tmdatalaudo = tmdatalaudo;
+        this.prazoexecucao = prazoexecucao;
     }
 
     public Integer getIdlaudo() {
@@ -127,36 +127,88 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
         this.limiteexecucao = limiteexecucao;
     }
 
-    public Date getDataanalise() {
-        return dataanalise;
+    /**
+     * @return the dtdatacadastro
+     */
+    public Date getDtdatacadastro() {
+        return dtdatacadastro;
     }
 
-    public void setDataanalise(Date dataanalise) {
-        this.dataanalise = dataanalise;
+    /**
+     * @param dtdatacadastro the dtdatacadastro to set
+     */
+    public void setDtdatacadastro(Date dtdatacadastro) {
+        this.dtdatacadastro = dtdatacadastro;
     }
 
-    public Date getDatacadastro() {
-        return datacadastro;
+    /**
+     * @return the boolomsap
+     */
+    public Boolean getBoolomsap() {
+        return boolomsap;
     }
 
-    public void setDatacadastro(Date datacadastro) {
-        this.datacadastro = datacadastro;
+    /**
+     * @param boolomsap the boolomsap to set
+     */
+    public void setBoolomsap(Boolean boolomsap) {
+        this.boolomsap = boolomsap;
     }
 
-    public Boolean getBoolos() {
-        return boolos;
+    /**
+     * @return the omsap
+     */
+    public Integer getOmsap() {
+        return omsap;
     }
 
-    public void setBoolos(Boolean boolos) {
-        this.boolos = boolos;
+    /**
+     * @param omsap the omsap to set
+     */
+    public void setOmsap(Integer omsap) {
+        this.omsap = omsap;
     }
 
-    public Integer getOsmaximo() {
-        return osmaximo;
+    /**
+     * @return the nmobservacao
+     */
+    public String getNmobservacao() {
+        return nmobservacao;
     }
 
-    public void setOsmaximo(Integer osmaximo) {
-        this.osmaximo = osmaximo;
+    /**
+     * @param nmobservacao the nmobservacao to set
+     */
+    public void setNmobservacao(String nmobservacao) {
+        this.nmobservacao = nmobservacao;
+    }
+
+    /**
+     * @return the nmrisco
+     */
+    public String getNmrisco() {
+        return nmrisco;
+    }
+
+    /**
+     * @param nmrisco the nmrisco to set
+     */
+    public void setNmrisco(String nmrisco) {
+        this.nmrisco = nmrisco;
+    }
+
+    /**
+     * @return the prazoexecucao
+     */
+    public Integer getPrazoexecucao() {
+        return prazoexecucao;
+    }
+
+    /**
+     * @param prazoexecucao the prazoexecucao to set
+     */
+    public void setPrazoexecucao(Integer prazoexecucao) {
+        this.prazoexecucao = prazoexecucao;
     }
 
     public Date getDtdatalaudo() {
