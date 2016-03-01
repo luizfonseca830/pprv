@@ -43,7 +43,7 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
     @Basic(optional = false)
     @NotNull
     @Column(name = "criticidade")
-    private int criticidade;
+    private Integer criticidade;
     @Size(max = 80)
     @Column(name = "descequipamento")
     private String descequipamento;
@@ -89,11 +89,11 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
         this.nmequipamenta = nmequipamenta;
     }
 
-    public int getCriticidade() {
+    public Integer getCriticidade() {
         return criticidade;
     }
 
-    public void setCriticidade(int criticidade) {
+    public void setCriticidade(Integer criticidade) {
         this.criticidade = criticidade;
     }
 
@@ -104,15 +104,7 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
     public void setDescequipamento(String descequipamento) {
         this.descequipamento = descequipamento;
     }
-
-    public Integer getCondicao() {
-        return condicao;
-    }
-
-    public void setCondicao(Integer condicao) {
-        this.condicao = condicao;
-    }
-
+    
     public Tbtecnica getIdtecnica() {
         return idtecnica;
     }
@@ -180,6 +172,20 @@ public class Tbequipamento implements Serializable, Identificador<Integer> {
 
     public void setTbarquivosEquipamentoList(List<TbarquivosEquipamento> tbarquivosEquipamentoList) {
         this.tbarquivosEquipamentoList = tbarquivosEquipamentoList;
+    }
+
+    /**
+     * @return the condicao
+     */
+    public Integer getCondicao() {
+        return condicao;
+    }
+
+    /**
+     * @param condicao the condicao to set
+     */
+    public void setCondicao(Integer condicao) {
+        this.condicao = condicao;
     }
 
 }

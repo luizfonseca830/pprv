@@ -49,7 +49,7 @@ body {height: 96%;}
 
 .context {width: 83%;
           height: 88%;
-          position: absolute; 
+          /*position: absolute;*/ 
           top: 25px; 
           left: 0px;
           overflow:auto;}

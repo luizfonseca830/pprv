@@ -1,0 +1,153 @@
+<ui:composition template="/faces/index.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="context">
+
+        <h:outputText id="page-rule" rendered="#{menuBean.isRule('cad_equipamento')}"/>
+
+        <h:body>
+
+            <div class="page-title">#{field.equipamento}</div>           
+
+            <p:panel header="#{field.parametrodepesquisa}" toggleable="true" toggleSpeed="500">
+
+                <h:form>
+
+                    <h:panelGrid columns="2" cellspacing="10">
+                        <h:outputText value="#{field.tecnica}" class="text-bold"/>
+                        <p:selectOneMenu id="autoComplete" value="#{equipamentoBean.tbtecnicaSearch}"
+                                         filter="true" filterMatchMode="contains" converter="converterEntity">
+                            <f:selectItem itemLabel="Selecione uma técnica"/>
+                            <f:selectItems value="#{equipamentoBean.listTbtecnicasSearch}" var="tecnica" 
+                                           itemValue="#{tecnica}" itemLabel="#{tecnica.nmtecnica}" >
+                            </f:selectItems>
+                        </p:selectOneMenu>
+
+                        <h:outputText value="Gerência" class="text-bold"/>
+                        <p:selectOneMenu id="autoCompleteGerencia" value="#{equipamentoBean.tbgerenciaSearch}"
+                                         filter="true" filterMatchMode="contains" converter="converterEntity">
+                            <f:selectItem itemLabel="Selecione uma gerência"/>
+                            <f:selectItems value="#{equipamentoBean.listTbgerenciasSearch}" var="gerencia" 
+                                           itemValue="#{gerencia}" itemLabel="#{gerencia.nmgerencia}" >
+                            </f:selectItems>
+                        </p:selectOneMenu>
+
+                    </h:panelGrid>
+
+                    <p:commandButton value="#{field.pesquisar}" action="#{equipamentoBean.search()}"
+                                     icon="ui-icon-search" update=":panelResult" ajax="false"
+                                     onclick="PF('statusDialog').show();"
+                                     oncomplete="PF('statusDialog').hide();PF('equipamentosEncontrados').update();"/>
+
+                </h:form>     
+            </p:panel>
+
+            <div class="space"/>
+
+            <p:fieldset id="panelResult" legend="Lista de Resultados">
+
+                <h:form>
+
+                    <p:dataTable id="equipamentosComLaudos" value="#{equipamentoBean.listTbequipamentoResult}" 
+                                 var="equipamento" paginator="true" widgetVar="equipamentosEncontrados"
+                                 paginatorPosition="bottom" scrollable="true" scrollHeight="250"
+                                 rows="5" filteredValue="#{equipamentoBean.listTbequipamentoFilter}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20" emptyMessage="#{message.nenhumresultadoencontrado}">
+
+                        <p:columnGroup type="header">
+
+                            <p:row>
+                                <p:column colspan="6" headerText="Lista de equipamentos"/>
+                            </p:row>
+
+                            <p:row>
+                                <p:column headerText="Condição"/> 
+                                <p:column headerText="Equipamento" filterBy="#{equipamento.nmequipamenta}"  
+                                          filterMatchMode="contains" sortBy="#{equipamento.nmequipamenta}"/> 
+                                <p:column headerText="Descrição" filterBy="#{equipamento.descequipamento}"  
+                                          filterMatchMode="contains" sortBy="#{equipamento.descequipamento}"/>                                
+                                <p:column headerText="Criticidade" filterBy="#{equipamento.criticidade}"  
+                                          filterMatchMode="contains" sortBy="#{equipamento.criticidade}"/>
+                                <p:column headerText="Técnica" filterBy="#{equipamento.idtecnica.nmtecnica}"  
+                                          filterMatchMode="contains" sortBy="#{equipamento.idtecnica.nmtecnica}"/>
+                                <p:column/>
+                            </p:row>
+
+                        </p:columnGroup>
+
+                        <p:column>
+
+                            <h:graphicImage url="#{resource['images/QUADRADOVERDE.png']}" rendered="#{equipamento.condicao==1}"/>
+                            <h:graphicImage url="#{resource['images/QUADRADOAMARELO.png']}" rendered="#{equipamento.condicao==2}"/>
+                            <h:graphicImage url="#{resource['images/QUADRADOVERMELHO.png']}" rendered="#{equipamento.condicao==3}"/>
+
+                        </p:column>
+
+                        <p:column>
+                            <h:link value="#{equipamento.nmequipamenta}" outcome="equipamento.xhtml">
+                                <f:param name="idEquipamento" value="#{equipamento.idequipamento}"/>
+                            </h:link>
+                        </p:column>
+
+                        <p:column>
+                            <h:link value="#{equipamento.descequipamento}" outcome="equipamento.xhtml">
+                                <f:param name="idEquipamento" value="#{equipamento.idequipamento}"/>
+                            </h:link>
+                        </p:column>
+
+                        <p:column>                            
+                            <h:link value="#{equipamento.criticidade}" outcome="equipamento.xhtml">
+                                <f:param name="idEquipamento" value="#{equipamento.idequipamento}"/>
+                            </h:link>
+                        </p:column>                        
+
+                        <p:column>
+                            <h:link value="#{equipamento.idtecnica.nmtecnica}" outcome="equipamento.xhtml">
+                                <f:param name="idEquipamento" value="#{equipamento.idequipamento}"/>
+                            </h:link>
+                        </p:column>
+
+                        <p:column>
+                            <p:commandLink >
+                                <p:graphicImage id="delete" value="#{resource['images/delete.gif']}" 
+                                                onclick="PF('confirmation').show();" />
+                                <f:setPropertyActionListener value="#{equipamento}" 
+                                                             target="#{equipamentoBean.tbequipamentoSelected}" />  
+                            </p:commandLink>
+                        </p:column>
+
+                        <f:facet name="footer">
+                            <div style="text-align: left;">
+                                <p:commandButton value="#{field.adicionar}" action="equipamentoCreate.xhtml" 
+                                                 ajax="false" icon="ui-icon-plusthick" onclick="PF('statusDialog').show();"
+                                                 oncomplete="PF('statusDialog').hide()"/>
+                            </div>
+                        </f:facet>
+
+                    </p:dataTable>
+
+                    <p:confirmDialog id="confirmDialog" message="Deseja deletar este equipamento"  
+                                     header="Deletar este equipamento?" severity="alert" widgetVar="confirmation">  
+
+                        <p:commandButton id="confirm" value="#{field.sim}" update="equipamentosComLaudos" 
+                                         oncomplete="PF('confirmation').hide();PF('equipamentosEncontrados').update();"  
+                                         action="#{equipamentoBean.deleteEquipamento()}" />  
+                        <p:commandButton id="decline" value="#{field.nao}" onclick="PF('confirmation').hide();" type="button" />   
+
+                    </p:confirmDialog>
+
+                </h:form>
+
+            </p:fieldset>
+
+        </h:body>
+
+    </ui:define>
+
+
+</ui:composition>

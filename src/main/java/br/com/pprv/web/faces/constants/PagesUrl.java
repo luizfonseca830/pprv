@@ -24,4 +24,6 @@ public final class PagesUrl {
     public static final String URL_USER_PADRAO = "/faces/cadastrosadministrativos/usuario/meusDados" + EXT_URL;
     public static final String URL_MODULO_LIST = "/faces/cadastrosadministrativos/modulo/ModuloList" + EXT_URL;
     public static final String URL_PERFIL_LIST = "/faces/cadastrosadministrativos/perfil/PerfilList" + EXT_URL;
+    public static final String URL_EQUIPAMENTO_LIST = "/faces/cadastros/equipamento/equipamentoList" + EXT_URL;
+    public static final String URL_EQUIPAMENTO = "/faces/cadastros/equipamento/equipamento" + EXT_URL;
 }

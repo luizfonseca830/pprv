@@ -1,0 +1,59 @@
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                template="/faces/index.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="context">
+
+        <h:outputText id="page-rule" rendered="#{menuBean.isRule('cad_equipamento')}"/>
+
+        <h:body>
+            <div class="page-title">#{field.equipamento}</div> 
+
+            <p:panel header="#{field.equipamento}" toggleable="true" toggleSpeed="500">
+
+                <h:form>
+
+                    <h:panelGrid columns="2" cellspacing="10">
+
+                        <h:outputText value="Condição" class="text-bold"/>
+                        <h:graphicImage url="#{equipamentoBean.tbequipamento.condicao == 1? resource['images/QUADRADOVERDE.png']: equipamentoBean.tbequipamento.condicao == 2 ? resource['images/QUADRADOAMARELO.png']:resource['images/QUADRADOVERMELHO.png']}"/>                        
+
+                        <h:outputText value="Nome equipamento" class="text-bold"/>
+                        <h:outputText value="#{equipamentoBean.tbequipamento.nmequipamenta}"/>
+
+                        <h:outputText value="Desc. equipamento" class="text-bold"/>
+                        <h:outputText value="#{equipamentoBean.tbequipamento.descequipamento}"/>
+
+                        <h:outputText value="Criticidade" class="text-bold"/>
+                        <h:outputText value="#{equipamentoBean.tbequipamento.criticidade}"/>
+
+                        <h:outputText value="Técnica" class="text-bold"/>
+                        <h:outputText value="#{equipamentoBean.tbequipamento.idtecnica.nmtecnica}"/>
+                        
+                        <h:outputText value="Gerência" class="text-bold"/>
+                        <h:outputText value="#{equipamentoBean.tbequipamento.idgerencia.nmgerencia}"/>
+
+                    </h:panelGrid>
+
+                    <p:commandButton value="#{field.editar}" action="equipamentoEdit.xhtml" 
+                                     ajax="false" icon="ui-icon-disk" onclick="PF('statusDialog').show();"
+                                     oncomplete="PF('statusDialog').hide()">
+                        <f:param name="idEquipamento" value="#{equipamentoBean.tbequipamento.idequipamento}"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{field.voltar}" action="equipamentoList.xhtml" 
+                                     ajax="false" icon="ui-icon-arrowreturnthick-1-w" onclick="PF('statusDialog').show();"
+                                     oncomplete="PF('statusDialog').hide()"/>
+
+                </h:form>
+
+            </p:panel>  
+
+        </h:body>
+
+    </ui:define>
+
+</ui:composition>

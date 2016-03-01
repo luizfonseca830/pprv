@@ -71,4 +71,12 @@ public class EquipamentoLogic extends AbstractModuleCore {
     public boolean editEquipamento(final Tbequipamento tbequipamento) {
         return tbequipamentoFacade.edit(tbequipamento, super.getEM());
     }
+
+    public boolean create(final Tbequipamento tbequipamento) {
+        return tbequipamentoFacade.create(tbequipamento, super.getEM());
+    }
+
+    public boolean removeTbequipamento(final Tbequipamento tbequipamento) {
+        return tbequipamentoFacade.remove(tbequipamento, super.getEM());
+    }
 }
