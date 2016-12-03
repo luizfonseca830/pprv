@@ -22,7 +22,7 @@ import javax.ejb.Stateless;
 public class EquipamentoLogic extends AbstractModuleCore {
 
     @EJB
-    TbequipamentoFacade tbequipamentoFacade;
+    private TbequipamentoFacade tbequipamentoFacade;
 
     public Tbequipamento find(int id) {
         return tbequipamentoFacade.find(id, super.getEM());
@@ -78,5 +78,35 @@ public class EquipamentoLogic extends AbstractModuleCore {
 
     public boolean removeTbequipamento(final Tbequipamento tbequipamento) {
         return tbequipamentoFacade.remove(tbequipamento, super.getEM());
+    }
+
+    /**
+     * metodo utilizado para encontrar equipamentos por tecnica ou gerencia.
+     *
+     * @param tbtecnica
+     * @param tbgerencia
+     * @return List Tbequipamento
+     */
+    public List<Tbequipamento> findAllTbequipamentoWithLaudoByTecnicaAndGerencia(final Tbtecnica tbtecnica, final Tbgerencia tbgerencia) {
+
+        StringBuilder filtro = new StringBuilder();
+        boolean isTbtecnicaNull = true;
+
+        if (tbtecnica != null) {
+            filtro.append(" WHERE tbequipamento.idtecnica = ").append(tbtecnica.getIdtecnica());
+            isTbtecnicaNull = false;
+        }
+
+        if (tbgerencia != null) {
+            if (isTbtecnicaNull) {
+                filtro.append(" WHERE tbequipamento.idgerencia = ").append(tbgerencia.getIdgerencia());
+            } else {
+                filtro.append(" AND tbequipamento.idgerencia = ").append(tbgerencia.getIdgerencia());
+            }
+        }
+
+        filtro.append(" ORDER BY tbequipamento.nmequipamenta ");
+
+        return tbequipamentoFacade.findAllTbequipamentoWithLaudoByTecnicaAndGerencia(filtro.toString(), super.getEM());
     }
 }

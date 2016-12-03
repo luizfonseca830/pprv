@@ -56,12 +56,14 @@
 
                     <p:dataTable id="dataTableResult" var="equipamento" 
                                  rowKey="#{equipamento.idequipamento}" value="#{tecnicaBean.listTbequipamento}"    
-                                 paginator="#{tecnicaBean.listTbequipamento.size() > 30}" paginatorPosition="bottom" 
-                                 rows="18" rendered="#{not empty tecnicaBean.listTbequipamento}"
-                                 emptyMessage="Nenhum resultado encontrado para a tecnica selecionada." filteredValue="#{tecnicaBean.filterequipamento}" 
+                                 paginator="#{tecnicaBean.listTbequipamento.size() > 30}" paginatorPosition="top" 
+                                 rows="5" rendered="#{not empty tecnicaBean.listTbequipamento}"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20"
+                                 emptyMessage="Nenhum resultado encontrado para a tecnica selecionada." 
+                                 filteredValue="#{tecnicaBean.filterequipamento}" 
                                  widgetVar="equipamentoall"
-                                 scrollable="true"                                 
-                                 scrollHeight="100%"
+                                 scrollable="true"                                                                  
                                  resizableColumns="true">
 
                         <p:column headerText="#{field.condicao}">
@@ -93,6 +95,9 @@
 
                     </p:dataTable>
 
+                    <p:blockUI block="dataTableResult" trigger="dataTableResult">					
+                        <p:graphicImage value="#{resource['images/ajaxloadingbar.gif']}"/>
+                    </p:blockUI>
                 </p:panel>
 
             </h:form>
@@ -100,7 +105,8 @@
 
             <!--TELA DE DIALOG RESPONSAVEL POR CHAMAR O INSERIR O LAUDO -->
             <p:dialog id="dialog" dynamic="true" widgetVar="dlgLaudo" header="Edição de Laudo" width="1000" height="600" 
-                      modal="true" resizable="true" draggable="true"> 
+                      modal="true" resizable="true" draggable="true"
+                      appendTo="@(body)"> 
 
                 <h:form id="formModeltLaudo" enctype="multipart/form-data">
                     <h:panelGrid columns="4" cellspacing="10">                        

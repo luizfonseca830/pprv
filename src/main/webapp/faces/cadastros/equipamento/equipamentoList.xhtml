@@ -48,9 +48,9 @@
 
             <div class="space"/>
 
-            <p:fieldset id="panelResult" legend="Lista de Resultados">
+            <p:fieldset id="panelResult" legend="Lista de Equipamentos">
 
-                <h:form>
+                <h:form id="formResult">
 
                     <p:dataTable id="equipamentosComLaudos" value="#{equipamentoBean.listTbequipamentoResult}" 
                                  var="equipamento" paginator="true" widgetVar="equipamentosEncontrados"
@@ -59,11 +59,7 @@
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10,15,20" emptyMessage="#{message.nenhumresultadoencontrado}">
 
-                        <p:columnGroup type="header">
-
-                            <p:row>
-                                <p:column colspan="6" headerText="Lista de equipamentos"/>
-                            </p:row>
+                        <p:columnGroup type="header">                        
 
                             <p:row>
                                 <p:column headerText="Condição"/> 
@@ -121,7 +117,7 @@
                             </p:commandLink>
                         </p:column>
 
-                        <f:facet name="footer">
+                        <f:facet name="header">
                             <div style="text-align: left;">
                                 <p:commandButton value="#{field.adicionar}" action="equipamentoCreate.xhtml" 
                                                  ajax="false" icon="ui-icon-plusthick" onclick="PF('statusDialog').show();"
@@ -144,6 +140,9 @@
                 </h:form>
 
             </p:fieldset>
+            <p:blockUI block=":formResult:equipamentosComLaudos" trigger=":formResult:equipamentosComLaudos">					
+                <p:graphicImage value="#{resource['images/ajaxloadingbar.gif']}"/>
+            </p:blockUI>
 
         </h:body>
 

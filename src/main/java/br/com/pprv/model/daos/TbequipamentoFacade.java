@@ -64,4 +64,12 @@ public class TbequipamentoFacade extends AbstractFacade<Tbequipamento> {
 
     }
 
+    public List<Tbequipamento> findAllTbequipamentoWithLaudoByTecnicaAndGerencia(String filtro, final EntityManager em) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("select distinct tbequipamento.*")
+                .append(" from tblaudo inner join tbequipamento on (tblaudo.idequipamento = tbequipamento.idequipamento)")
+                .append(filtro);        
+        
+        return em.createNativeQuery(sql.toString(), Tbequipamento.class).getResultList();
+    }
 }

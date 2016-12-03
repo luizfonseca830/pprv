@@ -22,20 +22,24 @@ public class UploadValidatorPDF implements Validator {
 
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
-        NativeUploadedFile file = (NativeUploadedFile) value;       
+        NativeUploadedFile file = (NativeUploadedFile) value;
 
         if (file == null) {
             return;
         }
 
-        if (!file.getFileName().isEmpty() && !file.getContentType().equals("application/pdf")) {
-            String exception_msg = "Informe um arquivo no formato (PDF)";
+        if (!file.getFileName().isEmpty() && !file.getContentType().equals("application/pdf")
+                && !file.getContentType().equals("application/vnd.ms-excel")) {
+            String exception_msg = "Informe um arquivo no formato (PDF) ou (Excel)";
 
             FacesMessage msg = new FacesMessage("Falha ao fazer upload.", exception_msg);
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 
             throw new ValidatorException(msg);
         }
+//        application/vnd.ms-excel
+//        application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+//        application/vnd.ms-excel
     }
 
 }

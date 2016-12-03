@@ -79,7 +79,7 @@ public class MenuBean implements Serializable {
 
         ArrayList<Tbmenu> listTbmenus = new ArrayList<>();
         LocaleController localeController = (LocaleController) AbstractFacesContextUtils.getSessionValue("localeController");
-        final String locale = localeController.getCurrentLocale().getLanguage();
+        final String locale = "pt";
         
         if (model.isEmpty()) {
 

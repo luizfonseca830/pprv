@@ -36,6 +36,8 @@ and open the template in the editor.
             <!--trocar cor de fundo do centro-->
             <div class="bordas_login" style="background: linear-gradient(#ffffff, #aaa8a8); border: transparent;">
                 <div id="login" class="login">
+                    <p:growl id="messages" showDetail="true" showSummary="false" 
+                             autoUpdate="true" sticky="false" transient="true"/>
                     <h:form id="form-login">
                         <table border="0">
                             <tr>
@@ -69,7 +71,7 @@ and open the template in the editor.
 
                                                 <p:commandButton                                    
                                                     value="#{field.entrar}" ajax="false" 
-                                                    style="margin:0;float: left;" 
+                                                    style="margin:0;float: left;" update="messages"
                                                     action="#{loginBean.makeLogin()}" icon="ui-icon-locked" />  
 
                                             </td>

@@ -11,11 +11,7 @@
 
         <p:toolbar style="padding-top: 0px;margin-top: 0px;">                        
 
-            <f:facet name="left">
-                <p:commandButton id="menuButton" styleClass="show_hide" 
-                                 action="#{menuBean.defineDisplayMenu()}" immediate="true" 
-                                 value="Menu" icon="ui-icon-menu" 
-                                 title="Show/Hide Menu"/>
+            <f:facet name="left">                
                 <p:autoComplete id="autoComplete" value="#{menuBean.nmmenu}" completeMethod="#{menuBean.autoComplete}" 
                                 var="item" itemValue="#{item}" 
                                 itemLabel="#{item}" forceSelection="true" onselect="true" scrollHeight="350" 
@@ -46,7 +42,7 @@
                                  icon="ui-icon-home" action="/faces/index.xhtml?faces-redirect=true" 
                                  ajax="false"/>
                 <p:commandButton value="#{field.sair}" title="encerrar sua sessao no sistema" 
-                                 icon="ui-icon-logout" action="#{shareds.logout()}" ajax="false"/>
+                                 icon="icon-red ui-icon-logout" action="#{shareds.logout()}" ajax="false"/>
 
             </f:facet>
 
