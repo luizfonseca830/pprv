@@ -10,33 +10,56 @@
         <link href="#{resource['images/logos/valelogo.png']}" rel="shortcut icon" type="image/x-icon"/>
         <meta http-equiv="refresh" content="3; url=/pprv" />
 
-        <h:outputStylesheet name="css/style.css" />
-
-        <script type="text/javascript">
-
-            $(document).ready(function () {
-                document.getElementById('menu-left').style.display = 'none';
-                $('.show_hide').click(function () {
-                    obj = document.getElementById('menu-left');
-                    if (obj.style.display === 'none') {
-                        $('#menu-left').show("drop", "slow");
-                        $('.context').animate({marginLeft: "210px"}, "slow");
-                    } else {
-                        $('#menu-left').hide("drop", "slow");
-                        $('.context').animate({marginLeft: "5px"}, "slow");
-                    }
-                });
-            });
-        </script>
-    </h:head>
-
-    <style>
-        .menu-left .ui-accordion .ui-accordion-content {padding: 0px;padding-left: 20px;}
-        .menu-left table.menu-item:hover {text-indent: 5px; transition: text-indent .10s linear;}
-        .menu-left .ui-accordion-header a:hover {text-shadow: none; color:#000;}
-    </style>
+        <h:outputStylesheet name="css/style.css" />       
+    </h:head>   
 
     <h:body>
+        <p:layout fullPage="true">
+
+            <p:layoutUnit position="north" size="60" resizable="false" closable="false" collapsible="false">
+                <ui:include id="include-menu" src="/faces/menutop.xhtml"/>
+            </p:layoutUnit>		 		    
+
+            <p:layoutUnit position="west" size="210" header="Menu" resizable="false" closable="false" collapsible="true">
+                <ui:include id="mnleft" src="/faces/menuleft.xhtml"/>
+            </p:layoutUnit>		 		    
+
+            <p:layoutUnit position="center">		        
+                <p:growl id="messages" showDetail="true" showSummary="false" 
+                         autoUpdate="true" sticky="false" /> 
+                <p:panel style="text-align: center;">                
+                    <h:link outcome="/faces/login.jsf">
+                        <h:outputText 
+                            style="color:blue; font-size:13px; font-weight: bold;font-family: Arial" 
+                            value="#{message.suasessaoexpirou30minutossemutilizarosistemaounaofoirestabelecida}"/>
+                        <br/>
+                        <h:outputText 
+                            style="color:blue; font-size:13px; font-weight: bold;font-family: Arial" 
+                            value="#{message.cliqueaquiparaentrarouaguardevoceseraredirecionadoparaapáginadelogindosistema}"/>
+                    </h:link>
+                </p:panel>
+
+                <p:spacer/>
+
+                <p:fieldset legend="#{field.centraldeajuda}">
+                    <h:form> 
+                        <center>                            
+                            <h:panelGrid columns="2" cellspacing="10">
+
+                                <p:graphicImage url="#{resource['images/mail.png']}" style="margin-right:5px; top: 0;width: 28px;height: 23px;"/>
+                                <a href="mailto:mailto:luizfonseca830@gmail.com">Email:luizfonseca830@gmail.com</a>
+
+                                <p:graphicImage url="#{resource['images/phone.png']}" style=" margin-right:5px; top: 0;width: 28px;height: 23px;"/>
+                                <h:outputText value="#{field.telefone}:+55(92)99357-6546"/>
+
+                            </h:panelGrid>
+                        </center>
+                    </h:form>
+                </p:fieldset>
+
+            </p:layoutUnit>
+
+        </p:layout> 
         <f:view locale="#{localeController.currentLocale}">
             <div class="geral">
                 <div class="header">

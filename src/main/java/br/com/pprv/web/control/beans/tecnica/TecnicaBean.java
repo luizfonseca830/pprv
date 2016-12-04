@@ -12,6 +12,7 @@ import br.com.pprv.model.entities.TbequipamentoSubconjunto;
 import br.com.pprv.model.entities.Tbgerencia;
 import br.com.pprv.model.entities.Tblaudo;
 import br.com.pprv.model.entities.Tbtecnica;
+import br.com.pprv.model.entities.Tbusuario;
 import br.com.pprv.model.entities.custom.EquipamentoModel;
 import br.com.pprv.model.entities.custom.LaudoMdl;
 import br.com.pprv.web.control.logic.arquivos_equipamento.ArquivosEquipamentoLogic;
@@ -131,8 +132,20 @@ public class TecnicaBean implements Serializable {
                     equipamentoLogic.editEquipamento(tbequipamentoSelected);
                     break;
                 case 3:
-                    tbequipamentoSelected.setCondicao(1);
-                    equipamentoLogic.editEquipamento(tbequipamentoSelected);
+                    final Tbusuario user = Shareds.getUser();
+                    /**
+                     * permissao operador nivel 2 no perfil.
+                     */
+                    if (user != null
+                            && user.getIdperfil() != null
+                            && user.getIdperfil().getNivelacessoperfil() != null
+                            && user.getIdperfil().getNivelacessoperfil() == 1) {
+
+                        tbequipamentoSelected.setCondicao(1);
+                        equipamentoLogic.editEquipamento(tbequipamentoSelected);
+                    } else {
+                        AbstractFacesContextUtils.addMessageWarn("Usuário não tem permissão para esta operação.");
+                    }
                     break;
             }
         }
@@ -145,60 +158,65 @@ public class TecnicaBean implements Serializable {
 
         for (LaudoMdl laudoMdl : listLaudoMdl) {
 
-            Tblaudo tblaudo = new Tblaudo();
-            tblaudo.setNmdiagnostico(laudoMdl.getNmDiagnostico());
-            tblaudo.setNmrecomendacao(laudoMdl.getNmRecomendacao());
-            tblaudo.setNmobservacao(laudoMdl.getNmObservacao());
-            tblaudo.setNmrisco(laudoMdl.getNmRisco());
-            tblaudo.setIdgerencia(laudoMdl.getTbgerencia());
-            tblaudo.setLimiteexecucao(laudoMdl.getDtDatalimiteExecucao());
-            tblaudo.setDtdatacadastro(laudoMdl.getDtDataCadastro());
-            tblaudo.setBoolomsap(laudoMdl.isNaoPreencherOmSap());
-            tblaudo.setPrazoexecucao(laudoMdl.getPrazoExecucao());
+            if (laudoMdl.getNmDiagnostico() != null
+                    && laudoMdl.getNmDiagnostico().trim().isEmpty()
+                    && laudoMdl.getNmRecomendacao() != null
+                    && laudoMdl.getNmRecomendacao().trim().isEmpty()) {
+                Tblaudo tblaudo = new Tblaudo();
+                tblaudo.setNmdiagnostico(laudoMdl.getNmDiagnostico());
+                tblaudo.setNmrecomendacao(laudoMdl.getNmRecomendacao());
+                tblaudo.setNmobservacao(laudoMdl.getNmObservacao());
+                tblaudo.setNmrisco(laudoMdl.getNmRisco());
+                tblaudo.setIdgerencia(laudoMdl.getTbgerencia());
+                tblaudo.setLimiteexecucao(laudoMdl.getDtDatalimiteExecucao());
+                tblaudo.setDtdatacadastro(laudoMdl.getDtDataCadastro());
+                tblaudo.setBoolomsap(laudoMdl.isNaoPreencherOmSap());
+                tblaudo.setPrazoexecucao(laudoMdl.getPrazoExecucao());
 
-            if (!laudoMdl.isNaoPreencherOmSap()) {
-                tblaudo.setOmsap(laudoMdl.getIntOmSap());
-            }
+                if (!laudoMdl.isNaoPreencherOmSap()) {
+                    tblaudo.setOmsap(laudoMdl.getIntOmSap());
+                }
 
-            tblaudo.setIdsubconjunto(laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
-            tblaudo.setIdequipamento(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento());
-            tblaudo.setDtdatalaudo(new Date());
-            tblaudo.setTmdatalaudo(new Date());
+                tblaudo.setIdsubconjunto(laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
+                tblaudo.setIdequipamento(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento());
+                tblaudo.setDtdatalaudo(new Date());
+                tblaudo.setTmdatalaudo(new Date());
 
-            if (laudoMdl.getTbequipamentoSubconjunto().getIdequipamento().getCondicao() != 1) {
-                /**
-                 * se for amarelo ou vermelho, criar um novo laudo.
-                 */
-                laudoLogic.createTblaudo(tblaudo);
-            } else {
-                /**
-                 * se for verde, editar o laudo.
-                 */
-
-                Tblaudo laudo = laudoLogic.findTblaudoByEquipamentoAndSubConjunto(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento(), laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
-
-                if (laudo != null) {
-                    laudo.setNmdiagnostico(laudoMdl.getNmDiagnostico());
-                    laudo.setNmrecomendacao(laudoMdl.getNmRecomendacao());
-                    tblaudo.setNmobservacao(laudoMdl.getNmObservacao());
-                    tblaudo.setNmrisco(laudoMdl.getNmRisco());
-                    laudo.setIdgerencia(laudoMdl.getTbgerencia());
-                    laudo.setLimiteexecucao(laudoMdl.getDtDatalimiteExecucao());
-                    laudo.setDtdatacadastro(laudoMdl.getDtDataCadastro());
-                    laudo.setBoolomsap(laudoMdl.isNaoPreencherOmSap());
-                    laudo.setPrazoexecucao(laudoMdl.getPrazoExecucao());
-
-                    if (!laudoMdl.isNaoPreencherOmSap()) {
-                        laudo.setOmsap(laudoMdl.getIntOmSap());
-                    }
-
-                    laudo.setIdsubconjunto(laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
-                    laudo.setIdequipamento(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento());
-                    laudo.setDtdatalaudo(new Date());
-                    laudo.setTmdatalaudo(new Date());
-                    laudoLogic.editTblaudo(laudo);
-                } else {
+                if (laudoMdl.getTbequipamentoSubconjunto().getIdequipamento().getCondicao() != 1) {
+                    /**
+                     * se for amarelo ou vermelho, criar um novo laudo.
+                     */
                     laudoLogic.createTblaudo(tblaudo);
+                } else {
+                    /**
+                     * se for verde, editar o laudo.
+                     */
+
+                    Tblaudo laudo = laudoLogic.findTblaudoByEquipamentoAndSubConjunto(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento(), laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
+
+                    if (laudo != null) {
+                        laudo.setNmdiagnostico(laudoMdl.getNmDiagnostico());
+                        laudo.setNmrecomendacao(laudoMdl.getNmRecomendacao());
+                        tblaudo.setNmobservacao(laudoMdl.getNmObservacao());
+                        tblaudo.setNmrisco(laudoMdl.getNmRisco());
+                        laudo.setIdgerencia(laudoMdl.getTbgerencia());
+                        laudo.setLimiteexecucao(laudoMdl.getDtDatalimiteExecucao());
+                        laudo.setDtdatacadastro(laudoMdl.getDtDataCadastro());
+                        laudo.setBoolomsap(laudoMdl.isNaoPreencherOmSap());
+                        laudo.setPrazoexecucao(laudoMdl.getPrazoExecucao());
+
+                        if (!laudoMdl.isNaoPreencherOmSap()) {
+                            laudo.setOmsap(laudoMdl.getIntOmSap());
+                        }
+
+                        laudo.setIdsubconjunto(laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
+                        laudo.setIdequipamento(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento());
+                        laudo.setDtdatalaudo(new Date());
+                        laudo.setTmdatalaudo(new Date());
+                        laudoLogic.editTblaudo(laudo);
+                    } else {
+                        laudoLogic.createTblaudo(tblaudo);
+                    }
                 }
             }
         }

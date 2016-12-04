@@ -36,6 +36,10 @@ public class Tbperfil implements Serializable, Identificador<Integer> {
     @Size(min = 1, max = 80)
     @Column(name = "nmperfil")
     private String nmperfil;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "nivelacessoperfil")
+    private Integer nivelacessoperfil;
 
     public Tbperfil() {
     }
@@ -93,6 +97,20 @@ public class Tbperfil implements Serializable, Identificador<Integer> {
     @Override
     public Integer getPK() {
         return idperfil;
+    }
+
+    /**
+     * @return the nivelacessoperfil
+     */
+    public Integer getNivelacessoperfil() {
+        return nivelacessoperfil;
+    }
+
+    /**
+     * @param nivelacessoperfil the nivelacessoperfil to set
+     */
+    public void setNivelacessoperfil(Integer nivelacessoperfil) {
+        this.nivelacessoperfil = nivelacessoperfil;
     }
 
 }

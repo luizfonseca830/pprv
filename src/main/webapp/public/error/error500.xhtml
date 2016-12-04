@@ -3,86 +3,55 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:h="http://java.sun.com/jsf/html">
     <h:head>
         <title>PPRV - Sistema Integrado Preditiva</title>
         <h:outputStylesheet name="css/style.css" />
-        <link href="#{resource['images/logos/valelogo.png']}" rel="shortcut icon" type="image/x-icon"/>
-        <script type="text/javascript">
-
-            $(document).ready(function () {
-                document.getElementById('menu-left').style.display = 'none';
-                $('.show_hide').click(function () {
-                    obj = document.getElementById('menu-left');
-                    if (obj.style.display === 'none') {
-                        $('#menu-left').show("drop", "slow");
-                        $('.context').animate({marginLeft: "210px"}, "slow");
-                    } else {
-                        $('#menu-left').hide("drop", "slow");
-                        $('.context').animate({marginLeft: "5px"}, "slow");
-                    }
-                });
-            });
-        </script>
-    </h:head>
-
-    <style>
-        .menu-left .ui-accordion .ui-accordion-content {padding: 0px;padding-left: 20px;}
-        .menu-left table.menu-item:hover {text-indent: 5px; transition: text-indent .10s linear;}
-        .menu-left .ui-accordion-header a:hover {text-shadow: none; color:#000;}
-    </style>
+        <link href="#{resource['images/logos/valelogo.png']}" rel="shortcut icon" type="image/x-icon"/>        
+    </h:head>   
 
     <h:body>
-        <f:view locale="#{localeController.currentLocale}">
-            <div class="geral">
-                <div class="header">
-                    <ui:insert name="menu">
-                        <ui:include src="/faces/menutop.xhtml"/>
-                    </ui:insert>
-                </div>
+        <p:layout fullPage="true">
 
-                <div id="menu-left" class="menu-left">                                
-                    <ui:insert id="menuleft" name="menuleft">
-                        <ui:include id="mnleft" src="/faces/menuleft.xhtml"/>
-                    </ui:insert>
-                </div>
+            <p:layoutUnit position="north" size="60" resizable="false" closable="false" collapsible="false">
+                <ui:include id="include-menu" src="/faces/menutop.xhtml"/>
+            </p:layoutUnit>		 		    
 
-                <div style="text-align: center;width: 50%;margin: 0 auto;margin-top: 50px;">
-                    <p:messages id="messages" showDetail="true" showSummary="false" autoUpdate="true"/>  
-                    <p:panel>                
+            <p:layoutUnit position="west" size="210" header="Menu" resizable="false" closable="false" collapsible="true">
+                <ui:include id="mnleft" src="/faces/menuleft.xhtml"/>
+            </p:layoutUnit>		 		    
+
+            <p:layoutUnit position="center">		        
+                <p:growl id="messages" showDetail="true" showSummary="false" 
+                         autoUpdate="true" sticky="false" /> 
+                <p:panel>
+                    <center>                
                         <h:outputText 
                             style="color:#FF0000;font-size:13px; font-weight: bold;font-family: Arial" 
+                            value="#{message.erro500ocorreuumerroaoacessarapaginasolicitadatentenovamenteouentreemcontatocomohelpcenter}" />
+                    </center>
+                </p:panel>
 
-                            value="#{message.erro500ocorreuumerroaoacessarapaginasolicitadatentenovamenteouentreemcontatocomohelpcenter}"/>
-                    </p:panel>
+                <p:spacer/>
 
-                    <p:spacer height="10px"/> 
-                    <h:form>
-                        <p:panel header="#{field.centraldeajuda}"> 
-                            <center>
-                                <h:panelGrid columns="2" cellspacing="10">
+                <p:fieldset legend="#{field.centraldeajuda}">
+                    <h:form> 
+                        <center>                            
+                            <h:panelGrid columns="2" cellspacing="10">
 
-                                    <p:graphicImage url="#{resource['images/mail.png']}" style="margin-right:5px; top: 0;width: 28px;height: 23px;"/>
-                                    <a href="mailto:mailto:luizfonseca830@gmail.com">Email:luizfonseca830@gmail.com</a>
+                                <p:graphicImage url="#{resource['images/mail.png']}" style="margin-right:5px; top: 0;width: 28px;height: 23px;"/>
+                                <a href="mailto:mailto:luizfonseca830@gmail.com">Email:luizfonseca830@gmail.com</a>
 
-                                    <p:graphicImage url="#{resource['images/phone.png']}" style=" margin-right:5px; top: 0;width: 28px;height: 23px;"/>
-                                    <h:outputText value="#{field.telefone}:+55(92)99357-6546"/>
+                                <p:graphicImage url="#{resource['images/phone.png']}" style=" margin-right:5px; top: 0;width: 28px;height: 23px;"/>
+                                <h:outputText value="#{field.telefone}:+55(92)99357-6546"/>
 
-                                </h:panelGrid>
-                            </center>
-                        </p:panel>
+                            </h:panelGrid>
+                        </center>
                     </h:form>
+                </p:fieldset>
 
-                    <p:spacer height="10px"/>                
-                </div>
-                <p:spacer  height="35px"/>
-                <div class="footer">
-                    <ui:insert name="footer">
-                        <ui:include src="/faces/footer.xhtml"/>
-                    </ui:insert>
-                </div>
-            </div>
-        </f:view>
+            </p:layoutUnit>
+
+        </p:layout>         
     </h:body>
 </html>

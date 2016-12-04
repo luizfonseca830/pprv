@@ -53,8 +53,7 @@ and open the template in the editor.
                     <h:panelGrid columns="3" rendered="#{not empty relEquipamentosBean.listTbequipamentosComLaudos}">                       
 
                         <h:commandLink styleClass="tooltip" style="padding:5px;" 
-                                       action="#{relEquipamentosBean.printToPdf()}">
-                            <span><img class ="callout" src="#{resource['images/callout.gif']}"/>Exportar para PDF</span>
+                                       action="#{relEquipamentosBean.printToPdf()}">                            
                             <p:graphicImage value="#{resource['images/pdf.png']}" onclick="target='_blank'"/>                            
                         </h:commandLink> 
                         <pe:tooltip global="true" atPosition="top center" myPosition="bottom center" showEffect="fadeIn" hideEffect="fadeIn"/>  

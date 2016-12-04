@@ -1,0 +1,135 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <title>#{field.scrpsistemadecontroleerastreabilidadedeproducao}</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <link rel="stylesheet" href="style.css" type="text/css"/>    
+        <script type="text/javascript" src="/pprv/resources/amcharts/amcharts.js" language="js"/>
+        <script type="text/javascript" src="/pprv/resources/amcharts/serial.js"  language="js"/>
+        
+    </h:head>
+
+    <h:body>
+        <script type="text/javascript">
+            var myChart = new AmCharts.AmSerialChart();
+
+            $(document).ready(function() {
+                // Initialize Graph:
+                initGraph();
+            });
+
+
+            function drawMyGraph(xhr, status, args) {
+                chartData = args.MYGRAPH;
+                myChart.dataProvider = eval(chartData);
+                myChart.validateData();
+            }
+
+            function initGraph()
+            {
+                var chartData = [];
+
+                //SERIAL CHART
+                myChart = new AmCharts.AmSerialChart();
+                myChart.dataProvider = chartData;
+                myChart.categoryField = "x";
+                myChart.startDuration = 1;
+                
+                myChart.depth3D = 15;
+                myChart.angle = 30;
+            
+                // AXES
+                // category
+                var categoryAxis = myChart.categoryAxis;
+                categoryAxis.gridAlpha = 0.10;
+                categoryAxis.axisAlpha = 0;
+                categoryAxis.gridPosition = "start";
+
+                // value
+                var valueAxis = new AmCharts.ValueAxis();
+                valueAxis.gridAlpha = 0.1;
+                valueAxis.axisAlpha = 0;
+                myChart.addValueAxis(valueAxis);
+
+                // GRAPHS
+                // first graph
+                var graph = new AmCharts.AmGraph();
+                graph.title = "Y1";
+                graph.valueField = "y1";
+                graph.bullet = "round";
+                graph.bulletSize = 0;
+                graph.bulletBorderThickness = 2;
+                graph.lineThickness = 0;
+                graph.lineColor = "#5fb503";
+                graph.type = "column";
+                graph.fillAlphas = 1;
+                graph.lineAlpha = 0;
+                myChart.addGraph(graph);
+
+                // second graph 
+                var graph2 = new AmCharts.AmGraph();
+                
+                graph2.title = "Y2";
+                graph2.valueField = "y2";
+                graph2.bullet = "round";
+                graph2.bulletSize = 1;
+                graph2.bulletBorderThickness = 10;
+                graph2.lineThickness = 2;
+                graph2.lineColor = "#efcc26";
+                graph2.bulletBorderAlpha = 100;
+                graph2.balloonText = "Valor: [[value]]";
+                graph2.type = "column";
+                graph2.useLineColorForBulletBorder = true;
+                graph2.fillAlphas = 1;
+                graph2.lineAlpha = 0;
+                myChart.addGraph(graph2);
+                
+                var graph3 = new AmCharts.AmGraph();
+                
+                graph3.title = "Y3";
+                graph3.valueField = "y3";
+                graph3.bullet = "round";
+                graph3.bulletSize = 1;
+                graph3.bulletBorderThickness = 10;
+                graph3.lineThickness = 2;
+                graph3.lineColor = "#FF0F00";
+                graph3.bulletBorderAlpha = 100;
+                graph3.balloonText = "Valor: [[value]]";
+                graph3.type = "column";
+                graph3.useLineColorForBulletBorder = true;
+                graph3.fillAlphas = 1;
+                graph3.lineAlpha = 0;
+                myChart.addGraph(graph3);
+
+                // LEGEND
+                var legend = new AmCharts.AmLegend();
+                legend.borderAlpha = 0.2;
+                legend.valueWidth = 60;
+                legend.horizontalGap = 10;
+                myChart.addLegend(legend);
+
+                myChart.write('graphContainer');
+            }
+        </script>
+        <h:form id="form">
+
+            <p:panel header="Input Fields" >
+                <h:outputLabel/>
+                
+
+                <p:commandButton id="btnShowAndSearch" value="Calculate &amp; Show" ajax="true"
+                                 actionListener="#{amChartsBean.calculateGraph}"
+                                 oncomplete="drawMyGraph(xhr, status, args);" />
+            </p:panel>
+
+            <p:panel header="Defaul JSF Panelgrid" >
+                <div id="graphContainer" style="width: 100%; height: 500px"></div>
+            </p:panel>
+
+        </h:form>
+    </h:body>
+
+</html>
