@@ -35,6 +35,9 @@ public class GraficoPorGerenciaBean implements Serializable {
     private List<Object[]> listObjects;
     private String jsonContentSecond;
     private List<Object[]> listObjectsSecond;
+    private String jsonContentThird;
+    private String jsonContenThirdPie;
+    private List<Object[]> listObjectsThird;
 
     @PostConstruct
     public void init() {
@@ -46,19 +49,30 @@ public class GraficoPorGerenciaBean implements Serializable {
 
     public void geraGrafico() {
 
-        listObjects = gerenciaLogic.getLaudosPorGerencia(dataInicial, dataFinal);
-        listObjectsSecond = gerenciaLogic.getLaudosPorGerenciaMesAtual();
+        if (dataInicial != null) {
+            listObjects = gerenciaLogic.getLaudosPorGerencia(dataInicial, dataFinal);
+            listObjectsSecond = gerenciaLogic.getLaudosPorGerenciaMesAtual();
+            listObjectsThird = gerenciaLogic.getLaudosPorGerenciaByLimiteExecucao(dataInicial, dataFinal);
 
-        if (listObjectsSecond != null
-                && !listObjectsSecond.isEmpty()) {
-            jsonContentSecond = getJSONLaudosPorGerencia(listObjectsSecond);
-        }
+            if (listObjectsThird != null
+                    && !listObjectsThird.isEmpty()) {
+                jsonContentThird = getJSONColumnLaudosPorGerenciaLimiteExecucao(listObjectsThird);
+                jsonContenThirdPie = getJSONPieLaudosPorGerenciaLimiteExecucao(listObjectsThird);
+            }
 
-        if (listObjects != null
-                && !listObjects.isEmpty()) {
-            jsonContent = getJSONLaudosPorGerencia(listObjects);
+            if (listObjectsSecond != null
+                    && !listObjectsSecond.isEmpty()) {
+                jsonContentSecond = getJSONLaudosPorGerencia(listObjectsSecond);
+            }
+
+            if (listObjects != null
+                    && !listObjects.isEmpty()) {
+                jsonContent = getJSONLaudosPorGerencia(listObjects);
+            } else {
+                AbstractFacesContextUtils.addMessageWarn("Nenhum resultado encontrado.");
+            }
         } else {
-            AbstractFacesContextUtils.addMessageWarn("Nenhum resultado encontrado.");
+            AbstractFacesContextUtils.addMessageWarn("É necessário informar pelo menos a data inicial.");
         }
     }
 
@@ -87,6 +101,61 @@ public class GraficoPorGerenciaBean implements Serializable {
         return builder.toString();
     }
 
+    private String getJSONColumnLaudosPorGerenciaLimiteExecucao(final List<Object[]> listObjects) {
+
+        StringBuilder builder = new StringBuilder();
+
+        if (listObjects != null && !listObjects.isEmpty()) {
+            builder.append("[");
+
+            for (int position = 0; position < listObjects.size(); position++) {
+
+                builder.append("{");
+                builder.append("\"year\": \"").append(listObjects.get(position)[1].toString().trim()).append("\"").append(", ");
+                builder.append("\"income\": ").append(listObjects.get(position)[2].toString()).append(", ");
+                builder.append("\"expenses\": ").append(listObjects.get(position)[3].toString());
+                builder.append("}");
+
+                builder.append(",");
+            }
+
+            builder.setLength(builder.length() - 1);
+
+            builder.append("];");
+        }
+
+        return builder.toString();
+    }
+
+    private String getJSONPieLaudosPorGerenciaLimiteExecucao(final List<Object[]> listObjects) {
+
+        StringBuilder builder = new StringBuilder();
+        Integer sumInTime = 0;
+        Integer sumLate = 0;
+
+        if (listObjects != null && !listObjects.isEmpty()) {
+
+            for (Object[] listObject : listObjects) {
+                sumInTime = sumInTime + Integer.parseInt(listObject[2].toString());
+                sumLate = sumLate + Integer.parseInt(listObject[3].toString());
+            }
+
+            builder.append("[")
+                    .append("{")
+                    .append("\"country\": \"").append("NO PRAZO").append("\"").append(", ")
+                    .append("\"litres\": ").append(sumInTime)
+                    .append("}")
+                    .append(",")
+                    .append("{")
+                    .append("\"country\": \"").append("EM ATRASO").append("\"").append(", ")
+                    .append("\"litres\": ").append(sumLate)
+                    .append("}")
+                    .append("];");
+        }
+
+        return builder.toString();
+    }
+
     public void carregaDataPorOpcao() {
         System.out.println("entrei no carregaDataPorOpcao");
         switch (optionSelected) {
@@ -103,6 +172,26 @@ public class GraficoPorGerenciaBean implements Serializable {
                 listObjects = null;
                 break;
         }
+    }
+
+    public boolean getResult() {
+
+        if (listObjects != null
+                && !listObjects.isEmpty()) {
+            return true;
+        }
+
+        if (listObjectsSecond != null
+                && !listObjectsSecond.isEmpty()) {
+            return true;
+        }
+
+        if (listObjectsThird != null
+                && !listObjectsThird.isEmpty()) {
+            return true;
+        }
+
+        return false;
     }
 
     private void carregaDiaAnterior() {
@@ -152,22 +241,7 @@ public class GraficoPorGerenciaBean implements Serializable {
 
     private void carregaDataPorPeriodo() {
         dataInicial = TimeControl.getDateIni();
-        dataFinal = TimeControl.getDateFim();
-    }
-
-    public boolean getResult() {
-
-        if (listObjects != null
-                && !listObjects.isEmpty()) {
-            return true;
-        }
-
-        if (listObjectsSecond != null
-                && !listObjectsSecond.isEmpty()) {
-            return true;
-        }
-
-        return false;
+        dataFinal = null;
     }
 
     /**
@@ -266,6 +340,48 @@ public class GraficoPorGerenciaBean implements Serializable {
      */
     public void setListObjectsSecond(List<Object[]> listObjectsSecond) {
         this.listObjectsSecond = listObjectsSecond;
+    }
+
+    /**
+     * @return the jsonContentThird
+     */
+    public String getJsonContentThird() {
+        return jsonContentThird;
+    }
+
+    /**
+     * @param jsonContentThird the jsonContentThird to set
+     */
+    public void setJsonContentThird(String jsonContentThird) {
+        this.jsonContentThird = jsonContentThird;
+    }
+
+    /**
+     * @return the listObjectsThird
+     */
+    public List<Object[]> getListObjectsThird() {
+        return listObjectsThird;
+    }
+
+    /**
+     * @param listObjectsThird the listObjectsThird to set
+     */
+    public void setListObjectsThird(List<Object[]> listObjectsThird) {
+        this.listObjectsThird = listObjectsThird;
+    }
+
+    /**
+     * @return the jsonContenThirdPie
+     */
+    public String getJsonContenThirdPie() {
+        return jsonContenThirdPie;
+    }
+
+    /**
+     * @param jsonContenThirdPie the jsonContenThirdPie to set
+     */
+    public void setJsonContenThirdPie(String jsonContenThirdPie) {
+        this.jsonContenThirdPie = jsonContenThirdPie;
     }
 
 }

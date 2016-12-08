@@ -48,15 +48,20 @@ public class TblaudoFacade extends AbstractFacade<Tblaudo> {
         StringBuilder builder = new StringBuilder();
 
         builder.append(" select distinct tbgerencia.idgerencia, tbgerencia.nmgerencia, count (tbgerencia.idgerencia) as total")
-                .append(" from tblaudo inner join tbgerencia on (tblaudo.idgerencia = tbgerencia.idgerencia) ")
-                .append(" WHERE ")
-                .append(" tblaudo.tmdatalaudo >= '").append(ConvData.parseToStringIso(dateInit)).append("'");
+                .append(" from tblaudo inner join tbgerencia on (tblaudo.idgerencia = tbgerencia.idgerencia) ");
 
-        builder.append(" AND ")
-                .append(" tblaudo.tmdatalaudo <= '").append(ConvData.parseToStringIso(dateFinal)).append("'");
+        if (dateFinal != null) {
+            builder.append(" WHERE tblaudo.tmdatalaudo >= '").append(ConvData.parseToStringIso(dateInit)).append("'")
+                    .append(" AND ")
+                    .append(" tblaudo.tmdatalaudo <= '").append(ConvData.parseToStringIso(dateFinal)).append("'");
+        }else{
+            builder.append(" WHERE tblaudo.tmdatalaudo <= '").append(ConvData.parseToStringIso(dateInit)).append("'");
+        }
 
         builder.append(" group by tbgerencia.idgerencia")
                 .append(" order by total desc");
+        
+        System.out.println("ResultSQL:getLaudosPorGerencia:  " + builder.toString());
 
         return em.createNativeQuery(builder.toString()).getResultList();
     }
@@ -80,6 +85,45 @@ public class TblaudoFacade extends AbstractFacade<Tblaudo> {
 
         builder.append(" group by tbgerencia.idgerencia")
                 .append(" order by total desc");
+
+        return em.createNativeQuery(builder.toString()).getResultList();
+    }
+
+    public List<Object[]> getLaudosPorGerenciaByLimiteExecucao(final Date dateInit, final Date dateFinal, final EntityManager em) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(" select idgerencia, nmgerencia, SUM(inTime) as inTimeTotal, SUM(late) as lateTotal ")
+                .append(" from( ")
+                .append(" select distinct tbgerencia.idgerencia, tbgerencia.nmgerencia, count (tblaudo.idgerencia) as inTime, 0 as late ")
+                .append(" from tblaudo inner join tbgerencia on (tblaudo.idgerencia = tbgerencia.idgerencia) ");
+
+        if (dateFinal != null) {
+            builder.append(" WHERE tblaudo.limiteexecucao >= '").append(ConvData.parseToStringIso(dateInit)).append("'")
+                    .append(" AND tblaudo.limiteexecucao <= '").append(ConvData.parseToStringIso(dateFinal)).append("'");
+        } else {
+            builder.append(" WHERE tblaudo.limiteexecucao >= '").append(ConvData.parseToStringIso(dateInit)).append("'");
+        }
+
+        builder.append(" group by tbgerencia.idgerencia ")
+                .append(" union all ")
+                .append(" select distinct tbgerencia.idgerencia, tbgerencia.nmgerencia, 0 as inTime, count (tblaudo.idgerencia) as late ")
+                .append(" from tblaudo inner join tbgerencia on (tblaudo.idgerencia = tbgerencia.idgerencia) ");
+
+        if (dateFinal != null) {
+            builder.append(" WHERE tblaudo.limiteexecucao >= '").append(ConvData.parseToStringIso(dateInit)).append("'")
+                    .append(" AND ")
+                    .append(" tblaudo.limiteexecucao <= '").append(ConvData.parseToStringIso(dateFinal)).append("'");
+        } else {
+            builder.append(" WHERE tblaudo.limiteexecucao <= '").append(ConvData.parseToStringIso(dateInit)).append("'");
+        }
+
+        builder.append(" group by tbgerencia.idgerencia ")
+                .append(" order by late desc ")
+                .append(" ) as quantidade ")
+                .append(" group by idgerencia,nmgerencia ")
+                .append(" order by 3,4 desc ");
+
+        System.out.println("resultSQL:getLaudosPorGerenciaByLimiteExecucao:  " + builder.toString());
 
         return em.createNativeQuery(builder.toString()).getResultList();
     }

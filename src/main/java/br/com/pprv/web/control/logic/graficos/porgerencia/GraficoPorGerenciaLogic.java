@@ -29,4 +29,8 @@ public class GraficoPorGerenciaLogic extends AbstractModuleCore {
     public List<Object[]> getLaudosPorGerenciaMesAtual() {
         return tblaudoFacade.getLaudosPorGerenciaMesAtual(super.getEM());
     }
+
+    public List<Object[]> getLaudosPorGerenciaByLimiteExecucao(final Date dateInit, final Date dateFinal) {
+        return tblaudoFacade.getLaudosPorGerenciaByLimiteExecucao(dateInit, dateFinal, super.getEM());
+    }
 }

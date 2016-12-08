@@ -11,17 +11,16 @@ and open the template in the editor.
     <head>                        
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>        
         <script src="/pprv/resources/amcharts/amcharts.js" type="text/javascript"></script>
-        <script src="/pprv/resources/amcharts/serial.js" type="text/javascript"></script>       
+        <script src="/pprv/resources/amcharts/serial.js" type="text/javascript"></script>     
+        <script src="/pprv/resources/amcharts/pie.js" type="text/javascript"></script>
 
         <script type="text/javascript" src="/pprv/resources/amcharts/plugins/export/export.js"></script>
         <link type="text/css" href="/pprv/resources/amcharts/plugins/export/export.css" rel="stylesheet"/>
 
         <h:panelGrid id="graphicsManager" rendered="#{not empty graficoPorGerenciaBean.listObjects}">
             <script type="text/javascript" language="js">
-                var chart;
 
                 var chartData = #{graficoPorGerenciaBean.jsonContent};
-
                 var chart = AmCharts.makeChart("chartdiv", {
                     type: "serial",
                     dataProvider: chartData,
@@ -55,14 +54,12 @@ and open the template in the editor.
                         "enabled": true
                     }
 
-                });
-            </script>
+                });</script>
         </h:panelGrid>
         <h:panelGrid id="graphicsManagerSecond" rendered="#{not empty graficoPorGerenciaBean.listObjectsSecond}">
             <script type="text/javascript" language="js">
 
                 var chartDataTwo = #{graficoPorGerenciaBean.jsonContentSecond};
-
                 var chartTwo = AmCharts.makeChart("chartdivtwo", {
                     type: "serial",
                     dataProvider: chartDataTwo,
@@ -96,9 +93,101 @@ and open the template in the editor.
                         "enabled": true
                     }
 
-                });
-            </script>
+                });</script>
         </h:panelGrid>
+        <h:panelGrid id="graphicsManagerThird" rendered="#{not empty graficoPorGerenciaBean.listObjectsThird}">
+            <script type="text/javascript" language="js">
+
+                var chartDataThird = #{graficoPorGerenciaBean.jsonContentThird};
+                var chartThird = AmCharts.makeChart("chartdivthird", {
+                    dataProvider: chartDataThird,
+                    type: "serial",
+                    startDuration: 1,
+                    plotAreaBorderColor: "#DADADA",
+                    plotAreaBorderAlpha: 1,
+                    categoryField: "year",
+                    rotate: false,
+                    depth3D: 20,
+                    angle: 30,
+                    fontSize: 14,
+                    categoryAxis: {
+                        labelRotation: 0,
+                        gridPosition: "start"
+                    },
+                    valueAxes: [{
+                            title: ""
+                        }],
+                    graphs: [{
+                            type: "column",
+                            lineAlpha: 0,
+                            fillAlphas: 1,
+                            title: "NO PRAZO",
+                            lineColor: "#04D215",
+                            valueField: "income",
+                            labelText: "[[value]]",
+                            balloonText: "no prazo:[[value]]"
+                        }, {
+                            type: "column",
+                            lineAlpha: 0,
+                            fillAlphas: 1,
+                            title: "EM ATRASO",
+                            lineColor: "#FF0F00",
+                            valueField: "expenses",
+                            labelText: "[[value]]",
+                            balloonText: "em atraso:[[value]]"
+                        }],
+                    chartCursor: {
+                        cursorAlpha: 0,
+                        zoomable: false,
+                        categoryBalloonEnabled: false
+                    },
+                    "export": {
+                        "enabled": true
+                    },
+                    "legend": {
+                        "autoMargins": false,
+                        "borderAlpha": 0.2,
+                        "equalWidths": false,
+                        "horizontalGap": 10,
+                        "markerSize": 10,
+                        "useGraphSettings": true,
+                        "valueAlign": "left",
+                        "valueWidth": 0,
+                        "position": "top",
+                        "marginTop": 10
+                    }
+                });</script>
+            <script>
+                var chartDataThirdPie = #{graficoPorGerenciaBean.jsonContenThirdPie};
+                var chart = AmCharts.makeChart("chartdivthirdpie", {
+                    "type": "pie",
+                    "startDuration": 0,
+                    "theme": "light",
+                    "addClassNames": true,
+                    "fontSize": 14,
+                    "legend": {
+                        "position": "top",
+                        "marginRight": 100,
+                        "autoMargins": false,
+                        "marginTop": 10
+                    },
+                    "dataProvider": chartDataThirdPie,
+                    "valueField": "litres",
+                    "titleField": "country",
+                    "depth3D": 15,
+                    "angle": 30,
+                    "outlineColor": "#FFFFFF",
+                    "outlineAlpha": 0.8,
+                    "outlineThickness": 2,
+                    "labelRadius": -30,
+                    "labelText": "[[percents]]%",
+                    "export": {
+                        "enabled": true
+                    }
+                });
+
+            </script>           
+        </h:panelGrid>        
     </head>
 
     <h:body>      
@@ -111,6 +200,14 @@ and open the template in the editor.
                     <td style="width: 50%" >                    
                         <div id="chartdivtwo" style="height: 350px;border: 1px solid #000;"></div>
                     </td>                
+                </tr>
+                <tr>
+                    <td style="width: 50%">
+                        <div id="chartdivthird" style="height: 350px;border: 1px solid #000;"></div>
+                    </td>
+                    <td style="width: 50%">
+                        <div id="chartdivthirdpie" style="height: 350px;border: 1px solid #000;"></div>
+                    </td>
                 </tr>
             </table>
         </h:panelGrid>                

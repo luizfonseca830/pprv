@@ -59,7 +59,7 @@
 
                         <h:outputText value="#{field.datainicial}" class="text-bold"/>
                         <p:calendar value="#{graficoPorGerenciaBean.dataInicial}" pattern="dd/MM/yyyy HH:mm" 
-                                    showOn="button" />
+                                    showOn="button" required="true" requiredMessage="É necessário informar pelo menos a data inicial"/>
 
                         <h:outputText value="#{field.datafinal}" class="text-bold"/>
                         <p:calendar value="#{graficoPorGerenciaBean.dataFinal}" pattern="dd/MM/yyyy HH:mm" 
