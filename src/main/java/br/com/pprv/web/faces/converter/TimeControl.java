@@ -503,11 +503,29 @@ public final class TimeControl {
         return mesSelected;
     }
 
+    /**
+     * method is used to get first date of current month.
+     *
+     * @return Date
+     */
     public static Date getFirstDateOfCurrentMonth() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.HOUR_OF_DAY, 0);
         cal.set(Calendar.MINUTE, 0);
         cal.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH));
+        return cal.getTime();
+    }
+
+    /**
+     * method is used to get last date of current month.
+     *
+     * @return date
+     */
+    public static Date getLastDateOfCurrentMonth() {
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH));
         return cal.getTime();
     }
 }

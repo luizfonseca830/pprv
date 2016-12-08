@@ -89,7 +89,8 @@
                     </p:dataTable>
 
                     <p:confirmDialog id="confirmDialog" message="#{message.desejadeletarestafuncionalidade}"  
-                                     header="#{field.deletarfuncionalidade}" severity="alert" widgetVar="confirmation">  
+                                     header="#{field.deletarfuncionalidade}" severity="alert" widgetVar="confirmation"
+                                     appendTo="@(body)">  
 
                         <p:commandButton id="confirm" value="#{field.sim}" update=":resultMenu" oncomplete="PF('confirmation').hide();"  
                                          actionListener="#{funcionalidadeBean.delete(funcionalidadeBean.menuSelected)}" />  

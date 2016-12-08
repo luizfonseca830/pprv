@@ -11,16 +11,16 @@
 
         <h:body>                     
 
-            <div class="page-title">#{field.topofensoresdeocorrencia}</div>
+            <div class="page-title">Laudos por gerências</div>
 
 
-            <p:panel id="panelTop" header="Laudos por Gerência" 
+            <p:fieldset id="panelTop" legend="Laudos por Gerência" 
                      toggleable="true" toggleSpeed="500">
 
                 <h:form id="formTop">                   
 
                     <p:selectOneRadio value="#{graficoPorGerenciaBean.optionSelected}">
-                        <f:selectItem itemLabel="Semana anterior" itemValue="1"/>
+                        <!--                        <f:selectItem itemLabel="Semana anterior" itemValue="1"/>-->
                         <f:selectItem itemLabel="Ontem" itemValue="2"/>
                         <f:selectItem itemLabel="Por Período" itemValue="3"/>
                         <p:ajax event="change" process="@this" 
@@ -67,11 +67,13 @@
 
                     </h:panelGrid>
 
-
+                    <p:commandButton value="#{field.gerarrelatorio}" ajax="false"
+                                     action="#{graficoPorGerenciaBean.geraGrafico()}"                                     
+                                     onclick="PF('statusDialog').show();" oncomplete="PF('statusDialog').hide();"/>
 
                 </h:form>
 
-            </p:panel>
+            </p:fieldset>
 
             <h:panelGrid width="100%">
                 <ui:include src="graficoPorGerencia.xhtml"/>

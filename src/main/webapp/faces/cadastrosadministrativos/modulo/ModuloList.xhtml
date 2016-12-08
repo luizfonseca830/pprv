@@ -51,7 +51,8 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:confirmDialog message="#{message.desejadeletaromodulo}" widgetVar="confirmation" header="#{field.deletarmodulo}">
+                    <p:confirmDialog message="#{message.desejadeletaromodulo}" widgetVar="confirmation" 
+                                     header="#{field.deletarmodulo}" appendTo="@(body)">
                         <p:commandButton value="#{field.sim}" onclick="PF('statusDialog').show();" 
                                          update=":searchResult,:messages" action="#{moduloBean.remove()}"/>
                         <p:commandButton value="#{field.nao}" onclick="PF('confirmation').hide();"/>

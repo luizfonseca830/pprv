@@ -65,7 +65,8 @@
                         </f:facet>
                     </p:dataTable>
 
-                    <p:confirmDialog id="confirmDialog" message="#{message.desejaexcluirrealmente}" header="#{field.deletar} #{field.perfil}" 
+                    <p:confirmDialog id="confirmDialog" message="#{message.desejaexcluirrealmente}" 
+                                     header="#{field.deletar} #{field.perfil}" appendTo="@(body)"
                                      severity="alert" widgetVar="confirmation">
                         <p:commandButton id="confirm" value="#{field.sim}" update=":panelResult" onclick="PF('statusDialog').show();"
                                          oncomplete="PF('statusDialog').hide()"

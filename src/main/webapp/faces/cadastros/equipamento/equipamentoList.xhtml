@@ -128,7 +128,8 @@
                     </p:dataTable>
 
                     <p:confirmDialog id="confirmDialog" message="Deseja deletar este equipamento"  
-                                     header="Deletar este equipamento?" severity="alert" widgetVar="confirmation">  
+                                     header="Deletar este equipamento?" severity="alert" widgetVar="confirmation"
+                                     appendTo="@(body)">  
 
                         <p:commandButton id="confirm" value="#{field.sim}" update="equipamentosComLaudos" 
                                          oncomplete="PF('confirmation').hide();PF('equipamentosEncontrados').update();"  

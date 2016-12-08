@@ -63,7 +63,9 @@
                         </p:column>
                     </p:dataTable>
 
-                    <p:confirmDialog id="confirmDialog" message="#{message.desejadeletarusuario}" header="#{field.excluir} #{field.usuario}" severity="alert" widgetVar="confirmation">  
+                    <p:confirmDialog id="confirmDialog" message="#{message.desejadeletarusuario}" 
+                                     header="#{field.excluir} #{field.usuario}" severity="alert" widgetVar="confirmation"
+                                     appendTo="@(body)">  
                         <p:commandButton id="confirm" value="#{field.sim}" onclick="PF('statusDialog').show();" update=":resultUser,:messages" action="#{cadastroUsuarioBean.deleteUsuario()}"/>  
                         <p:commandButton id="decline" value="#{field.nao}" onclick="PF('confirmation').hide();" type="button" />   
                     </p:confirmDialog>
