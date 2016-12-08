@@ -13,7 +13,7 @@
 
             <div class="page-title">#{field.equipamento}</div>           
 
-            <p:panel header="#{field.parametrodepesquisa}" toggleable="true" toggleSpeed="500">
+            <p:fieldset legend="#{field.parametrodepesquisa}" toggleable="true" toggleSpeed="500">
 
                 <h:form>
 
@@ -44,7 +44,7 @@
                                      oncomplete="PF('statusDialog').hide();PF('equipamentosEncontrados').update();"/>
 
                 </h:form>     
-            </p:panel>
+            </p:fieldset>
 
             <div class="space"/>
 
@@ -52,7 +52,7 @@
 
                 <h:form id="formResult">
 
-                    <p:dataTable id="equipamentosComLaudos" value="#{equipamentoBean.listTbequipamentoResult}" 
+                    <p:dataTable id="equipamentosComLaudosTest" value="#{equipamentoBean.listTbequipamentoResult}" 
                                  var="equipamento" paginator="true" widgetVar="equipamentosEncontrados"
                                  paginatorPosition="bottom" scrollable="true" scrollHeight="250"
                                  rows="5" filteredValue="#{equipamentoBean.listTbequipamentoFilter}"
@@ -125,23 +125,28 @@
                             </div>
                         </f:facet>
 
-                    </p:dataTable>
-
-                    <p:confirmDialog id="confirmDialog" message="Deseja deletar este equipamento"  
-                                     header="Deletar este equipamento?" severity="alert" widgetVar="confirmation"
-                                     appendTo="@(body)">  
-
-                        <p:commandButton id="confirm" value="#{field.sim}" update="equipamentosComLaudos" 
-                                         oncomplete="PF('confirmation').hide();PF('equipamentosEncontrados').update();"  
-                                         action="#{equipamentoBean.deleteEquipamento()}" />  
-                        <p:commandButton id="decline" value="#{field.nao}" onclick="PF('confirmation').hide();" type="button" />   
-
-                    </p:confirmDialog>
+                    </p:dataTable>                  
 
                 </h:form>
 
             </p:fieldset>
-            <p:blockUI block=":formResult:equipamentosComLaudos" trigger=":formResult:equipamentosComLaudos">					
+
+            <p:confirmDialog id="confirmDialog" message="Deseja deletar este equipamento"  
+                             header="Deletar este equipamento?" severity="alert" widgetVar="confirmation"
+                             appendTo="@(body)">  
+
+                <h:form>
+                    <p:commandButton id="confirm" value="#{field.sim}" update=":messages,:formResult:equipamentosComLaudosTest" 
+                                     oncomplete="PF('confirmation').hide();PF('statusDialog').hide();
+                                                PF('equipamentosEncontrados').clearFilters();"
+                                                icon="ui-icon-check" onclick="PF('statusDialog').show();"
+                                     action="#{equipamentoBean.deleteEquipamento()}" />  
+                    <p:commandButton id="decline" value="#{field.nao}" icon="ui-icon-cancel"
+                                     onclick="PF('confirmation').hide();" type="button" />   
+                </h:form>
+
+            </p:confirmDialog>
+            <p:blockUI block=":formResult:equipamentosComLaudosTest" trigger=":formResult:equipamentosComLaudosTest">					
                 <p:graphicImage value="#{resource['images/ajaxloadingbar.gif']}"/>
             </p:blockUI>
 

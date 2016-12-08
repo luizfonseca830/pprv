@@ -15,17 +15,26 @@
 
             <div class="page-title">#{field.funcionalidade}</div>
 
-            <h:form id="resultMenu">
-                <p:panel id="list-funcionalidade" header="#{field.funcionalidades}" toggleable="true" toggleSpeed="500">
-                    <p:dataTable id="list-menus" styleClass="dttable-list-menus" value="#{funcionalidadeBean.allMenuList}" var="menu"
-                                 rowKey="#{menu.idmenu}" paginator="#{funcionalidadeBean.allMenuList.size() > 30}"
-                                 paginatorPosition="bottom" rows="18" rendered="#{not empty funcionalidadeBean.allMenuList}"
+            <p:fieldset id="list-funcionalidade" legend="#{field.funcionalidades}" toggleable="false" toggleSpeed="500">
+                <h:form id="resultMenu">
+                    <p:dataTable id="list-menus" styleClass="dttable-list-menus" 
+                                 value="#{funcionalidadeBean.allMenuList}" var="menu"
+                                 rowKey="#{menu.idmenu}" 
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"                             		 
+                                 rowsPerPageTemplate="10,15,20" rows="10"
+                                 rendered="#{not empty funcionalidadeBean.allMenuList}"
                                  filteredValue="#{funcionalidadeBean.filterMenu}" widgetVar="menuall"
-                                 scrollable="true"                                 
-                                 scrollHeight="100%"
+                                 scrollable="true"                                                                  
                                  resizableColumns="true">
 
-                      
+                        <f:facet name="header">
+                            <div style="text-align: left;">                                
+                                <p:commandButton value="#{field.adicionar}" action="menuCreate.xhtml" 
+                                                 ajax="false" icon="ui-icon-plusthick" onclick="PF('statusDialog').show();"
+                                                 oncomplete="PF('statusDialog').hide()"/>
+                            </div>
+                        </f:facet>
 
                         <p:column headerText="#{field.idfuncionalidade}" sortBy="#{menu.idmenu}">
                             <h:link outcome="/faces/cadastrosadministrativos/funcionalidade/menuConsulta.xhtml" value="#{menu.idmenu}">
@@ -86,24 +95,32 @@
                                 <f:setPropertyActionListener value="#{menu}" target="#{funcionalidadeBean.menuSelected}" />  
                             </p:commandLink>
                         </p:column>                                                
-                    </p:dataTable>
+                    </p:dataTable>                                        
 
-                    <p:confirmDialog id="confirmDialog" message="#{message.desejadeletarestafuncionalidade}"  
-                                     header="#{field.deletarfuncionalidade}" severity="alert" widgetVar="confirmation"
-                                     appendTo="@(body)">  
+                </h:form>
+            </p:fieldset>
 
-                        <p:commandButton id="confirm" value="#{field.sim}" update=":resultMenu" oncomplete="PF('confirmation').hide();"  
-                                         actionListener="#{funcionalidadeBean.delete(funcionalidadeBean.menuSelected)}" />  
-                        <p:commandButton id="decline" value="#{field.nao}" onclick="PF('confirmation').hide();" type="button" />   
+            <p:blockUI block=":resultMenu:list-menus" trigger=":resultMenu:list-menus">					
+                <p:graphicImage value="#{resource['images/ajaxloadingbar.gif']}"/>
+            </p:blockUI>
 
-                    </p:confirmDialog>                     
+            <p:confirmDialog id="confirmDialog" message="#{message.desejadeletarestafuncionalidade}"  
+                             header="#{field.deletarfuncionalidade}" severity="alert" widgetVar="confirmation"
+                             appendTo="@(body)">  
 
-                    <p:commandButton value="#{field.adicionar}" action="/faces/cadastrosadministrativos/funcionalidade/menuCreate.xhtml" 
-                                     ajax="false" icon="ui-icon-plusthick" onclick="PF('statusDialog').show();"
-                                     oncomplete="PF('statusDialog').hide()"/>
-                </p:panel>
+                <h:form>
+                    <p:commandButton id="confirm" value="#{field.sim}" update=":resultMenu" 
+                                     onclick="PF('statusDialog').show();" 
+                                     oncomplete="PF('statusDialog').hide();PF('confirmation').hide();"
+                                     icon="ui-icon-check"
+                                     actionListener="#{funcionalidadeBean.delete(funcionalidadeBean.menuSelected)}" />  
+                    <p:commandButton id="decline" value="#{field.nao}" onclick="PF('confirmation').hide();" 
+                                     type="button" icon="ui-icon-cancel"/>
+                </h:form>   
 
-            </h:form>
+            </p:confirmDialog>
+
+
         </h:body>
     </ui:define>
 </ui:composition>

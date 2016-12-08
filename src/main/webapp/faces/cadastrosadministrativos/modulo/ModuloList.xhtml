@@ -10,14 +10,25 @@
 
         <h:body>            
 
-            <p:panel id="searchResult" header="#{field.dadosdomodulos}" toggleable="true" toggleSpeed="500">
-                <h:form>
+            <p:fieldset id="searchResult" legend="#{field.dadosdomodulos}" toggleable="false" toggleSpeed="500">
+                <h:form id="resultMenu">
 
                     <h:outputText value="#{message.nenhumresultadoencontrado}" rendered="#{empty moduloBean.listTbmodulo}"/>
 
-                    <p:dataTable var="modulo" value="#{moduloBean.listTbmodulo}" rowKey="#{modulo.idmodulo}"
-                                 paginator="#{moduloBean.listTbmodulo.size() > 10}" paginatorPosition="bottom"
-                                 rows="10" rendered="#{not empty moduloBean.listTbmodulo}" filteredValue="#{moduloBean.filteredmodulo}">                        
+                    <p:dataTable id="dataTableResultFunc" var="modulo" value="#{moduloBean.listTbmodulo}" rowKey="#{modulo.idmodulo}"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"                             		 
+                                 rowsPerPageTemplate="10,15,20"                                 
+                                 rows="10" rendered="#{not empty moduloBean.listTbmodulo}" 
+                                 filteredValue="#{moduloBean.filteredmodulo}">                        
+
+                        <f:facet name="header">
+                            <div style="text-align: left;">                                                                
+                                <p:commandButton value="#{field.adicionarmodulo}" action="ModuloEdit.jsf" ajax="false"
+                                                 immediate="true" icon="ui-icon-disk" onclick="PF('statusDialog').show();"
+                                                 oncomplete="PF('statusDialog').hide()"/>
+                            </div>
+                        </f:facet>
 
                         <p:column headerText="#{field.idmodulo}" sortBy="#{modulo.idmodulo}" filterBy="#{modulo.idmodulo}">
                             <h:link value="#{modulo.idmodulo}" onclick="PF('statusDialog').show();" outcome="/faces/cadastrosadministrativos/modulo/Modulo.jsf">
@@ -49,21 +60,26 @@
                                 <f:setPropertyActionListener value="#{modulo}" target="#{moduloBean.tbmodulo}"/>
                             </p:commandLink>
                         </p:column>
-                    </p:dataTable>
+                    </p:dataTable>                   
 
-                    <p:confirmDialog message="#{message.desejadeletaromodulo}" widgetVar="confirmation" 
-                                     header="#{field.deletarmodulo}" appendTo="@(body)">
-                        <p:commandButton value="#{field.sim}" onclick="PF('statusDialog').show();" 
-                                         update=":searchResult,:messages" action="#{moduloBean.remove()}"/>
-                        <p:commandButton value="#{field.nao}" onclick="PF('confirmation').hide();"/>
-                    </p:confirmDialog>
-
-                    <p:spacer height="20px"/>
-                    <p:commandButton value="#{field.adicionarmodulo}" action="/faces/cadastrosadministrativos/modulo/ModuloEdit.jsf?faces-redirect=true"
-                                     immediate="true" icon="ui-icon-disk" onclick="PF('statusDialog').show();"
-                                     oncomplete="PF('statusDialog').hide()"/>
                 </h:form>
-            </p:panel>
+            </p:fieldset>
+
+            <p:blockUI block=":resultMenu:dataTableResultFunc" trigger=":resultMenu:dataTableResultFunc">					
+                <p:graphicImage value="#{resource['images/ajaxloadingbar.gif']}"/>
+            </p:blockUI>
+
+            <p:confirmDialog message="#{message.desejadeletaromodulo}" widgetVar="confirmation" 
+                             header="#{field.deletarmodulo}" appendTo="@(body)">
+                <h:form>
+                    <p:commandButton value="#{field.sim}" onclick="PF('statusDialog').show();" 
+                                     oncomplete="PF('statusDialog').hide();PF('confirmation').hide();"
+                                     icon="ui-icon-check" ajax="false"
+                                     update=":resultMenu,:messages" action="#{moduloBean.remove()}"/>
+                    <p:commandButton value="#{field.nao}" onclick="PF('confirmation').hide();"
+                                     icon="ui-icon-cancel" type="button"/>
+                </h:form>
+            </p:confirmDialog>
 
         </h:body>
     </ui:define>

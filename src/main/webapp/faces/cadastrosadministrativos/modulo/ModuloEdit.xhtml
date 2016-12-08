@@ -2,15 +2,16 @@
                 template="/faces/index.xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns="http://www.w3.org/1999/xhtml">
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="context">
 
         <h:outputText id="page-rule" rendered="#{menuBean.isRule('cad_modulo')}"/>
 
         <h:body>           
 
-            <p:panel header="#{field.adicionarmodulo}" id="panelCadastrar" toggleable="true" 
-                     toggleSpeed="500" rendered="#{moduloBean.tbmodulo.idmodulo == null}">
+            <p:fieldset legend="#{field.adicionarmodulo}" id="panelCadastrar" toggleable="false" 
+                        toggleSpeed="500" rendered="#{moduloBean.tbmodulo.idmodulo == null}">
                 <h:form>
                     <h:panelGrid columns="2" cellspacing="10">
 
@@ -33,16 +34,16 @@
 
                     <p:commandButton value="#{field.adicionar}" action="#{moduloBean.create()}" 
                                      update="@all" icon="ui-icon-plusthick" onclick="PF('statusDialog').show();"
-                                     oncomplete="PF('statusDialog').hide()"/>
+                                     oncomplete="PF('statusDialog').hide()" ajax="false"/>
                     <p:spacer width="5px"/>
-                    <p:commandButton value="#{field.cancelar}" action="/faces/cadastrosadministrativos/modulo/ModuloList"
+                    <p:commandButton value="#{field.cancelar}" action="ModuloList.jsf"
                                      immediate="true" icon="ui-icon-arrowreturnthick-1-w" onclick="PF('statusDialog').show();"
-                                     oncomplete="PF('statusDialog').hide()"/>
+                                     oncomplete="PF('statusDialog').hide()" ajax="false"/>
                 </h:form>
-            </p:panel>
+            </p:fieldset>
 
-            <p:panel header="#{field.editar} #{field.modulo}" id="panelEdit" toggleable="true" 
-                     toggleSpeed="500" rendered="#{moduloBean.tbmodulo.idmodulo != null }">
+            <p:fieldset legend="#{field.editar} #{field.modulo}" id="panelEdit" toggleable="false" 
+                        toggleSpeed="500" rendered="#{moduloBean.tbmodulo.idmodulo != null }">
                 <h:form id="formEdit">
                     <h:panelGrid columns="2" cellspacing="10">
                         <h:outputText value="#{field.moduloptbr}" class="text-bold"/>
@@ -62,15 +63,17 @@
 
                     </h:panelGrid>
                     <p:commandButton value="#{field.salvar}" action="#{moduloBean.edit()}" update="@all" icon="ui-icon-disk"
-                                     onclick="PF('statusDialog').show();"
+                                     onclick="PF('statusDialog').show();" ajax="false"
                                      oncomplete="PF('statusDialog').hide()"/>
                     <p:spacer width="5px"/>
-                    <p:commandButton value="#{field.cancelar}" action="/faces/cadastrosadministrativos/modulo/ModuloList"
+                    <p:commandButton value="#{field.cancelar}" action="Modulo.jsf"
                                      immediate="true" icon="ui-icon-arrowreturnthick-1-w"
-                                     onclick="PF('statusDialog').show();"
-                                     oncomplete="PF('statusDialog').hide()"/>
+                                     onclick="PF('statusDialog').show();" ajax="false"
+                                     oncomplete="PF('statusDialog').hide()">
+                        <f:param name="idmodulo" value="#{moduloBean.tbmodulo.idmodulo}"/>
+                    </p:commandButton>
                 </h:form>
-            </p:panel>
+            </p:fieldset>
         </h:body>
     </ui:define>
 </ui:composition>

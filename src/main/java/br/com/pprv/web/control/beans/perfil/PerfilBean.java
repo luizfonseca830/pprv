@@ -54,6 +54,7 @@ public class PerfilBean implements Serializable {
             AbstractFacesContextUtils.redirectPage(PagesUrl.URL_PERFIL_LIST);
             AbstractFacesContextUtils.addMessageError(Resources.getMessage("falhaaoadicionarperfilperfiljaxiste"));
         } else {
+            tbperfil.setNivelacessoperfil(0);
             if (perfilLogic.create(tbperfil)) {
                 AbstractFacesContextUtils.redirectPage(PagesUrl.URL_PERFIL_LIST);
                 AbstractFacesContextUtils.addMessageInfo(Resources.getMessage("perfiladicionadocomsucesso"));

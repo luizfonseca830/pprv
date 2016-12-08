@@ -133,13 +133,19 @@ public class EquipamentoBean implements Serializable {
     }
 
     public void deleteEquipamento() {
-        if (tbequipamentoSelected != null) {
-            if (equipamentoLogic.removeTbequipamento(tbequipamentoSelected)) {
-                listTbequipamentoResult = equipamentoLogic.allEquipamentos();
-                AbstractFacesContextUtils.addMessageInfo("Equipamento removido com sucesso.");
-            } else {
-                AbstractFacesContextUtils.addMessageWarn("Falha ao remover equipamento");
+        try {
+            if (tbequipamentoSelected != null) {
+                if (equipamentoLogic.removeTbequipamento(tbequipamentoSelected)) {
+                    listTbequipamentoResult = equipamentoLogic.allEquipamentos();
+                    AbstractFacesContextUtils.addMessageInfo("Equipamento removido com sucesso.");
+                } else {
+                    AbstractFacesContextUtils.addMessageWarn("Falha ao remover equipamento");
+                }
+            }else{
+                System.out.println("delete equipamento: " + tbequipamentoSelected);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

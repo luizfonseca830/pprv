@@ -13,7 +13,7 @@
 
             <div class="page-title">#{field.perfil}</div>
 
-            <p:panel id="panel-perfil" header="#{field.perfil}" toggleable="true" toggleSpeed="500">
+            <p:fieldset id="panel-perfil" legend="#{field.perfil}" toggleable="false" toggleSpeed="500">
 
                 <h:form id="perfil-form">
 
@@ -28,7 +28,7 @@
                     </h:panelGrid>
 
                     <p:commandButton ajax="false" value="#{field.editar}" action="PerfilEdit.jsf" icon="ui-icon-pencil"
-                                     onclick="PF('statusDialog').show();"
+                                     onclick="PF('statusDialog').show();" 
                                      oncomplete="PF('statusDialog').hide()">
                         <f:param name="idperfil" value="#{perfilBean.tbperfil.idperfil}"/>
                     </p:commandButton>
@@ -36,10 +36,11 @@
                     <p:spacer width="5px"/> 
 
                     <p:commandButton value="#{field.voltar}" action="PerfilList.jsf" icon="ui-icon-arrowreturnthick-1-w"
-                                     onclick="PF('statusDialog').show();" oncomplete="PF('statusDialog').hide()"/>
+                                     onclick="PF('statusDialog').show();" oncomplete="PF('statusDialog').hide()"
+                                     ajax="false"/>
 
                 </h:form>
-            </p:panel>
+            </p:fieldset>
 
         </h:body>
     </ui:define>

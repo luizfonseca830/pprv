@@ -11,12 +11,12 @@
         <h:outputText id="page-rule" rendered="#{menuBean.isRule('funcionalidade')}"/>       
 
         <h:body> 
-            
+
             <div class="page-title">#{field.funcionalidade}</div>
 
             <h:form>                               
 
-                <p:panel header="#{field.adicionarfuncionalidade}" toggleable="true" toggleSpeed="500">
+                <p:fieldset legend="#{field.adicionarfuncionalidade}" toggleable="false" toggleSpeed="500">
                     <h:panelGrid columns="2" cellpadding="10" cellspacing="10">
 
                         <h:outputText value="#{field.funcionalidadept}" class="text-bold"/>
@@ -47,14 +47,14 @@
                     </h:panelGrid>
 
                     <h:panelGrid columns="2" cellpadding="10" cellspacing="10">
-                        <p:commandButton value="#{field.salvar}" action="#{funcionalidadeBean.create()}" 
+                        <p:commandButton value="#{field.salvar}" action="#{funcionalidadeBean.create()}"
                                          icon="ui-icon-disk" ajax="false" onclick="PF('statusDialog').show();"
                                          oncomplete="PF('statusDialog').hide()"/>
-                        <p:commandButton value="#{field.voltar}" action="/faces/cadastrosadministrativos/funcionalidade/menuList.xhtml" 
+                        <p:commandButton value="#{field.voltar}" action="menuList.xhtml" ajax="false"
                                          immediate="true" icon="ui-icon-arrowreturnthick-1-w" onclick="PF('statusDialog').show();"
                                          oncomplete="PF('statusDialog').hide()"/>
                     </h:panelGrid>
-                </p:panel>
+                </p:fieldset>
             </h:form>
         </h:body>
     </ui:define>
