@@ -110,7 +110,7 @@ public class CadastroUsuarioBean implements Serializable {
         }
 
     }
-
+    
     public void createAccessUser() {
         boolean verifica = true;
         if (!listAcessos.isEmpty() && listAcessos != null) {

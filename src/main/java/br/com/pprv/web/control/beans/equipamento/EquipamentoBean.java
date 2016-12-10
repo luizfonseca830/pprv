@@ -6,14 +6,19 @@
 package br.com.pprv.web.control.beans.equipamento;
 
 import br.com.pprv.model.entities.Tbequipamento;
+import br.com.pprv.model.entities.TbequipamentoSubconjunto;
 import br.com.pprv.model.entities.Tbgerencia;
+import br.com.pprv.model.entities.Tbsubconjunto;
 import br.com.pprv.model.entities.Tbtecnica;
 import br.com.pprv.web.control.logic.equipamento.EquipamentoLogic;
+import br.com.pprv.web.control.logic.equipamento_subconjunto.EquipamentoSubconjuntoLogic;
 import br.com.pprv.web.control.logic.gerencia.GerenciaLogic;
 import br.com.pprv.web.control.logic.tecnica.TecnicaLogic;
 import br.com.pprv.web.faces.constants.PagesUrl;
+import br.com.pprv.web.faces.constants.Resources;
 import br.com.pprv.web.faces.utils.AbstractFacesContextUtils;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +26,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+import org.primefaces.model.DualListModel;
 
 /**
  *
@@ -39,6 +45,8 @@ public class EquipamentoBean implements Serializable {
     private GerenciaLogic gerenciaLogic;
     @EJB
     private TecnicaLogic tecnicaLogic;
+    @EJB
+    private EquipamentoSubconjuntoLogic equipamentoSubconjuntoLogic;
 
     /**
      * objects below.
@@ -55,6 +63,9 @@ public class EquipamentoBean implements Serializable {
     private List<Tbequipamento> listTbequipamentoFilter;
     private List<Tbgerencia> listTbgerenciasSearch;
     private List<Tbtecnica> listTbtecnicasSearch;
+    private List<Tbsubconjunto> listSubConjuntosEquipamento;
+    private DualListModel<Tbsubconjunto> pickList;
+    private List<Tbsubconjunto> listAllSubConjuntos;
 
     @PostConstruct
     public void init() {
@@ -67,6 +78,18 @@ public class EquipamentoBean implements Serializable {
         Integer idEquipamento = AbstractFacesContextUtils.getParamInt("idEquipamento");
         if (idEquipamento != null && idEquipamento > 0) {
             tbequipamento = equipamentoLogic.find(idEquipamento);
+            if (tbequipamento != null) {
+                listSubConjuntosEquipamento = equipamentoSubconjuntoLogic.getListAllSubconjuntoByIdEquipamento(tbequipamento);
+                if (listSubConjuntosEquipamento != null
+                        && !listSubConjuntosEquipamento.isEmpty()) {
+                    listAllSubConjuntos = equipamentoSubconjuntoLogic.getListAllSubconjuntoNotFromEquipamento(tbequipamento);
+                } else {
+                    listSubConjuntosEquipamento = new ArrayList<>();
+                    listAllSubConjuntos = equipamentoSubconjuntoLogic.getListAllSubconjunto();
+                }
+
+                pickList = new DualListModel<>(listAllSubConjuntos, listSubConjuntosEquipamento);
+            }
         }
     }
 
@@ -141,11 +164,42 @@ public class EquipamentoBean implements Serializable {
                 } else {
                     AbstractFacesContextUtils.addMessageWarn("Falha ao remover equipamento");
                 }
-            }else{
+            } else {
                 System.out.println("delete equipamento: " + tbequipamentoSelected);
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void asscobequipamentoSubconjunto() {
+
+        boolean verifica = true;
+
+        if (listSubConjuntosEquipamento != null
+                && !listSubConjuntosEquipamento.isEmpty()) {
+            equipamentoSubconjuntoLogic.deleteAllSubConjuntoByIdEquipamento(tbequipamento);
+        }
+        TbequipamentoSubconjunto subconjunto;
+        for (Tbsubconjunto subTbsubconjuntoChose : pickList.getTarget()) {
+            subconjunto = new TbequipamentoSubconjunto();
+            subconjunto.setIdequipamento(tbequipamento);
+            subconjunto.setIdsubconjunto(subTbsubconjuntoChose);
+
+            if (equipamentoSubconjuntoLogic.createEquipamentoSubConjunto(subconjunto)) {
+                verifica = true;
+            } else {
+                verifica = false;
+            }
+        }
+
+        if (verifica) {
+            Map map = new HashMap();
+            map.put("idEquipamento", tbequipamento.getIdequipamento());
+            AbstractFacesContextUtils.redirectPageWithParam(PagesUrl.URL_EQUIPAMENTO, map);
+            AbstractFacesContextUtils.addMessageInfo("Lista de subconjunto associada com sucesso.");
+        } else {
+            AbstractFacesContextUtils.addMessageWarn("Falha ao criar lista de subconjunto.");
         }
     }
 
@@ -259,5 +313,33 @@ public class EquipamentoBean implements Serializable {
      */
     public void setTbequipamentoSelected(Tbequipamento tbequipamentoSelected) {
         this.tbequipamentoSelected = tbequipamentoSelected;
+    }
+
+    /**
+     * @return the listSubConjuntosEquipamento
+     */
+    public List<Tbsubconjunto> getListSubConjuntosEquipamento() {
+        return listSubConjuntosEquipamento;
+    }
+
+    /**
+     * @param listSubConjuntosEquipamento the listSubConjuntosEquipamento to set
+     */
+    public void setListSubConjuntosEquipamento(List<Tbsubconjunto> listSubConjuntosEquipamento) {
+        this.listSubConjuntosEquipamento = listSubConjuntosEquipamento;
+    }
+
+    /**
+     * @return the pickList
+     */
+    public DualListModel<Tbsubconjunto> getPickList() {
+        return pickList;
+    }
+
+    /**
+     * @param pickList the pickList to set
+     */
+    public void setPickList(DualListModel<Tbsubconjunto> pickList) {
+        this.pickList = pickList;
     }
 }

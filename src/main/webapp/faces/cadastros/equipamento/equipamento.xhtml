@@ -32,7 +32,7 @@
 
                         <h:outputText value="Técnica" class="text-bold"/>
                         <h:outputText value="#{equipamentoBean.tbequipamento.idtecnica.nmtecnica}"/>
-                        
+
                         <h:outputText value="Gerência" class="text-bold"/>
                         <h:outputText value="#{equipamentoBean.tbequipamento.idgerencia.nmgerencia}"/>
 
@@ -49,6 +49,36 @@
                                      oncomplete="PF('statusDialog').hide()"/>
 
                 </h:form>
+
+            </p:fieldset>
+            
+            <p:spacer/>
+            
+            <p:fieldset legend="Subconjuntos">                
+                <h:form>
+                    <p:dataTable id="equip-sub-datatable"  
+                                 var="subconj" value="#{equipamentoBean.listSubConjuntosEquipamento}"
+                                 rowKey="#{subconj.idsubconjunto}" 
+                                 paginator="true" rows="10"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20" emptyMessage="#{message.nenhumresultadoencontrado}">
+
+                        <f:facet name="header">
+                            <div style="text-align: left;">
+                                <p:commandButton value="#{field.adicionar}" action="editSubconjuntoEquipamento.xhtml" 
+                                                 ajax="false" icon="ui-icon-plusthick" onclick="PF('statusDialog').show();"
+                                                 oncomplete="PF('statusDialog').hide()">
+                                    <f:param name="idEquipamento" value="#{equipamentoBean.tbequipamento.idequipamento}"/>
+                                </p:commandButton>                            
+                            </div>
+                        </f:facet>
+
+                        <p:column headerText="SubConjunto">
+                            #{subconj.nmsubconjunto}
+                        </p:column>
+                        
+                    </p:dataTable> 
+                </h:form>              
 
             </p:fieldset>  
 
