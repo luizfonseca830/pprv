@@ -38,7 +38,7 @@ public class SubconjuntoLogic extends AbstractModuleCore {
      * @return
      */
     public List<Tbsubconjunto> findallTbsubconjuntoByName(String name) {
-        return tbsubconjuntoFacade.findAllTbconjuntoByName(name, super.getEM());
+        return tbsubconjuntoFacade.findallTbconjuntoByName(name, super.getEM());
     }
 
     /**
@@ -57,7 +57,7 @@ public class SubconjuntoLogic extends AbstractModuleCore {
      * @param tbsubconjunto
      * @return
      */
-    public boolean deleteSubconjunto(final Tbsubconjunto tbsubconjunto) {
+    public boolean deleteSubconjunto(Tbsubconjunto tbsubconjunto) {
         return tbsubconjuntoFacade.remove(tbsubconjunto, super.getEM());
     }
 

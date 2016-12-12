@@ -34,16 +34,17 @@ public class TbsubconjuntoFacade extends AbstractFacade<Tbsubconjunto> {
     }
 
     /**
-     * metodo que recupera a lista de todos os subconjunto por nome
+     * metodo que recupera o subconjunto por nome
      *
      * @param name
      * @param em
      * @return List TbsuconjuntoByName
      */
-    public List<Tbsubconjunto> findAllTbconjuntoByName(String name, final EntityManager em) {
-
-        return em.createQuery("SELECT t FROM Tbsubconjunto t WHERE UPPER (t.nmsubconjunto) LIKE (:nmSubconjunto)", Tbsubconjunto.class)
-                .setParameter("nmsubconjunto", name.toUpperCase() + "%")
-                .getResultList();
+    public List<Tbsubconjunto> findallTbconjuntoByName(String name, EntityManager em) {
+  
+            return em.createQuery("SELECT t FROM Tbsubconjunto t WHERE UPPER (t.nmsubconjunto) LIKE (:nmSubconjunto) ", Tbsubconjunto.class)
+                    .setParameter("nmsubconjunto", name.toUpperCase()+"%")
+                    .getResultList();
+      
     }
 }

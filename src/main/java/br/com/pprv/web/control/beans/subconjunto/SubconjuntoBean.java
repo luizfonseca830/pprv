@@ -31,7 +31,6 @@ public class SubconjuntoBean implements Serializable {
     private String nmSubconjunto;
     private Tbsubconjunto tbsubconjunto;
     private Tbsubconjunto tbSubconjuntoSelectd;
-
     private List<Tbsubconjunto> listTbsubconjunto;
 
     @PostConstruct
@@ -50,34 +49,31 @@ public class SubconjuntoBean implements Serializable {
      * metodo para fazer pesquisa por nome
      */
     public void pesquisarSubconjuntoPorNome() {
-        if (getNmSubconjunto() != null && !nmSubconjunto.trim().isEmpty()) {
-            setListTbsubconjunto(subconjuntoLogic.findallTbsubconjuntoByName(getNmSubconjunto()));
+        if (nmSubconjunto != null && !nmSubconjunto.trim().isEmpty()) {
+            listTbsubconjunto = subconjuntoLogic.findallTbsubconjuntoByName(nmSubconjunto);
         } else {
-            setListTbsubconjunto(subconjuntoLogic.findallTbsubconjunto());
+            listTbsubconjunto = subconjuntoLogic.findallTbsubconjunto();
         }
+
     }
 
     /**
      * metodo para deletar o subconjunto
+     *
+     * @param tbsubconjunto
      */
     public void deletarSubconjunto() {
-        try {
-            if (tbSubconjuntoSelectd != null) {
-                if (subconjuntoLogic.deleteSubconjunto(getTbSubconjuntoSelectd())) {
-                    AbstractFacesContextUtils.redirectPage(PagesUrl.URL_SUBCONJUNTO_LIST);
-                    AbstractFacesContextUtils.addMessageInfo(Resources.getMessage("subconjuntodeletadocomsucesso"));
-                    setListTbsubconjunto(subconjuntoLogic.findallTbsubconjunto());
-                } else {
-                    AbstractFacesContextUtils.redirectPage(PagesUrl.URL_SUBCONJUNTO_LIST);
-                    AbstractFacesContextUtils.addMessageError(Resources.getMessage("erroaoremoversubconjunto"));
-                }
-            } else {
-                System.out.println("nao deleto o subconjunto: " + tbSubconjuntoSelectd);
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+       try{
+           if(subconjuntoLogic.deleteSubconjunto(tbSubconjuntoSelectd)){
+           AbstractFacesContextUtils.redirectPage(PagesUrl.URL_SUBCONJUNTO_LIST);
+           AbstractFacesContextUtils.addMessageInfo(Resources.getMessage("subconjuntodeletadocomsucesso"));
+           listTbsubconjunto = subconjuntoLogic.findallTbsubconjunto();
+                   
+           }
+       }catch(Exception e){
+           AbstractFacesContextUtils.redirectPage(PagesUrl.URL_SUBCONJUNTO_LIST);
+            AbstractFacesContextUtils.addMessageInfo(Resources.getMessage("erroaoremoversubconjunto"));
+       }
     }
 
     /**
