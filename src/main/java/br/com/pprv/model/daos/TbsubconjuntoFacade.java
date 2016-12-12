@@ -43,7 +43,7 @@ public class TbsubconjuntoFacade extends AbstractFacade<Tbsubconjunto> {
     public List<Tbsubconjunto> findallTbconjuntoByName(String name, EntityManager em) {
   
             return em.createQuery("SELECT t FROM Tbsubconjunto t WHERE UPPER (t.nmsubconjunto) LIKE (:nmSubconjunto) ", Tbsubconjunto.class)
-                    .setParameter("nmsubconjunto", name.toUpperCase()+"%")
+                    .setParameter("nmsubconjunto", name.toUpperCase() + "%")
                     .getResultList();
       
     }
