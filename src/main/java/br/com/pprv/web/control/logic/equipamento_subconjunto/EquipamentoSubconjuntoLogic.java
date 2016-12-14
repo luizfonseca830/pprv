@@ -51,4 +51,8 @@ public class EquipamentoSubconjuntoLogic extends AbstractModuleCore {
     public boolean createEquipamentoSubConjunto(final TbequipamentoSubconjunto tbequipamentoSubconjunto) {
         return tbequipamentoSubconjuntoFacade.create(tbequipamentoSubconjunto, super.getEM());
     }
+
+    public boolean editEquipamentoSubconjunto(final TbequipamentoSubconjunto tbequipamentoSubconjunto) {
+        return tbequipamentoSubconjuntoFacade.edit(tbequipamentoSubconjunto, super.getEM());
+    }
 }

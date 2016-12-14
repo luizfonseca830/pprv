@@ -15,7 +15,6 @@ import br.com.pprv.web.control.logic.equipamento_subconjunto.EquipamentoSubconju
 import br.com.pprv.web.control.logic.gerencia.GerenciaLogic;
 import br.com.pprv.web.control.logic.tecnica.TecnicaLogic;
 import br.com.pprv.web.faces.constants.PagesUrl;
-import br.com.pprv.web.faces.constants.Resources;
 import br.com.pprv.web.faces.utils.AbstractFacesContextUtils;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -186,11 +185,7 @@ public class EquipamentoBean implements Serializable {
             subconjunto.setIdequipamento(tbequipamento);
             subconjunto.setIdsubconjunto(subTbsubconjuntoChose);
 
-            if (equipamentoSubconjuntoLogic.createEquipamentoSubConjunto(subconjunto)) {
-                verifica = true;
-            } else {
-                verifica = false;
-            }
+            verifica = equipamentoSubconjuntoLogic.createEquipamentoSubConjunto(subconjunto);
         }
 
         if (verifica) {

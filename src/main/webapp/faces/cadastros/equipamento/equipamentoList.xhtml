@@ -57,7 +57,8 @@
                                  scrollable="true" scrollHeight="250"
                                  rows="5" filteredValue="#{equipamentoBean.listTbequipamentoFilter}"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="10,15,20" emptyMessage="#{message.nenhumresultadoencontrado}">
+                                 rowsPerPageTemplate="10,15,20" emptyMessage="#{message.nenhumresultadoencontrado}"
+                                 filterEvent="enter">
 
                         <p:columnGroup type="header">                        
 

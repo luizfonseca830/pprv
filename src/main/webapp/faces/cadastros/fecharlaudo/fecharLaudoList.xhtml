@@ -1,0 +1,134 @@
+<ui:composition template="/faces/index.xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns="http://www.w3.org/1999/xhtml">
+
+    <ui:define name="context">
+
+        <h:outputText id="page-rule" rendered="#{menuBean.isRule('close_laudo')}"/>
+
+        <h:body>
+
+            <div class="page-title">Encerramento de Laudo</div>           
+
+            <p:fieldset legend="Filtrar listagem" toggleable="false" toggleSpeed="500">
+
+                <h:form>
+
+                    <h:panelGrid columns="4" cellspacing="10">
+                        <h:outputText value="Condição preditiva" class="text-bold"/>
+                        <p:selectOneMenu id="condition" value="#{closeLaudoBean.condicaoFilter}">
+                            <f:selectItem itemLabel="" itemValue="0"/>
+                            <f:selectItem itemValue="1" itemLabel="Normal"/>
+                            <f:selectItem itemValue="2" itemLabel="Alerta"/>
+                            <f:selectItem itemValue="3" itemLabel="Critico"/>
+                            <f:selectItem itemValue="4" itemLabel="Executado"/>
+                        </p:selectOneMenu>
+
+                        <h:outputText value="#{field.tecnica}" class="text-bold" rendered="false"/>
+                        <p:selectOneMenu id="autoComplete" value="#{closeLaudoBean.tblaudoFilter}"
+                                         filter="true" filterMatchMode="contains" converter="converterEntity"
+                                         rendered="false">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems value="#{closeLaudoBean.listTbtecnica}" var="tecnica" 
+                                           itemValue="#{tecnica}" itemLabel="#{tecnica.nmtecnica}" >
+                            </f:selectItems>
+                        </p:selectOneMenu>
+
+                    </h:panelGrid>
+
+                    <p:commandButton value="Filtrar" action="#{closeLaudoBean.search()}"
+                                     icon="ui-icon-search" update=":fieldSetResult" ajax="false"
+                                     onclick="PF('statusDialog').show();"
+                                     oncomplete="PF('statusDialog').hide();PF('laudosEncontrados').update();"/>
+
+                </h:form>     
+            </p:fieldset>
+
+            <div class="space"/>
+
+            <p:fieldset id="fieldSetResult">
+
+                <h:form id="formResult">                    
+
+                    <p:commandButton id="btnExecute" value="Definir todas as ordens de serviços como EXECUTADAS"
+                                     ajax="false" icon="ui-icon-disk" onclick="PF('statusDialog').show();"
+                                     oncomplete="PF('statusDialog').hide()"
+                                     action="#{closeLaudoBean.changeStatusToDone()}"
+                                     rendered="#{not empty closeLaudoBean.listFecharLaudoModels}"/>
+
+                    <ui:repeat value="#{closeLaudoBean.listFecharLaudoModels}"
+                               rendered="#{not empty closeLaudoBean.listFecharLaudoModels}" var="laudo" >
+
+                        <p:panel id="painelNote" header="##{laudo.tblaudo.idlaudo}">
+                            
+                            <h:panelGrid columns="10" cellspacing="10">
+
+                                <h:outputText rendered="#{laudo.tblaudo.condicao!=4}"/>
+                                <p:selectBooleanCheckbox value="#{laudo.executar}"
+                                                         rendered="#{laudo.tblaudo.condicao!=4}">
+                                </p:selectBooleanCheckbox>
+
+                                <h:outputText value="N° OS" class="text-bold"/>
+                                <h:outputText value="#{laudo.tblaudo.omsap}"/>   
+
+                                <h:outputText value="Data execução" class="text-bold"/>
+                                <p:calendar id="calendarDataExecucao" value="#{laudo.tblaudo.dtdataexecucao}"
+                                            mode="popup" showOn="button" 
+                                            navigator="true" required="#{laudo.executar}"
+                                            requiredMessage="#{message.camponaopodeservazio}"
+                                            rendered="#{laudo.tblaudo.condicao!=4}"/>
+
+                                <h:outputText value="#{laudo.tblaudo.dtdataexecucao}" rendered="#{laudo.tblaudo.condicao==4}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+
+                                <h:outputText value="Equipamento" class="text-bold"/>
+                                <h:outputText value="#{laudo.tblaudo.idequipamento.nmequipamenta}"/>
+
+                                <h:outputText value="Tecnica" class="text-bold"/>
+                                <h:outputText value="#{laudo.tblaudo.idequipamento.idtecnica.nmtecnica}"/>                                
+
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="2" cellspacing="10">
+
+                                <h:outputText value="Data análise:" class="text-bold"/>
+                                <h:outputText value="#{laudo.tblaudo.dtdatalaudo}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                </h:outputText>
+
+                                <h:outputText value="Diagnóstico:" class="text-bold"/>
+                                <h:outputText value="#{laudo.tblaudo.nmdiagnostico}"/>
+
+                                <h:outputText value="Recomendação:" class="text-bold"/>
+                                <h:outputText value="#{laudo.tblaudo.nmrecomendacao}"/>
+
+                                <h:outputText value="Observação" class="text-bold"
+                                              rendered="#{laudo.tblaudo.condicao!=4}"/>
+                                <p:inputTextarea id="laudoObservacao" value="#{laudo.tblaudo.nmobservacao}" 
+                                                 required="#{laudo.executar}" cols="60" requiredMessage="#{message.camponaopodeservazio}"
+                                                 rendered="#{laudo.tblaudo.condicao!=4}"/>
+
+                                <h:outputText value="Observação" class="text-bold" rendered="#{laudo.tblaudo.condicao==4}"/>
+                                <h:outputText value="#{laudo.tblaudo.nmobservacao}" 
+                                              rendered="#{laudo.tblaudo.condicao==4}"/>
+
+                            </h:panelGrid> 
+
+                        </p:panel>
+                        <br /> 
+                    </ui:repeat>
+
+                </h:form>               
+
+            </p:fieldset>
+
+        </h:body>
+
+    </ui:define>
+
+
+</ui:composition>

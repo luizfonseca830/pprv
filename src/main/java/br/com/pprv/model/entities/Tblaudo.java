@@ -21,7 +21,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -37,10 +36,8 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
     @Basic(optional = false)
     @Column(name = "idlaudo")
     private Integer idlaudo;
-    @Size(max = 2147483647)
     @Column(name = "nmrecomendacao")
     private String nmrecomendacao;
-    @Size(max = 2147483647)
     @Column(name = "nmdiagnostico")
     private String nmdiagnostico;
     @Column(name = "limiteexecucao")
@@ -53,7 +50,7 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
     @Column(name = "boolomsap")
     private Boolean boolomsap;
     @Column(name = "omsap")
-    private Integer omsap;
+    private String omsap;
     @Basic(optional = false)
     @Column(name = "dtdatalaudo")
     @Temporal(TemporalType.DATE)
@@ -70,6 +67,19 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
     @Basic(optional = false)
     @Column(name = "prazoexecucao")
     private Integer prazoexecucao;
+    @Basic(optional = false)
+    @Column(name = "condicao")
+    private Integer condicao;
+    @Column(name = "responsavel")
+    private String responsavel;
+    @Basic(optional = false)
+    @Column(name = "dtdataexecucao")
+    @Temporal(TemporalType.DATE)
+    private Date dtdataexecucao;
+    @Basic(optional = false)
+    @Column(name = "tmdataexecucao")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date tmdataexecucao;
     @JoinColumn(name = "idsubconjunto", referencedColumnName = "idsubconjunto")
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tbsubconjunto idsubconjunto;
@@ -153,20 +163,6 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
      */
     public void setBoolomsap(Boolean boolomsap) {
         this.boolomsap = boolomsap;
-    }
-
-    /**
-     * @return the omsap
-     */
-    public Integer getOmsap() {
-        return omsap;
-    }
-
-    /**
-     * @param omsap the omsap to set
-     */
-    public void setOmsap(Integer omsap) {
-        this.omsap = omsap;
     }
 
     /**
@@ -279,6 +275,76 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
     @Override
     public Integer getPK() {
         return idlaudo;
+    }
+
+    /**
+     * @return the condicao
+     */
+    public Integer getCondicao() {
+        return condicao;
+    }
+
+    /**
+     * @param condicao the condicao to set
+     */
+    public void setCondicao(Integer condicao) {
+        this.condicao = condicao;
+    }
+
+    /**
+     * @return the omsap
+     */
+    public String getOmsap() {
+        return omsap;
+    }
+
+    /**
+     * @param omsap the omsap to set
+     */
+    public void setOmsap(String omsap) {
+        this.omsap = omsap;
+    }
+
+    /**
+     * @return the responsavel
+     */
+    public String getResponsavel() {
+        return responsavel;
+    }
+
+    /**
+     * @param responsavel the responsavel to set
+     */
+    public void setResponsavel(String responsavel) {
+        this.responsavel = responsavel;
+    }
+
+    /**
+     * @return the dtdataexecucao
+     */
+    public Date getDtdataexecucao() {
+        return dtdataexecucao;
+    }
+
+    /**
+     * @param dtdataexecucao the dtdataexecucao to set
+     */
+    public void setDtdataexecucao(Date dtdataexecucao) {
+        this.dtdataexecucao = dtdataexecucao;
+    }
+
+    /**
+     * @return the tmdataexecucao
+     */
+    public Date getTmdataexecucao() {
+        return tmdataexecucao;
+    }
+
+    /**
+     * @param tmdataexecucao the tmdataexecucao to set
+     */
+    public void setTmdataexecucao(Date tmdataexecucao) {
+        this.tmdataexecucao = tmdataexecucao;
     }
 
 }

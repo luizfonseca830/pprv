@@ -22,16 +22,19 @@ public class LaudoMdl implements Serializable {
     private Tbgerencia tbgerencia;
     private Date dtDatalimiteExecucao;
     private Date dtDataCadastro;
-    private Integer intOmSap;
+    private String strOmSap;
     private boolean naoPreencherOmSap;
     private Integer prazoExecucao;
     private String nmObservacao;
     private String nmRisco;
     private TbequipamentoSubconjunto Tbequipamentosubconjunto;
+    private Integer situation;
+    private Integer idLaudo;
 
     public LaudoMdl() {
         dtDataCadastro = new Date();
         naoPreencherOmSap = false;
+        situation = 1;
     }
 
     /**
@@ -175,20 +178,6 @@ public class LaudoMdl implements Serializable {
     }
 
     /**
-     * @return the intOmSap
-     */
-    public Integer getIntOmSap() {
-        return intOmSap;
-    }
-
-    /**
-     * @param intOmSap the intOmSap to set
-     */
-    public void setIntOmSap(Integer intOmSap) {
-        this.intOmSap = intOmSap;
-    }
-
-    /**
      * @return the naoPreencherOmSap
      */
     public boolean isNaoPreencherOmSap() {
@@ -200,6 +189,48 @@ public class LaudoMdl implements Serializable {
      */
     public void setNaoPreencherOmSap(boolean naoPreencherOmSap) {
         this.naoPreencherOmSap = naoPreencherOmSap;
+    }
+
+    /**
+     * @return the strOmSap
+     */
+    public String getStrOmSap() {
+        return strOmSap;
+    }
+
+    /**
+     * @param strOmSap the strOmSap to set
+     */
+    public void setStrOmSap(String strOmSap) {
+        this.strOmSap = strOmSap;
+    }
+
+    /**
+     * @return the situation
+     */
+    public Integer getSituation() {
+        return situation;
+    }
+
+    /**
+     * @param situation the situation to set
+     */
+    public void setSituation(Integer situation) {
+        this.situation = situation;
+    }
+
+    /**
+     * @return the idLaudo
+     */
+    public Integer getIdLaudo() {
+        return idLaudo;
+    }
+
+    /**
+     * @param idLaudo the idLaudo to set
+     */
+    public void setIdLaudo(Integer idLaudo) {
+        this.idLaudo = idLaudo;
     }
 
 }

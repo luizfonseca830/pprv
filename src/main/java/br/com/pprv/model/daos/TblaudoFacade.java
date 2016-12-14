@@ -54,14 +54,12 @@ public class TblaudoFacade extends AbstractFacade<Tblaudo> {
             builder.append(" WHERE tblaudo.tmdatalaudo >= '").append(ConvData.parseToStringIso(dateInit)).append("'")
                     .append(" AND ")
                     .append(" tblaudo.tmdatalaudo <= '").append(ConvData.parseToStringIso(dateFinal)).append("'");
-        }else{
+        } else {
             builder.append(" WHERE tblaudo.tmdatalaudo <= '").append(ConvData.parseToStringIso(dateInit)).append("'");
         }
 
         builder.append(" group by tbgerencia.idgerencia")
                 .append(" order by total desc");
-        
-        System.out.println("ResultSQL:getLaudosPorGerencia:  " + builder.toString());
 
         return em.createNativeQuery(builder.toString()).getResultList();
     }
@@ -123,8 +121,17 @@ public class TblaudoFacade extends AbstractFacade<Tblaudo> {
                 .append(" group by idgerencia,nmgerencia ")
                 .append(" order by 3,4 desc ");
 
-        System.out.println("resultSQL:getLaudosPorGerenciaByLimiteExecucao:  " + builder.toString());
-
         return em.createNativeQuery(builder.toString()).getResultList();
+    }
+
+    public List<Tblaudo> findAllTblaudo(final EntityManager em) {
+        return em.createQuery("SELECT t FROM Tblaudo t", Tblaudo.class)
+                .getResultList();
+    }
+
+    public List<Tblaudo> findAllTblaudoByCondition(final Integer condition, final EntityManager em) {
+        return em.createQuery("SELECT t FROM Tblaudo t WHERE t.condicao =:condition", Tblaudo.class)
+                .setParameter("condition", condition)
+                .getResultList();
     }
 }

@@ -15,8 +15,8 @@ import java.util.List;
  *
  * @author JorgeFonseca
  */
-public class EquipamentoModel implements Serializable{
-    
+public class EquipamentoModel implements Serializable {
+
     private String nmEquipamento;
     private Integer criticidade;
     private String descEquipamento;
@@ -24,8 +24,8 @@ public class EquipamentoModel implements Serializable{
     private Tbtecnica idTecnica;
     private Integer idCondicao;
     private List<SubConjuntoModel> listSubConjuntoModels;
-    
-    public EquipamentoModel (){
+
+    public EquipamentoModel() {
         listSubConjuntoModels = new ArrayList<>();
     }
 
@@ -70,7 +70,7 @@ public class EquipamentoModel implements Serializable{
     public void setDescEquipamento(String descEquipamento) {
         this.descEquipamento = descEquipamento;
     }
-  
+
     /**
      * @return the idCondicao
      */
@@ -126,6 +126,5 @@ public class EquipamentoModel implements Serializable{
     public void setIdInspecao(Tbinspecao idInspecao) {
         this.idInspecao = idInspecao;
     }
-    
-    
+
 }

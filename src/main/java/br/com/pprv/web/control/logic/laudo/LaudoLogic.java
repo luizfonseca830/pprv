@@ -10,6 +10,7 @@ import br.com.pprv.model.entities.Tbequipamento;
 import br.com.pprv.model.entities.Tblaudo;
 import br.com.pprv.model.entities.Tbsubconjunto;
 import br.com.pprv.web.control.module.AbstractModuleCore;
+import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 
@@ -33,5 +34,13 @@ public class LaudoLogic extends AbstractModuleCore {
 
     public Tblaudo findTblaudoByEquipamentoAndSubConjunto(final Tbequipamento tbequipamento, final Tbsubconjunto tbsubconjunto) {
         return tblaudoFacade.findTblaudoByEquipamentoAndSubConjunto(tbequipamento, tbsubconjunto, super.getEM());
+    }
+
+    public List<Tblaudo> findAllTblaudo() {
+        return tblaudoFacade.findAllTblaudo(super.getEM());
+    }
+
+    public List<Tblaudo> findAllTblaudoByCondition(final Integer condition) {
+        return tblaudoFacade.findAllTblaudoByCondition(condition, super.getEM());
     }
 }

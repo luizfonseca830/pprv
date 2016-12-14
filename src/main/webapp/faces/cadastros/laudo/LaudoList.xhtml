@@ -19,7 +19,7 @@
             <div class="page-title">#{field.laudo}</div>
 
             <h:form id="resultLaudo">
-                <p:panel header="#{field.parametrodepesquisa}" toggleable="true" toggleSpeed="500">
+                <p:fieldset legend="#{field.parametrodepesquisa}" toggleable="false" toggleSpeed="500">
 
                     <h:panelGrid columns="2" cellspacing="10">
                         <h:outputText value="#{field.tecnica}" class="text-bold"/>
@@ -48,42 +48,48 @@
                                      oncomplete="PF('statusDialog').hide();PF('equipamentoall').update();"/>
 
 
-                </p:panel>
+                </p:fieldset>
                 <div class="space"/>
 
-                <p:panel id="panelResult" header="#{field.resultado} #{tecnicaBean.listTbequipamento.size()} encontrado(s)" toggleable="true" toggleSpeed="500"
+                <p:fieldset id="panelResult" legend="#{field.resultado} #{tecnicaBean.listTbequipamento.size()} encontrado(s)" 
+                         toggleable="true" toggleSpeed="500"
                          rendered="#{not empty tecnicaBean.listTbequipamento}">                                      
 
                     <p:dataTable id="dataTableResult" var="equipamento" 
                                  rowKey="#{equipamento.idequipamento}" value="#{tecnicaBean.listTbequipamento}"    
-                                 paginator="#{tecnicaBean.listTbequipamento.size() > 30}" paginatorPosition="top" 
+                                 paginator="true"
                                  rows="5" rendered="#{not empty tecnicaBean.listTbequipamento}"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10,15,20"
                                  emptyMessage="Nenhum resultado encontrado para a tecnica selecionada." 
                                  filteredValue="#{tecnicaBean.filterequipamento}" 
-                                 widgetVar="equipamentoall"
+                                 widgetVar="equipamentoLaudos"
                                  scrollable="true"                                                                  
-                                 resizableColumns="true">
+                                 resizableColumns="true"
+                                 filterEvent="enter">
 
                         <p:column headerText="#{field.condicao}">
 
-                            <h:graphicImage url="#{resource['images/QUADRADOVERDE.png']}" rendered="#{equipamento.condicao==1}"/>
-                            <h:graphicImage url="#{resource['images/QUADRADOAMARELO.png']}" rendered="#{equipamento.condicao==2}"/>
-                            <h:graphicImage url="#{resource['images/QUADRADOVERMELHO.png']}" rendered="#{equipamento.condicao==3}"/>
+                            <p:graphicImage value="#{resource['images/QUADRADOVERDE.png']}" 
+                                            rendered="#{equipamento.condicao==1}" width="30" height="25"/>
+                            <p:graphicImage value="#{resource['images/QUADRADOAMARELO.png']}" 
+                                            rendered="#{equipamento.condicao==2}" width="30" height="25"/>
+                            <p:graphicImage value="#{resource['images/QUADRADOVERMELHO.png']}" 
+                                            rendered="#{equipamento.condicao==3}" width="30" height="25"/>
 
                         </p:column>
 
                         <p:column headerText="#{field.nome} #{field.equipamento}" filterBy="#{equipamento.nmequipamenta}"  
-                                  filterMatchMode="contains" sortBy="#{equipamento.nmequipamenta}">
-                            <p:commandLink oncomplete="PF('dlgLaudo').show();" value="#{equipamento.nmequipamenta}" update=":dialog">
+                                  filterMatchMode="contains">
+                            <p:commandLink oncomplete="PF('dlgLaudo').show();" value="#{equipamento.nmequipamenta}" 
+                                           update=":dialog">
                                 <f:setPropertyActionListener for="dataTableOcorrencias" value="#{equipamento}" 
                                                              target="#{tecnicaBean.tbequipamentoSelected}"/> 
                             </p:commandLink>
                         </p:column>
 
                         <p:column headerText="#{field.tecnica}" filterBy="#{equipamento.idtecnica.nmtecnica}"  
-                                  filterMatchMode="contains" sortBy="#{equipamento.idtecnica.nmtecnica}">
+                                  filterMatchMode="contains">
                             <h:link value="#{equipamento.idtecnica.nmtecnica}" outcome="Laudo.jsf">
                                 <f:param name="idequipamento" value="#{equipamento.idequipamento}"/>
                             </h:link>
@@ -98,7 +104,7 @@
                     <p:blockUI block="dataTableResult" trigger="dataTableResult">					
                         <p:graphicImage value="#{resource['images/ajaxloadingbar.gif']}"/>
                     </p:blockUI>
-                </p:panel>
+                </p:fieldset>
 
             </h:form>
 
@@ -109,15 +115,8 @@
                       appendTo="@(body)"> 
 
                 <h:form id="formModeltLaudo" enctype="multipart/form-data">
-                    <h:panelGrid columns="4" cellspacing="10">                        
-                        <h:commandLink actionListener="#{tecnicaBean.updateStatusCondicaoEquipamento()}">
-                            <p:graphicImage value="#{resource['images/QUADRADOVERDE.png']}"
-                                            rendered="#{tecnicaBean.tbequipamentoSelected.condicao==1}"/>
-                            <p:graphicImage value="#{resource['images/QUADRADOAMARELO.png']}"
-                                            rendered="#{tecnicaBean.tbequipamentoSelected.condicao==2}"/>
-                            <p:graphicImage value="#{resource['images/QUADRADOVERMELHO.png']}" 
-                                            rendered="#{tecnicaBean.tbequipamentoSelected.condicao==3}"/>
-                        </h:commandLink>                        
+
+                    <h:panelGrid columns="3" cellspacing="10">                                                
 
                         <h:outputText value="#{tecnicaBean.tbequipamentoSelected.nmequipamenta}" class="text-bold"/>
 
@@ -128,7 +127,27 @@
                     <p:accordionPanel value="#{tecnicaBean.listLaudoMdl}" var="equipamentosubcojunto"
                                       activeIndex="-1">
                         <p:tab title="#{equipamentosubcojunto.tbequipamentoSubconjunto.idsubconjunto.nmsubconjunto}">                            
-                            <h:panelGrid columns="1" cellspacing="5">
+                            <h:panelGrid id="pgSituation" columns="2" cellspacing="5">
+
+                                <p:selectOneMenu value="#{equipamentosubcojunto.situation}">
+                                    <f:selectItem itemValue="1" itemLabel="Normal"/>
+                                    <f:selectItem itemValue="2" itemLabel="Alerta"/>
+                                    <f:selectItem itemValue="3" itemLabel="Critico"/>
+                                    <p:ajax event="change" update="pgSituationImg"/>
+                                </p:selectOneMenu>
+
+                                <h:panelGrid id="pgSituationImg">
+                                    <p:graphicImage value="#{resource['images/QUADRADOVERDE.png']}" 
+                                                    rendered="#{equipamentosubcojunto.situation==1}" width="30" height="25"/>
+                                    <p:graphicImage value="#{resource['images/QUADRADOAMARELO.png']}" 
+                                                    rendered="#{equipamentosubcojunto.situation==2}" width="30" height="25"/>
+                                    <p:graphicImage value="#{resource['images/QUADRADOVERMELHO.png']}" 
+                                                    rendered="#{equipamentosubcojunto.situation==3}" width="30" height="25"/>
+                                </h:panelGrid>
+
+                            </h:panelGrid>
+
+                            <h:panelGrid columns="1" cellspacing="5">                                                               
 
                                 <h:outputText id="diagnostico" value="Diagnóstico" class="text-bold"/>
                                 <p:inputTextarea id="textAreaDiagnostico" value="#{equipamentosubcojunto.nmDiagnostico}"
@@ -188,7 +207,7 @@
                                 <div style="width: 250px;"/>
 
                                 <h:outputText id="osmaximo" value="OM SAP:" class="text-bold"/>
-                                <p:inputText id="inputOsMaximo" value="#{equipamentosubcojunto.intOmSap}"/>
+                                <p:inputText id="inputOsMaximo" value="#{equipamentosubcojunto.strOmSap}"/>
 
                             </h:panelGrid>
                             <h:panelGrid columns="6" cellspacing="5">
@@ -246,13 +265,16 @@
                     <div class="space"/>
 
                     <p:commandButton value="Salvar" ajax="false" 
-                                     icon="ui-icon-check" update=":resultLaudo"
+                                     icon="ui-icon-check" update="@all"
+                                     onclick="PF('statusDialog').show();"
                                      action="#{tecnicaBean.createLaudos()}"
-                                     oncomplete="PF('dlgLaudo').hide();"/>
+                                     oncomplete="PF('dlgLaudo').hide();PF('statusDialog').hide();
+                                     PF('equipamentoLaudos').clearFilters();PF('equipamentoLaudos').update();"/>
 
                     <p:spacer/>
 
-                    <p:commandButton value="Gerar laudos" ajax="false" icon="ui-icon-check"/>
+                    <p:commandButton value="Gerar novos laudos" ajax="false" icon="ui-icon-check"
+                                     rendered="false"/>
 
                 </h:form>
 

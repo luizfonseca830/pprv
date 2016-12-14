@@ -31,7 +31,7 @@ public class TbequipamentoSubconjuntoFacade extends AbstractFacade<Tbequipamento
      * @return list of tbequipamentoSubconjunto
      */
     public List<TbequipamentoSubconjunto> getListAllTbequipamentoSubconjuntoByIdEquipamento(final Tbequipamento tbequipamento, EntityManager em) {
-        return em.createQuery("SELECT t FROM TbequipamentoSubconjunto t WHERE t.idequipamento =:idEquipamento", TbequipamentoSubconjunto.class)
+        return em.createQuery("SELECT t FROM TbequipamentoSubconjunto t WHERE t.idequipamento =:idEquipamento ORDER BY t.idsubconjunto.nmsubconjunto", TbequipamentoSubconjunto.class)
                 .setParameter("idEquipamento", tbequipamento)
                 .getResultList();
 
