@@ -17,7 +17,7 @@
 
                 <h:form>
 
-                    <h:panelGrid columns="4" cellspacing="10">
+                    <h:panelGrid columns="6" cellspacing="10">
                         <h:outputText value="Condição preditiva" class="text-bold"/>
                         <p:selectOneMenu id="condition" value="#{closeLaudoBean.condicaoFilter}">
                             <f:selectItem itemLabel="" itemValue="0"/>
@@ -27,13 +27,21 @@
                             <f:selectItem itemValue="4" itemLabel="Executado"/>
                         </p:selectOneMenu>
 
-                        <h:outputText value="#{field.tecnica}" class="text-bold" rendered="false"/>
+                        <h:outputText value="#{field.tecnica}" class="text-bold"/>
                         <p:selectOneMenu id="autoComplete" value="#{closeLaudoBean.tblaudoFilter}"
-                                         filter="true" filterMatchMode="contains" converter="converterEntity"
-                                         rendered="false">
+                                         filter="true" filterMatchMode="contains" converter="converterEntity">
                             <f:selectItem itemLabel=""/>
                             <f:selectItems value="#{closeLaudoBean.listTbtecnica}" var="tecnica" 
                                            itemValue="#{tecnica}" itemLabel="#{tecnica.nmtecnica}" >
+                            </f:selectItems>
+                        </p:selectOneMenu>
+
+                        <h:outputText value="Gerência" class="text-bold"/>
+                        <p:selectOneMenu id="autoCompleteGerencia" value="#{closeLaudoBean.tbgerenciaFilter}"
+                                         filter="true" filterMatchMode="contains" converter="converterEntity">
+                            <f:selectItem itemLabel=""/>
+                            <f:selectItems value="#{closeLaudoBean.listTbgerenciasFilters}" var="gerencia" 
+                                           itemValue="#{gerencia}" itemLabel="#{gerencia.nmgerencia}" >
                             </f:selectItems>
                         </p:selectOneMenu>
 
@@ -49,7 +57,7 @@
 
             <div class="space"/>
 
-            <p:fieldset id="fieldSetResult">
+            <p:fieldset id="fieldSetResult" rendered="#{not empty closeLaudoBean.listFecharLaudoModels}">
 
                 <h:form id="formResult">                    
 
@@ -63,7 +71,7 @@
                                rendered="#{not empty closeLaudoBean.listFecharLaudoModels}" var="laudo" >
 
                         <p:panel id="painelNote" header="##{laudo.tblaudo.idlaudo}">
-                            
+
                             <h:panelGrid columns="10" cellspacing="10">
 
                                 <h:outputText rendered="#{laudo.tblaudo.condicao!=4}"/>

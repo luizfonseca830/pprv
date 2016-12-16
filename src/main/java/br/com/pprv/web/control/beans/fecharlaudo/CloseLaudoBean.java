@@ -5,13 +5,17 @@
  */
 package br.com.pprv.web.control.beans.fecharlaudo;
 
+import br.com.pprv.model.entities.Tbgerencia;
 import br.com.pprv.model.entities.Tblaudo;
 import br.com.pprv.model.entities.Tbtecnica;
+import br.com.pprv.model.entities.Tbusuario;
 import br.com.pprv.model.entities.custom.FecharLaudoModel;
+import br.com.pprv.web.control.logic.gerencia.GerenciaLogic;
 import br.com.pprv.web.control.logic.laudo.LaudoLogic;
 import br.com.pprv.web.control.logic.tecnica.TecnicaLogic;
 import br.com.pprv.web.faces.constants.StatusConstants;
 import br.com.pprv.web.faces.utils.AbstractFacesContextUtils;
+import br.com.pprv.web.faces.utils.Shareds;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,15 +36,19 @@ public class CloseLaudoBean implements Serializable {
     private LaudoLogic laudoLogic;
     @EJB
     private TecnicaLogic tecnicaLogic;
+    @EJB
+    private GerenciaLogic gerenciaLogic;
 
     private List<Tblaudo> listTblaudos;
     private List<Tblaudo> listTblaudosFilters;
+    private List<Tbgerencia> listTbgerenciasFilters;
     private List<Tbtecnica> listTbtecnica;
     private List<Tblaudo> listTblaudoSelection;
     private List<FecharLaudoModel> listFecharLaudoModels;
 
     private Integer condicaoFilter;
     private Tbtecnica tblaudoFilter;
+    private Tbgerencia tbgerenciaFilter;
     private Tblaudo tblaudoSelected;
 
     @PostConstruct
@@ -48,40 +56,43 @@ public class CloseLaudoBean implements Serializable {
         listTblaudos = laudoLogic.findAllTblaudo();
         createFecharLaudoList();
         listTbtecnica = tecnicaLogic.listallTecnica();
+        listTbgerenciasFilters = gerenciaLogic.findAllTbgerencia();
     }
 
     public void search() {
-        if (condicaoFilter != null
-                && condicaoFilter >= 1) {
-            listTblaudos = laudoLogic.findAllTblaudoByCondition(condicaoFilter);
-            createFecharLaudoList();
-        } else {
-            listTblaudos = laudoLogic.findAllTblaudo();
-            createFecharLaudoList();            
-        }
+        listTblaudos = laudoLogic.findAllTblaudoByConditionOrTbtecnicaOrTbgerencia(condicaoFilter, tblaudoFilter, tbgerenciaFilter);
+        createFecharLaudoList();        
     }
 
     public void changeStatusToDone() {
 
         boolean result = false;
 
-        if (verifyThereIsAtLeastOneSelected()) {
-            for (final FecharLaudoModel laudo : listFecharLaudoModels) {
-                if (laudo.isExecutar()) {
-                    laudo.getTblaudo().setCondicao(StatusConstants.STATUS_LAUDO_EXECUTADO);
-                    laudo.getTblaudo().setTmdataexecucao(laudo.getTblaudo().getDtdataexecucao());
-                    result = laudoLogic.editTblaudo(laudo.getTblaudo());
-                }
-            }
+        final Tbusuario user = Shareds.getUser();
 
-            if (result) {
-                listFecharLaudoModels = null;
-                AbstractFacesContextUtils.addMessageInfo("Laudos executados com sucesso.");
+        if (user != null
+                && user.getIdperfil() != null
+                && user.getIdperfil().getNivelacessoperfil() == 2) {
+            if (verifyThereIsAtLeastOneSelected()) {
+                for (final FecharLaudoModel laudo : listFecharLaudoModels) {
+                    if (laudo.isExecutar()) {
+                        laudo.getTblaudo().setCondicao(StatusConstants.STATUS_LAUDO_EXECUTADO);
+                        laudo.getTblaudo().setTmdataexecucao(laudo.getTblaudo().getDtdataexecucao());
+                        result = laudoLogic.editTblaudo(laudo.getTblaudo());
+                    }
+                }
+
+                if (result) {
+                    listFecharLaudoModels = null;
+                    AbstractFacesContextUtils.addMessageInfo("Laudos executados com sucesso.");
+                } else {
+                    AbstractFacesContextUtils.addMessageWarn("Falha ao execuatr laudos.");
+                }
             } else {
-                AbstractFacesContextUtils.addMessageWarn("Falha ao execuatr laudos.");
+                AbstractFacesContextUtils.addMessageWarn("Nenhum laudo selecionado para executar.");
             }
         } else {
-            AbstractFacesContextUtils.addMessageWarn("Nenhum laudo selecionado para executar.");
+            AbstractFacesContextUtils.addMessageWarn("É necessário ter o perfil de Operador nível 2 para este tipo de operação.");
         }
     }
 
@@ -228,6 +239,34 @@ public class CloseLaudoBean implements Serializable {
      */
     public void setListFecharLaudoModels(List<FecharLaudoModel> listFecharLaudoModels) {
         this.listFecharLaudoModels = listFecharLaudoModels;
+    }
+
+    /**
+     * @return the listTbgerenciasFilters
+     */
+    public List<Tbgerencia> getListTbgerenciasFilters() {
+        return listTbgerenciasFilters;
+    }
+
+    /**
+     * @param listTbgerenciasFilters the listTbgerenciasFilters to set
+     */
+    public void setListTbgerenciasFilters(List<Tbgerencia> listTbgerenciasFilters) {
+        this.listTbgerenciasFilters = listTbgerenciasFilters;
+    }
+
+    /**
+     * @return the tbgerenciaFilter
+     */
+    public Tbgerencia getTbgerenciaFilter() {
+        return tbgerenciaFilter;
+    }
+
+    /**
+     * @param tbgerenciaFilter the tbgerenciaFilter to set
+     */
+    public void setTbgerenciaFilter(Tbgerencia tbgerenciaFilter) {
+        this.tbgerenciaFilter = tbgerenciaFilter;
     }
 
 }

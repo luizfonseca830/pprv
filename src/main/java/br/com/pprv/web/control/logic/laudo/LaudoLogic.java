@@ -7,8 +7,10 @@ package br.com.pprv.web.control.logic.laudo;
 
 import br.com.pprv.model.daos.TblaudoFacade;
 import br.com.pprv.model.entities.Tbequipamento;
+import br.com.pprv.model.entities.Tbgerencia;
 import br.com.pprv.model.entities.Tblaudo;
 import br.com.pprv.model.entities.Tbsubconjunto;
+import br.com.pprv.model.entities.Tbtecnica;
 import br.com.pprv.web.control.module.AbstractModuleCore;
 import java.util.List;
 import javax.ejb.EJB;
@@ -42,5 +44,9 @@ public class LaudoLogic extends AbstractModuleCore {
 
     public List<Tblaudo> findAllTblaudoByCondition(final Integer condition) {
         return tblaudoFacade.findAllTblaudoByCondition(condition, super.getEM());
+    }
+
+    public List<Tblaudo> findAllTblaudoByConditionOrTbtecnicaOrTbgerencia(final Integer condition, final Tbtecnica tbtecnica, final Tbgerencia tbgerencia) {
+        return tblaudoFacade.findAllTblaudoByConditionOrTbtecnicaOrTbgerencia(condition, tbtecnica, tbgerencia, super.getEM());
     }
 }

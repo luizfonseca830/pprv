@@ -6,14 +6,17 @@
 package br.com.pprv.model.daos;
 
 import br.com.pprv.model.entities.Tbequipamento;
+import br.com.pprv.model.entities.Tbgerencia;
 import br.com.pprv.model.entities.Tblaudo;
 import br.com.pprv.model.entities.Tbsubconjunto;
+import br.com.pprv.model.entities.Tbtecnica;
 import br.com.pprv.web.faces.converter.ConvData;
 import br.com.pprv.web.faces.converter.TimeControl;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -133,5 +136,57 @@ public class TblaudoFacade extends AbstractFacade<Tblaudo> {
         return em.createQuery("SELECT t FROM Tblaudo t WHERE t.condicao =:condition", Tblaudo.class)
                 .setParameter("condition", condition)
                 .getResultList();
+    }
+
+    public List<Tblaudo> findAllTblaudoByConditionOrTbtecnicaOrTbgerencia(final Integer condition,
+            final Tbtecnica tbtecnica, final Tbgerencia tbgerencia, final EntityManager em) {
+
+        StringBuilder filtro = new StringBuilder();
+        boolean conditionIsNull = true;
+        boolean tbgerenciaIsNull = true;
+        boolean tbtecnicaIsNull = true;
+
+        filtro.append(" SELECT t FROM Tblaudo t ");
+
+        if (condition != null
+                && condition > 0) {
+            filtro.append(" WHERE t.condicao =:condition ");
+            conditionIsNull = false;
+        }
+
+        if (tbgerencia != null) {
+            tbgerenciaIsNull = false;
+            if (conditionIsNull) {
+                filtro.append(" WHERE t.idgerencia =:idGerencia ");
+            } else {
+                filtro.append(" AND t.idgerencia =:idGerencia ");
+            }
+        }
+
+        if (tbtecnica != null) {
+            tbtecnicaIsNull = false;
+            if (conditionIsNull && tbgerenciaIsNull) {
+                filtro.append(" WHERE t.idequipamento.idtecnica=:idTecnica ");
+            } else {
+                filtro.append(" AND t.idequipamento.idtecnica=:idTecnica ");
+            }
+        }
+
+        System.out.println("queryResult: " + filtro.toString());
+
+        TypedQuery<Tblaudo> q = em.createQuery(filtro.toString(), Tblaudo.class);
+        if (!conditionIsNull) {
+            q.setParameter("condition", condition);
+        }
+
+        if (!tbgerenciaIsNull) {
+            q.setParameter("idGerencia", tbgerencia);
+        }
+
+        if (!tbtecnicaIsNull) {
+            q.setParameter("idTecnica", tbtecnica);
+        }
+
+        return q.getResultList();
     }
 }
