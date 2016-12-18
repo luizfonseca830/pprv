@@ -19,7 +19,8 @@
                     <h:panelGrid columns="2" cellspacing="10">
 
                         <h:outputText value="Condição" class="text-bold"/>
-                        <h:graphicImage url="#{equipamentoBean.tbequipamento.condicao == 1? resource['images/QUADRADOVERDE.png']: equipamentoBean.tbequipamento.condicao == 2 ? resource['images/QUADRADOAMARELO.png']:resource['images/QUADRADOVERMELHO.png']}"/>                        
+                        <p:graphicImage value="#{equipamentoBean.tbequipamento.condicao == 1? resource['images/QUADRADOVERDE.png']: equipamentoBean.tbequipamento.condicao == 2 ? resource['images/QUADRADOAMARELO.png']:resource['images/QUADRADOVERMELHO.png']}"
+                                        width="30" height="25"/>                        
 
                         <h:outputText value="Nome equipamento" class="text-bold"/>
                         <h:outputText value="#{equipamentoBean.tbequipamento.nmequipamenta}"/>

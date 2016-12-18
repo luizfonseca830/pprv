@@ -10,6 +10,7 @@ import br.com.pprv.model.entities.Tbgerencia;
 import br.com.pprv.model.entities.Tblaudo;
 import br.com.pprv.model.entities.Tbsubconjunto;
 import br.com.pprv.model.entities.Tbtecnica;
+import br.com.pprv.web.faces.constants.StatusConstants;
 import br.com.pprv.web.faces.converter.ConvData;
 import br.com.pprv.web.faces.converter.TimeControl;
 import java.util.Date;
@@ -188,5 +189,18 @@ public class TblaudoFacade extends AbstractFacade<Tblaudo> {
         }
 
         return q.getResultList();
+    }
+
+    public List<Tblaudo> findAllTblaudoByEquipamentoECondicaoNaoExecutado(final Tbequipamento tbequipamento, final EntityManager em) {
+        return em.createQuery("SELECT t FROM Tblaudo t WHERE t.idequipamento=:idEquipamento AND t.condicao !=:condition ORDER BY t.condicao DESC", Tblaudo.class)
+                .setParameter("idEquipamento", tbequipamento)
+                .setParameter("condition", StatusConstants.STATUS_LAUDO_EXECUTADO)
+                .getResultList();
+    }
+
+    public List<Tblaudo> findAllTblaudoByEquipamento(final Tbequipamento tbequipamento, final EntityManager em) {
+        return em.createQuery("SELECT t FROM Tblaudo t WHERE t.idequipamento=:idEquipamento ORDER BY t.condicao DESC", Tblaudo.class)
+                .setParameter("idEquipamento", tbequipamento)
+                .getResultList();
     }
 }

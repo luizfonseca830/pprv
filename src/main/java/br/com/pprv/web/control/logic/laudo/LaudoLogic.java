@@ -49,4 +49,12 @@ public class LaudoLogic extends AbstractModuleCore {
     public List<Tblaudo> findAllTblaudoByConditionOrTbtecnicaOrTbgerencia(final Integer condition, final Tbtecnica tbtecnica, final Tbgerencia tbgerencia) {
         return tblaudoFacade.findAllTblaudoByConditionOrTbtecnicaOrTbgerencia(condition, tbtecnica, tbgerencia, super.getEM());
     }
+
+    public List<Tblaudo> findAllTblaudoByEquipamentoECondicaoNaoExecutado(final Tbequipamento tbequipamento) {
+        return tblaudoFacade.findAllTblaudoByEquipamentoECondicaoNaoExecutado(tbequipamento, super.getEM());
+    }
+
+    public List<Tblaudo> findAllTblaudoByEquipamento(final Tbequipamento tbequipamento) {
+        return tblaudoFacade.findAllTblaudoByEquipamento(tbequipamento, super.getEM());
+    }
 }

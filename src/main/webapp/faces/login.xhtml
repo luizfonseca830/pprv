@@ -9,8 +9,8 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>PPRV - Sistema Integrado Preditiva</title>        
-          <link href="#{resource['images/logos/valelogo.png']}" rel="shortcut icon" type="image/x-icon"/>
-    
+        <link href="#{resource['images/logos/valelogo.png']}" rel="shortcut icon" type="image/x-icon"/>
+
         <h:outputStylesheet name="css/style_login.css"/>
 
         <style>              
@@ -54,7 +54,8 @@ and open the template in the editor.
                                             </td>
                                             <td>
                                                 <p:inputText id="nmloginusuario" autocomplete="off" 
-                                                             value="#{loginBean.tbusuario.nmloginusuario}" label="Usuário" required="true" />
+                                                             value="#{loginBean.tbusuario.nmloginusuario}" label="Usuário" 
+                                                             required="true" requiredMessage="É necessário informar o usuário"/>
                                             </td>                        
                                         </tr>
                                         <tr>                            
@@ -63,7 +64,8 @@ and open the template in the editor.
                                             </td>
                                             <td>
                                                 <p:inputText id="nmsenhausuario" autocomplete="off" type="password" 
-                                                             value="#{loginBean.tbusuario.nmsenhausuario}" label="Senha" required="true"/>  
+                                                             value="#{loginBean.tbusuario.nmsenhausuario}" label="Senha" 
+                                                             required="true" requiredMessage="É necessário informar a senha"/>  
                                             </td>
                                         </tr>
                                         <tr>
@@ -72,7 +74,9 @@ and open the template in the editor.
                                                 <p:commandButton                                    
                                                     value="#{field.entrar}" ajax="false" 
                                                     style="margin:0;float: left;" update="messages"
-                                                    action="#{loginBean.makeLogin()}" icon="ui-icon-locked" />  
+                                                    action="#{loginBean.makeLogin()}" icon="ui-icon-locked" 
+                                                    onclick="PF('statusDialog').show();"
+                                                    oncomplete="PF('statusDialog').hide();"/>  
 
                                             </td>
                                         </tr>                                        
@@ -88,8 +92,12 @@ and open the template in the editor.
 
                         </table>   
                     </h:form>
+                    <p:dialog  widgetVar="statusDialog" draggable="false" closable="false" modal="true" resizable="false"
+                               showHeader="false" appendTo="@(body)">                
+                        <p:graphicImage value="#{resource['images/ajaxloadingbar.gif']}" />                 
+                    </p:dialog>
                 </div>                
-                
+
             </div>
 
         </div>

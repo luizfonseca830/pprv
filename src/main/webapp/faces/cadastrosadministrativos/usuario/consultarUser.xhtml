@@ -10,8 +10,10 @@
         <h:outputText id="page-rule" rendered="#{menuBean.isRule('usuario')}"/>
         <h:body>
 
+            <div class="page-title">#{field.usuario}</div>
+
             <h:form id="consulta">
-                <p:panel header="#{field.consultadeusuario}">
+                <p:fieldset legend="#{field.consultadeusuario}">
 
                     <h:panelGrid columns="2" cellspacing="10" cellpadding="10" >
                         <h:outputText  value="#{field.usuario}" class="text-bold"/>
@@ -33,28 +35,51 @@
                         <p:selectBooleanCheckbox value="#{cadastroUsuarioBean.tbusuario.bolativo == null ? false : cadastroUsuarioBean.tbusuario.bolativo}" disabled="true"/>
 
                         <h:outputText value="#{field.ultimoacesso}" class="text-bold"/>
-                        <h:outputText value="#{cadastroUsuarioBean.tbusuario.tmdataultimoacesso}" />
+                        <h:outputText value="#{cadastroUsuarioBean.tbusuario.tmdataultimoacesso}" >
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="GMT-04"/>
+                        </h:outputText>
 
                     </h:panelGrid>
 
 
-                    <p:commandButton value="#{field.editar}" action="/faces/cadastrosadministrativos/usuario/editarUser.xhtml" 
+                    <p:commandButton value="#{field.editar}" action="editarUser.xhtml" 
                                      ajax="false" icon="ui-icon-pencil" onclick="PF('statusDialog').show();"
                                      oncomplete="PF('statusDialog').hide()">
                         <f:param name="user" value="#{cadastroUsuarioBean.tbusuario.idusuario}"/>
                     </p:commandButton>
                     <p:spacer width="5px"/>
-                    <p:commandButton value="#{field.voltar}" action="/faces/cadastrosadministrativos/usuario/usuarioList.xhtml" 
+                    <p:commandButton value="#{field.voltar}" action="usuarioList.xhtml" ajax="false"
                                      immediate="true" icon="ui-icon-arrowreturnthick-1-w" onclick="PF('statusDialog').show();"
                                      oncomplete="PF('statusDialog').hide()"/>
-                </p:panel>              
+                </p:fieldset>              
 
-                <p:panel header="#{field.acesso}">
+                <p:fieldset>
                     <h:outputText id="not-result" value="#{message.aindanaofoiadicionadonenhumacessoparaesseusuario}"  
                                   rendered="#{empty cadastroUsuarioBean.listAcessos}"/>
                     <p:dataTable id="id-datatable"  var="access" value="#{cadastroUsuarioBean.listAcessos}"
-                                 rowKey="#{access.idacesso}" paginator="#{cadastroUsuarioBean.listAcessos.size() > 30}"
-                                 paginatorPosition="bottom" rows="18" selectionMode="single" rendered="#{not empty cadastroUsuarioBean.listAcessos}" >
+                                 rowKey="#{access.idacesso}" paginator="true"
+                                 rows="5"
+                                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,15,20" emptyMessage="#{message.nenhumresultadoencontrado}"
+                                 rendered="#{not empty cadastroUsuarioBean.listAcessos}" >
+
+                        <f:facet name="header">
+                            <div style="text-align: left;">                                
+                                <p:commandButton value="#{field.acesso}" action="editAccessUser.xhtml" 
+                                                 ajax="false" icon="ui-icon-locked" onclick="PF('statusDialog').show();"
+                                                 oncomplete="PF('statusDialog').hide()">
+                                    <f:param name="user" value="#{cadastroUsuarioBean.tbusuario.idusuario}"/>
+                                </p:commandButton>
+
+                                <p:spacer width="5px"/>
+
+                                <p:commandButton value="#{field.copiaracesso}" action="copiarAcesso.xhtml" 
+                                                 ajax="false" icon="ui-icon-locked" onclick="PF('statusDialog').show();"
+                                                 oncomplete="PF('statusDialog').hide()">
+                                    <f:param name="user" value="#{cadastroUsuarioBean.tbusuario.idusuario}"/>
+                                </p:commandButton>
+                            </div>
+                        </f:facet>
 
                         <p:column headerText="#{field.modulo}">
                             #{access.idmenu.idmodulo.nmmodulo}
@@ -67,21 +92,7 @@
 
                     <p:spacer height="10px"/>
 
-                    <h:panelGrid columns="2" cellspacing="5" cellpadding="10">
-                        <p:commandButton value="#{field.acesso}" action="/faces/cadastrosadministrativos/usuario/editAccessUser.xhtml" 
-                                         ajax="false" icon="ui-icon-locked" onclick="PF('statusDialog').show();"
-                                         oncomplete="PF('statusDialog').hide()">
-                            <f:param name="user" value="#{cadastroUsuarioBean.tbusuario.idusuario}"/>
-                        </p:commandButton>
-
-                        <p:commandButton value="#{field.copiaracesso}" action="/faces/cadastrosadministrativos/usuario/copiarAcesso.xhtml" 
-                                         ajax="false" icon="ui-icon-locked" onclick="PF('statusDialog').show();"
-                                         oncomplete="PF('statusDialog').hide()">
-                            <f:param name="user" value="#{cadastroUsuarioBean.tbusuario.idusuario}"/>
-                        </p:commandButton>
-
-                    </h:panelGrid>
-                </p:panel>   
+                </p:fieldset>   
             </h:form>
         </h:body>
     </ui:define>

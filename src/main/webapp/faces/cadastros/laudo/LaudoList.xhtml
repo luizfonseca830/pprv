@@ -52,8 +52,8 @@
                 <div class="space"/>
 
                 <p:fieldset id="panelResult" legend="#{field.resultado} #{tecnicaBean.listTbequipamento.size()} encontrado(s)" 
-                         toggleable="true" toggleSpeed="500"
-                         rendered="#{not empty tecnicaBean.listTbequipamento}">                                      
+                            toggleable="true" toggleSpeed="500"
+                            rendered="#{not empty tecnicaBean.listTbequipamento}">                                      
 
                     <p:dataTable id="dataTableResult" var="equipamento" 
                                  rowKey="#{equipamento.idequipamento}" value="#{tecnicaBean.listTbequipamento}"    
@@ -76,6 +76,8 @@
                                             rendered="#{equipamento.condicao==2}" width="30" height="25"/>
                             <p:graphicImage value="#{resource['images/QUADRADOVERMELHO.png']}" 
                                             rendered="#{equipamento.condicao==3}" width="30" height="25"/>
+                            <p:graphicImage value="#{resource['images/QUADRADOAZUL.png']}" 
+                                            rendered="#{equipamento.condicao==4}" width="30" height="25"/>
 
                         </p:column>
 
@@ -133,6 +135,7 @@
                                     <f:selectItem itemValue="1" itemLabel="Normal"/>
                                     <f:selectItem itemValue="2" itemLabel="Alerta"/>
                                     <f:selectItem itemValue="3" itemLabel="Critico"/>
+                                    <f:selectItem itemValue="4" itemLabel="Executado"/>
                                     <p:ajax event="change" update="pgSituationImg"/>
                                 </p:selectOneMenu>
 
@@ -143,6 +146,8 @@
                                                     rendered="#{equipamentosubcojunto.situation==2}" width="30" height="25"/>
                                     <p:graphicImage value="#{resource['images/QUADRADOVERMELHO.png']}" 
                                                     rendered="#{equipamentosubcojunto.situation==3}" width="30" height="25"/>
+                                    <p:graphicImage value="#{resource['images/QUADRADOAZUL.png']}" 
+                                                    rendered="#{equipamentosubcojunto.situation==4}" width="30" height="25"/>
                                 </h:panelGrid>
 
                             </h:panelGrid>
@@ -274,7 +279,10 @@
                     <p:spacer/>
 
                     <p:commandButton value="Gerar novos laudos" ajax="false" icon="ui-icon-check"
-                                     rendered="false"/>
+                                     action="#{tecnicaBean.gerarNovosLaudos()}"
+                                     rendered="false" onclick="PF('statusDialog').show();"
+                                     oncomplete="PF('dlgLaudo').hide();PF('statusDialog').hide();
+                                     PF('equipamentoLaudos').clearFilters();PF('equipamentoLaudos').update();"/>
 
                 </h:form>
 

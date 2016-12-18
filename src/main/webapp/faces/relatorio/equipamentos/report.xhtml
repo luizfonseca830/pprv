@@ -30,9 +30,10 @@ and open the template in the editor.
                         <h:outputText value="#{field.condicao}" class="text-bold"/>
                         <p:selectOneMenu id="autoComplete" value="#{relEquipamentosBean.condicaoEquipamento}"
                                          filter="true" filterMatchMode="contains">
-                            <f:selectItem itemLabel="Verde" itemValue="1"/>
-                            <f:selectItem itemLabel="Amarelo" itemValue="2"/>
-                            <f:selectItem itemLabel="Vermelho" itemValue="3"/>
+                            <f:selectItem itemLabel="Normal" itemValue="1"/>
+                            <f:selectItem itemLabel="Alerta" itemValue="2"/>
+                            <f:selectItem itemLabel="Critico" itemValue="3"/>
+                            <f:selectItem itemLabel="Executado" itemValue="4"/>
                         </p:selectOneMenu>
 
                     </h:panelGrid>
@@ -84,9 +85,12 @@ and open the template in the editor.
 
                         <p:column>
 
-                            <h:graphicImage url="#{resource['images/QUADRADOVERDE.png']}" rendered="#{equipamento.condicao==1}"/>
-                            <h:graphicImage url="#{resource['images/QUADRADOAMARELO.png']}" rendered="#{equipamento.condicao==2}"/>
-                            <h:graphicImage url="#{resource['images/QUADRADOVERMELHO.png']}" rendered="#{equipamento.condicao==3}"/>
+                            <p:graphicImage value="#{resource['images/QUADRADOVERDE.png']}" 
+                                            rendered="#{equipamento.condicao==1}" width="30" height="25"/>
+                            <p:graphicImage value="#{resource['images/QUADRADOAMARELO.png']}" 
+                                            rendered="#{equipamento.condicao==2}" width="30" height="25"/>
+                            <p:graphicImage value="#{resource['images/QUADRADOVERMELHO.png']}" 
+                                            rendered="#{equipamento.condicao==3}" width="30" height="25"/>
 
                         </p:column>
 

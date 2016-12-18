@@ -9,7 +9,7 @@
     <ui:define name="context">
         <h:outputText id="page-rule" rendered="#{menuBean.isRule('usuario')}"/>      
 
-        <div class="page-title">#{field.editaracessodeusuario}</div>
+        <div class="page-title">#{field.usuario}</div>
 
         <style>
             .ui-picklist .ui-picklist-list {
@@ -23,7 +23,7 @@
         <h:body>
 
             <h:form>
-                <p:panel>
+                <p:fieldset legend="Editar acesso do usuário: #{cadastroUsuarioBean.tbusuario.nmnomeusuario}">
                     <p:pickList id="pojoPickList" value="#{cadastroUsuarioBean.pickList}" var="acesso"   
                                 itemValue="#{acesso}" itemLabel="#{acesso.idmodulo.nmmodulo}" converter="converterEntity"  
                                 showCheckbox="true"  
@@ -40,16 +40,16 @@
                     <h:panelGrid columns="2" cellspacing="10" cellpadding="10">
                         <p:commandButton value="#{field.salvar}" action="#{cadastroUsuarioBean.createAccessUser()}" 
                                          icon="ui-icon-disk" onclick="PF('statusDialog').show();" 
-                                         oncomplete="PF('statusDialog').hide();" />
+                                         oncomplete="PF('statusDialog').hide();" ajax="false"/>
 
-                        <p:commandButton value="#{field.voltar}" action="/faces/cadastrosadministrativos/usuario/consultarUser.xhtml" 
-                                         immediate="true" icon="ui-icon-arrowreturnthick-1-w" 
+                        <p:commandButton value="#{field.voltar}" action="consultarUser.xhtml" 
+                                         immediate="true" icon="ui-icon-arrowreturnthick-1-w" ajax="false"
                                          onclick="PF('statusDialog').show();" oncomplete="PF('statusDialog').hide();">
                             <f:param name="user" value="#{cadastroUsuarioBean.tbusuario.idusuario}"/>
                         </p:commandButton>
 
                     </h:panelGrid>
-                </p:panel>
+                </p:fieldset>
             </h:form>
         </h:body>
     </ui:define>

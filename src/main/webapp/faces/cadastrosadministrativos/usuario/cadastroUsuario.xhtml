@@ -9,8 +9,9 @@
     <ui:define name="context">
         <h:outputText id="page-rule" rendered="#{menuBean.isRule('usuario')}"/>
         <h:body>            
+            <div class="page-title">#{field.usuario}</div>
 
-            <p:panel header="#{field.cadastrodeusuario}">
+            <p:fieldset legend="#{field.cadastrodeusuario}">
                 <h:form id="cadastro">
                     <h:panelGrid columns="3" cellspacing="10" cellpadding="10">
                         <h:outputText value="#{field.usuario}" class="text-bold"/>
@@ -43,13 +44,14 @@
                         <p:commandButton value="#{field.salvar}" action="#{cadastroUsuarioBean.criarUsuario()}" ajax="false" 
                                          icon="ui-icon-disk" onclick="PF('statusDialog').show();"
                                          oncomplete="PF('statusDialog').hide()" />
-                        <p:commandButton value="#{field.voltar}" action="/faces/cadastrosadministrativos/usuario/usuarioList.xhtml" 
+
+                        <p:commandButton value="#{field.voltar}" action="usuarioList.xhtml" 
                                          immediate="true" icon="ui-icon-arrowreturnthick-1-w" onclick="PF('statusDialog').show();"
-                                         oncomplete="PF('statusDialog').hide()"/>
+                                         oncomplete="PF('statusDialog').hide()" ajax="false"/>
 
                     </h:panelGrid>
                 </h:form>
-            </p:panel>
+            </p:fieldset>
 
         </h:body>
     </ui:define>

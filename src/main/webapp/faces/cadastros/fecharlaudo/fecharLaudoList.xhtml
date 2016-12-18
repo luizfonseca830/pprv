@@ -72,11 +72,22 @@
 
                         <p:panel id="painelNote" header="##{laudo.tblaudo.idlaudo}">
 
-                            <h:panelGrid columns="10" cellspacing="10">
+                            <h:panelGrid id="pgEncerrarLaudo" columns="12" cellspacing="10">
+                                <h:outputText/>
+                                <p:column>
+                                    <p:graphicImage value="#{resource['images/QUADRADOVERDE.png']}" 
+                                                    rendered="#{laudo.tblaudo.condicao==1}" width="30" height="25"/>
+                                    <p:graphicImage value="#{resource['images/QUADRADOAMARELO.png']}" 
+                                                    rendered="#{laudo.tblaudo.condicao==2}" width="30" height="25"/>
+                                    <p:graphicImage value="#{resource['images/QUADRADOVERMELHO.png']}" 
+                                                    rendered="#{laudo.tblaudo.condicao==3}" width="30" height="25"/>
+                                    <p:graphicImage value="#{resource['images/QUADRADOAZUL.png']}" 
+                                                    rendered="#{laudo.tblaudo.condicao==4}" width="30" height="25"/>
+                                </p:column>
 
                                 <h:outputText rendered="#{laudo.tblaudo.condicao!=4}"/>
                                 <p:selectBooleanCheckbox value="#{laudo.executar}"
-                                                         rendered="#{laudo.tblaudo.condicao!=4}">
+                                                         rendered="#{laudo.tblaudo.condicao!=4}">                                    
                                 </p:selectBooleanCheckbox>
 
                                 <h:outputText value="N° OS" class="text-bold"/>
@@ -85,9 +96,10 @@
                                 <h:outputText value="Data execução" class="text-bold"/>
                                 <p:calendar id="calendarDataExecucao" value="#{laudo.tblaudo.dtdataexecucao}"
                                             mode="popup" showOn="button" 
-                                            navigator="true" required="#{laudo.executar}"
+                                            navigator="true" required="#{closeLaudoBean.isRequired(laudo)}"
                                             requiredMessage="#{message.camponaopodeservazio}"
-                                            rendered="#{laudo.tblaudo.condicao!=4}"/>
+                                            rendered="#{laudo.tblaudo.condicao!=4}">                                    
+                                </p:calendar>
 
                                 <h:outputText value="#{laudo.tblaudo.dtdataexecucao}" rendered="#{laudo.tblaudo.condicao==4}">
                                     <f:convertDateTime pattern="dd/MM/yyyy"/>
@@ -97,7 +109,7 @@
                                 <h:outputText value="#{laudo.tblaudo.idequipamento.nmequipamenta}"/>
 
                                 <h:outputText value="Tecnica" class="text-bold"/>
-                                <h:outputText value="#{laudo.tblaudo.idequipamento.idtecnica.nmtecnica}"/>                                
+                                <h:outputText value="#{laudo.tblaudo.idequipamento.idtecnica.nmtecnica}"/>                                                                
 
                             </h:panelGrid>
 
@@ -117,7 +129,7 @@
                                 <h:outputText value="Observação" class="text-bold"
                                               rendered="#{laudo.tblaudo.condicao!=4}"/>
                                 <p:inputTextarea id="laudoObservacao" value="#{laudo.tblaudo.nmobservacao}" 
-                                                 required="#{laudo.executar}" cols="60" requiredMessage="#{message.camponaopodeservazio}"
+                                                 required="#{closeLaudoBean.isRequired(laudo)}" cols="60" requiredMessage="#{message.camponaopodeservazio}"
                                                  rendered="#{laudo.tblaudo.condicao!=4}"/>
 
                                 <h:outputText value="Observação" class="text-bold" rendered="#{laudo.tblaudo.condicao==4}"/>

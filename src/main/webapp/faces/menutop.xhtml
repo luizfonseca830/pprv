@@ -30,7 +30,9 @@
 
                 <p:commandButton icon="ui-icon-person" title="visualizar os detalhes do seu usuario" 
                                  value="#{shareds.getUser().nmnomeusuario}" 
-                                 action="/faces/cadastrosadministrativos/usuario/meusDados.xhtml" ajax="false">
+                                 action="/faces/cadastrosadministrativos/usuario/meusDados.xhtml" ajax="false"
+                                 onclick="PF('statusDialog').show();"
+                                 oncomplete="PF('statusDialog').hide();">
                     <f:param id="param" name="user" value="#{shareds.getUser().idusuario}"/>
                 </p:commandButton>                
 
@@ -40,9 +42,13 @@
 
                 <p:commandButton value="#{field.paginainicial}" title="volta para a pagina inicial" 
                                  icon="ui-icon-home" action="/faces/index.xhtml?faces-redirect=true" 
-                                 ajax="false"/>
+                                 ajax="false"
+                                 onclick="PF('statusDialog').show();"
+                                 oncomplete="PF('statusDialog').hide();"/>
                 <p:commandButton value="#{field.sair}" title="encerrar sua sessao no sistema" 
-                                 icon="icon-red ui-icon-logout" action="#{shareds.logout()}" ajax="false"/>
+                                 icon="icon-red ui-icon-logout" action="#{shareds.logout()}" ajax="false"
+                                 onclick="PF('statusDialog').show();"
+                                 oncomplete="PF('statusDialog').hide();"/>
 
             </f:facet>
 

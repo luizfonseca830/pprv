@@ -10,8 +10,10 @@
         <h:outputText id="page-rule" rendered="#{menuBean.isRule('usuario')}"/>
 
         <h:body>
-            <h:form id="form-copiar">
-                <p:panel id="copia-acesso" header="#{field.copiaracesso}">
+            <div class="page-title">#{field.usuario}</div>
+
+            <p:fieldset id="copia-acesso" legend="#{field.copiaracesso}">
+                <h:form id="form-copiar">
                     <h:panelGrid columns="3" cellspacing="30">
                         <h:outputText value="#{field.copiaracessousuario}:" class="text-bold"/>  
 
@@ -29,17 +31,18 @@
                     <h:panelGrid columns="2" cellspacing="10" cellpadding="10">
                         <p:commandButton value="#{field.copiaracesso}" action="#{cadastroUsuarioBean.copiarAcesso()}" 
                                          icon="ui-icon-transferthick-e-w" onclick="PF('statusDialog').show();"
-                                         oncomplete="PF('statusDialog').hide()"/>
+                                         oncomplete="PF('statusDialog').hide()" ajax="false"/>
 
-                        <p:commandButton value="#{field.voltar}" action="/faces/cadastrosadministrativos/usuario/consultarUser.xhtml" 
+                        <p:commandButton value="#{field.voltar}" action="consultarUser.xhtml" 
                                          immediate="true" icon="ui-icon-arrowreturnthick-1-w" onclick="PF('statusDialog').show();"
-                                         oncomplete="PF('statusDialog').hide()">
+                                         oncomplete="PF('statusDialog').hide()" ajax="false">
                             <f:param name="user" value="#{cadastroUsuarioBean.tbusuario.idusuario}"/>
                         </p:commandButton>
 
                     </h:panelGrid>
-                </p:panel>
-            </h:form>
+                </h:form>
+            </p:fieldset>
+
         </h:body>
     </ui:define>
 </ui:composition>

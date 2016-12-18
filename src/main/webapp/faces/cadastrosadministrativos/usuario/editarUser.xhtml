@@ -12,8 +12,10 @@
 
         <h:body>
 
-            <h:form id="editar-user">
-                <p:panel header="#{field.editar} #{field.usuario}">
+            <div class="page-title">#{field.usuario}</div>
+
+            <p:fieldset legend="#{field.editar} #{field.usuario}">
+                <h:form id="editar-user">
 
                     <h:panelGrid columns="2" cellspacing="15" cellpadding="15">
                         <h:outputText  value="#{field.usuario}" class="text-bold"/>
@@ -38,19 +40,20 @@
                                         itemLabel="#{perfil.nmperfil}" converter="converterEntity" 
                                         dropdown="true" scrollHeight="250"/>
 
-
                         <p:commandButton value="#{field.salvar}" action="#{cadastroUsuarioBean.editUser()}"
                                          icon="ui-icon-disk" onclick="PF('statusDialog').show();"
                                          oncomplete="PF('statusDialog').hide()" ajax="false"/>
-                        <p:commandButton value="#{field.voltar}" action="/faces/cadastrosadministrativos/usuario/consultarUser.xhtml" 
+
+                        <p:commandButton value="#{field.voltar}" action="consultarUser.xhtml"  ajax="false"
                                          immediate="true" icon="ui-icon-arrowreturnthick-1-w" onclick="PF('statusDialog').show();"
                                          oncomplete="PF('statusDialog').hide()">
                             <f:param name="user" value="#{cadastroUsuarioBean.tbusuario.idusuario}"/>
                         </p:commandButton>
 
                     </h:panelGrid>
-                </p:panel>
-            </h:form>
+                </h:form>
+            </p:fieldset>
+
         </h:body>
     </ui:define>
 </ui:composition>
