@@ -19,6 +19,7 @@ import br.com.pprv.web.faces.utils.AbstractFacesContextUtils;
 import br.com.pprv.web.faces.utils.Shareds;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -85,7 +86,9 @@ public class CloseLaudoBean implements Serializable {
             for (final FecharLaudoModel laudo : listFecharLaudoModels) {
                 if (laudo.isExecutar()) {
                     laudo.getTblaudo().setCondicao(StatusConstants.STATUS_LAUDO_EXECUTADO);
-                    laudo.getTblaudo().setTmdataexecucao(laudo.getTblaudo().getDtdataexecucao());
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(laudo.getTblaudo().getDtdataexecucao());
+                    laudo.getTblaudo().setTmdataexecucao(calendar.getTime());
                     result = laudoLogic.editTblaudo(laudo.getTblaudo());
                     if (result) {
                         final List<Tblaudo> listTblaudosByEquipamento = laudoLogic.findAllTblaudoByEquipamentoECondicaoNaoExecutado(laudo.getTblaudo().getIdequipamento());

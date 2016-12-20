@@ -55,8 +55,7 @@ public class Tbusuario implements Serializable, Identificador<Integer> {
     @Column(name = "nmloginusuario")
     private String nmloginusuario;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 32)
+    @NotNull    
     @Column(name = "nmsenhausuario")
     private String nmsenhausuario;
     @Column(name = "inorigeminfo")

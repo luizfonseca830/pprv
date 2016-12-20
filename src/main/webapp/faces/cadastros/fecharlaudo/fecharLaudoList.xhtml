@@ -85,9 +85,9 @@
                                                     rendered="#{laudo.tblaudo.condicao==4}" width="30" height="25"/>
                                 </p:column>
 
-                                <h:outputText rendered="#{laudo.tblaudo.condicao!=4}"/>
+                                <h:outputText rendered="#{laudo.tblaudo.condicao!=4?false:laudo.tblaudo.condicao!=1?false:true}"/>
                                 <p:selectBooleanCheckbox value="#{laudo.executar}"
-                                                         rendered="#{laudo.tblaudo.condicao!=4}">                                    
+                                                         rendered="#{laudo.tblaudo.condicao!=4?false:laudo.tblaudo.condicao!=1?false:true}">
                                 </p:selectBooleanCheckbox>
 
                                 <h:outputText value="N° OS" class="text-bold"/>
@@ -98,10 +98,10 @@
                                             mode="popup" showOn="button" 
                                             navigator="true" required="#{closeLaudoBean.isRequired(laudo)}"
                                             requiredMessage="#{message.camponaopodeservazio}"
-                                            rendered="#{laudo.tblaudo.condicao!=4}">                                    
+                                            rendered="#{laudo.tblaudo.condicao!=4?false:laudo.tblaudo.condicao!=1?false:true}">                                    
                                 </p:calendar>
 
-                                <h:outputText value="#{laudo.tblaudo.dtdataexecucao}" rendered="#{laudo.tblaudo.condicao==4}">
+                                <h:outputText value="#{laudo.tblaudo.dtdataexecucao}" rendered="#{laudo.tblaudo.condicao!=4?true:laudo.tblaudo.condicao!=1?true:false}">
                                     <f:convertDateTime pattern="dd/MM/yyyy"/>
                                 </h:outputText>
 
@@ -127,14 +127,15 @@
                                 <h:outputText value="#{laudo.tblaudo.nmrecomendacao}"/>
 
                                 <h:outputText value="Observação" class="text-bold"
-                                              rendered="#{laudo.tblaudo.condicao!=4}"/>
+                                              rendered="#{laudo.tblaudo.condicao!=4?false:laudo.tblaudo.condicao!=1?false:true}"/>
                                 <p:inputTextarea id="laudoObservacao" value="#{laudo.tblaudo.nmobservacao}" 
                                                  required="#{closeLaudoBean.isRequired(laudo)}" cols="60" requiredMessage="#{message.camponaopodeservazio}"
-                                                 rendered="#{laudo.tblaudo.condicao!=4}"/>
+                                                 rendered="#{laudo.tblaudo.condicao!=4?false:laudo.tblaudo.condicao!=1?false:true}"/>
 
-                                <h:outputText value="Observação" class="text-bold" rendered="#{laudo.tblaudo.condicao==4}"/>
+                                <h:outputText value="Observação" class="text-bold" 
+                                              rendered="#{laudo.tblaudo.condicao!=4?true:laudo.tblaudo.condicao!=1?true:false}"/>
                                 <h:outputText value="#{laudo.tblaudo.nmobservacao}" 
-                                              rendered="#{laudo.tblaudo.condicao==4}"/>
+                                              rendered="#{laudo.tblaudo.condicao!=4?true:laudo.tblaudo.condicao!=1?true:false}"/>
 
                             </h:panelGrid> 
 

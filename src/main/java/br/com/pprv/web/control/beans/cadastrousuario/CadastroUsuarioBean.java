@@ -16,6 +16,7 @@ import br.com.pprv.web.control.logic.user.UserLogic;
 import br.com.pprv.web.faces.constants.PagesUrl;
 import br.com.pprv.web.faces.constants.Resources;
 import br.com.pprv.web.faces.utils.AbstractFacesContextUtils;
+import br.com.pprv.web.faces.utils.EncryptUtil;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -144,11 +145,12 @@ public class CadastroUsuarioBean implements Serializable {
 
     }
 
-    public void editUser() {
+    public void editUser() {        
         if (!tbusuario.getNmnomeusuario().isEmpty() && tbusuario.getNmnomeusuario() != null && !tbusuario.getNmnomeusuario().trim().equals("")) {
             if (!tbusuario.getNmloginusuario().isEmpty() && tbusuario.getNmloginusuario() != null && !tbusuario.getNmloginusuario().trim().equals("")) {
                 if (!tbusuario.getNmsenhausuario().isEmpty() && tbusuario.getNmsenhausuario() != null && !tbusuario.getNmsenhausuario().trim().equals("")) {
                     if (userLogic.findTbusuarioByLoginandIdusuario(tbusuario) == null) {
+                        tbusuario.setNmsenhausuario(EncryptUtil.sha256(tbusuario.getNmsenhausuario()));
                         if (userLogic.editUser(tbusuario)) {
                             Map<String, Object> params = new HashMap<>();
                             params.put("user", tbusuario.getIdusuario());
@@ -176,6 +178,7 @@ public class CadastroUsuarioBean implements Serializable {
             if (!tbusuario.getNmloginusuario().isEmpty() && tbusuario.getNmloginusuario() != null && !tbusuario.getNmloginusuario().trim().equals("")) {
                 if (!tbusuario.getNmsenhausuario().isEmpty() && tbusuario.getNmsenhausuario() != null && !tbusuario.getNmsenhausuario().trim().equals("")) {
                     if (userLogic.findTbusuarioByLoginandIdusuario(tbusuario) == null) {
+                        tbusuario.setNmsenhausuario(EncryptUtil.sha256(tbusuario.getNmsenhausuario()));
                         if (userLogic.editUser(tbusuario)) {
                             Map<String, Object> params = new HashMap<>();
                             params.put("user", tbusuario.getIdusuario());
@@ -229,7 +232,7 @@ public class CadastroUsuarioBean implements Serializable {
         tbusuario.setNmnomeusuario(nome);
         tbusuario.setNmloginusuario(login);
         tbusuario.setNmcracha(cracha);
-        tbusuario.setNmsenhausuario(senha);
+        tbusuario.setNmsenhausuario(EncryptUtil.sha256(senha));
         tbusuario.setIdperfil(getTbperfil());
         tbusuario.setBolativo(true);
         if (!tbusuario.getNmnomeusuario().isEmpty() && tbusuario.getNmnomeusuario() != null && !tbusuario.getNmnomeusuario().trim().equals("")) {

@@ -30,6 +30,8 @@ public class LaudoMdl implements Serializable {
     private TbequipamentoSubconjunto Tbequipamentosubconjunto;
     private Integer situation;
     private Integer idLaudo;
+    private Date dtDataExecucao;
+    private Date tmDataExecucao;
 
     public LaudoMdl() {
         dtDataCadastro = new Date();
@@ -231,6 +233,34 @@ public class LaudoMdl implements Serializable {
      */
     public void setIdLaudo(Integer idLaudo) {
         this.idLaudo = idLaudo;
+    }
+
+    /**
+     * @return the dtDataExecucao
+     */
+    public Date getDtDataExecucao() {
+        return dtDataExecucao;
+    }
+
+    /**
+     * @param dtDataExecucao the dtDataExecucao to set
+     */
+    public void setDtDataExecucao(Date dtDataExecucao) {
+        this.dtDataExecucao = dtDataExecucao;
+    }
+
+    /**
+     * @return the tmDataExecucao
+     */
+    public Date getTmDataExecucao() {
+        return tmDataExecucao;
+    }
+
+    /**
+     * @param tmDataExecucao the tmDataExecucao to set
+     */
+    public void setTmDataExecucao(Date tmDataExecucao) {
+        this.tmDataExecucao = tmDataExecucao;
     }
 
 }

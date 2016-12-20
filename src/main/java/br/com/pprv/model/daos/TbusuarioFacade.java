@@ -6,6 +6,7 @@
 package br.com.pprv.model.daos;
 
 import br.com.pprv.model.entities.Tbusuario;
+import br.com.pprv.web.faces.utils.EncryptUtil;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -73,7 +74,7 @@ public class TbusuarioFacade extends AbstractFacade<Tbusuario> {
         try {
             return em.createQuery("SELECT t FROM Tbusuario t WHERE t.nmloginusuario = :nmloginusuario and t.nmsenhausuario = :nmsenhausuario", Tbusuario.class)
                     .setParameter("nmloginusuario", tbusuario.getNmloginusuario())
-                    .setParameter("nmsenhausuario", tbusuario.getNmsenhausuario())
+                    .setParameter("nmsenhausuario", EncryptUtil.sha256(tbusuario.getNmsenhausuario()))
                     .getSingleResult();
         } catch (NoResultException ex) {
             return null;
