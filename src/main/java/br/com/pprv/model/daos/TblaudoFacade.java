@@ -103,10 +103,11 @@ public class TblaudoFacade extends AbstractFacade<Tblaudo> {
             builder.append(" WHERE tblaudo.limiteexecucao >= '").append(ConvData.parseToStringIso(dateInit)).append("'")
                     .append(" AND tblaudo.limiteexecucao <= '").append(ConvData.parseToStringIso(dateFinal)).append("'");
         } else {
-            builder.append(" WHERE tblaudo.limiteexecucao >= '").append(ConvData.parseToStringIso(dateInit)).append("'");
+            builder.append(" WHERE tblaudo.limiteexecucao <= '").append(ConvData.parseToStringIso(dateInit)).append("'");
         }
 
-        builder.append(" group by tbgerencia.idgerencia ")
+        builder.append(" AND tblaudo.dtdataexecucao is null ")
+                .append(" group by tbgerencia.idgerencia ")
                 .append(" union all ")
                 .append(" select distinct tbgerencia.idgerencia, tbgerencia.nmgerencia, 0 as inTime, count (tblaudo.idgerencia) as late ")
                 .append(" from tblaudo inner join tbgerencia on (tblaudo.idgerencia = tbgerencia.idgerencia) ");
@@ -202,5 +203,68 @@ public class TblaudoFacade extends AbstractFacade<Tblaudo> {
         return em.createQuery("SELECT t FROM Tblaudo t WHERE t.idequipamento=:idEquipamento ORDER BY t.condicao DESC", Tblaudo.class)
                 .setParameter("idEquipamento", tbequipamento)
                 .getResultList();
+    }
+
+    public List<Object[]> getLaudosPorGerenciaECondicao(final Date dateInit, final Date dateFinal, final EntityManager em) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(" select idgerencia, nmgerencia, SUM(total_alerta) as totalalerta, SUM(total_critico) as totalcritico ")
+                .append(" from( ")
+                .append(" select distinct tbgerencia.idgerencia, tbgerencia.nmgerencia, count (tbgerencia.idgerencia) as total_alerta, 0 as total_critico ")
+                .append(" from tblaudo inner join tbgerencia on (tblaudo.idgerencia = tbgerencia.idgerencia) ");
+
+        if (dateFinal != null) {
+            builder.append(" WHERE tblaudo.limiteexecucao >= '").append(ConvData.parseToStringIso(dateInit)).append("'")
+                    .append(" AND tblaudo.limiteexecucao <= '").append(ConvData.parseToStringIso(dateFinal)).append("'");
+        } else {
+            builder.append(" WHERE tblaudo.limiteexecucao <= '").append(ConvData.parseToStringIso(dateInit)).append("'");
+        }
+
+        builder.append(" AND tblaudo.condicao = ").append(StatusConstants.STATUS_LAUDO_ALERTA)
+                .append(" group by tbgerencia.idgerencia ")
+                .append(" union all ")
+                .append(" select distinct tbgerencia.idgerencia, tbgerencia.nmgerencia, 0 as total_alerta, count (tbgerencia.idgerencia) as total_critico ")
+                .append(" from tblaudo inner join tbgerencia on (tblaudo.idgerencia = tbgerencia.idgerencia) ");
+
+        if (dateFinal != null) {
+            builder.append(" WHERE tblaudo.limiteexecucao >= '").append(ConvData.parseToStringIso(dateInit)).append("'")
+                    .append(" AND ")
+                    .append(" tblaudo.limiteexecucao <= '").append(ConvData.parseToStringIso(dateFinal)).append("'");
+        } else {
+            builder.append(" WHERE tblaudo.limiteexecucao <= '").append(ConvData.parseToStringIso(dateInit)).append("'");
+        }
+
+        builder.append(" AND tblaudo.condicao = ").append(StatusConstants.STATUS_LAUDO_CRITICO)
+                .append(" group by tbgerencia.idgerencia ")
+                .append(" ) as quantidade ")
+                .append(" group by idgerencia,nmgerencia ")
+                .append(" order by 3,4 desc ");
+
+        System.out.println("getLaudosPorGerenciaECondicao: " + builder.toString());
+
+        return em.createNativeQuery(builder.toString()).getResultList();
+    }
+
+    public List<Object[]> getLaudosPorGerenciaEmAtrasoECritico(final Date dateInit, final Date dateFinal, final EntityManager em) {
+        StringBuilder builder = new StringBuilder();
+
+        builder.append(" select distinct tbgerencia.idgerencia, tbgerencia.nmgerencia, count (tblaudo.idgerencia) as late_critic ")
+                .append(" from tblaudo inner join tbgerencia on (tblaudo.idgerencia = tbgerencia.idgerencia) ");
+
+        if (dateFinal != null) {
+            builder.append(" WHERE tblaudo.limiteexecucao >= '").append(ConvData.parseToStringIso(dateInit)).append("'")
+                    .append(" AND tblaudo.limiteexecucao <= '").append(ConvData.parseToStringIso(dateFinal)).append("'");
+        } else {
+            builder.append(" WHERE tblaudo.limiteexecucao <= '").append(ConvData.parseToStringIso(dateInit)).append("'");
+        }
+
+        builder.append(" AND tblaudo.condicao = ").append(StatusConstants.STATUS_LAUDO_CRITICO)
+                .append(" and tblaudo.dtdataexecucao is null ")
+                .append(" group by tbgerencia.idgerencia ")
+                .append(" order by late_critic desc ");
+
+        System.out.println("getLaudosPorGerenciaEmAtrasoECritico: " + builder.toString());
+
+        return em.createNativeQuery(builder.toString()).getResultList();
     }
 }

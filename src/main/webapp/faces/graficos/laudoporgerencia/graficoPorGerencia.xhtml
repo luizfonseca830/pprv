@@ -156,7 +156,8 @@ and open the template in the editor.
                         "position": "top",
                         "marginTop": 10
                     }
-                });</script>
+                });
+            </script>
             <script>
                 var chartDataThirdPie = #{graficoPorGerenciaBean.jsonContenThirdPie};
                 var chart = AmCharts.makeChart("chartdivthirdpie", {
@@ -187,7 +188,110 @@ and open the template in the editor.
                 });
 
             </script>           
-        </h:panelGrid>        
+        </h:panelGrid>      
+        <h:panelGrid id="graphicsManagerFourth" rendered="#{not empty graficoPorGerenciaBean.listObjectsFourth}">
+            <script type="text/javascript" language="js">
+
+                var chartDataFourth = #{graficoPorGerenciaBean.jsonContenFourth};
+                var chartFourth = AmCharts.makeChart("chartdivfourth", {
+                    dataProvider: chartDataFourth,
+                    type: "serial",
+                    startDuration: 1,
+                    plotAreaBorderColor: "#DADADA",
+                    plotAreaBorderAlpha: 1,
+                    categoryField: "year",
+                    rotate: false,
+                    depth3D: 20,
+                    angle: 30,
+                    fontSize: 14,
+                    categoryAxis: {
+                        labelRotation: 0,
+                        gridPosition: "start"
+                    },
+                    valueAxes: [{
+                            title: ""
+                        }],
+                    graphs: [{
+                            type: "column",
+                            lineAlpha: 0,
+                            fillAlphas: 1,
+                            title: "Alerta",
+                            lineColor: "#FFFF00",
+                            valueField: "income",
+                            labelText: "[[value]]",
+                            balloonText: "alerta:[[value]]"
+                        }, {
+                            type: "column",
+                            lineAlpha: 0,
+                            fillAlphas: 1,
+                            title: "Crítico",
+                            lineColor: "#FF0F00",
+                            valueField: "expenses",
+                            labelText: "[[value]]",
+                            balloonText: "crítico:[[value]]"
+                        }],
+                    chartCursor: {
+                        cursorAlpha: 0,
+                        zoomable: false,
+                        categoryBalloonEnabled: false
+                    },
+                    "export": {
+                        "enabled": true
+                    },
+                    "legend": {
+                        "autoMargins": false,
+                        "borderAlpha": 0.2,
+                        "equalWidths": false,
+                        "horizontalGap": 10,
+                        "markerSize": 10,
+                        "useGraphSettings": true,
+                        "valueAlign": "left",
+                        "valueWidth": 0,
+                        "position": "top",
+                        "marginTop": 10
+                    }
+                });
+            </script>            
+        </h:panelGrid>
+        <h:panelGrid id="graphicsManagerFifth" rendered="#{not empty graficoPorGerenciaBean.listObjectsFifth}">
+            <script type="text/javascript" language="js">
+
+                var chartDataFifth = #{graficoPorGerenciaBean.jsonContenFifth};
+                var chartFifth = AmCharts.makeChart("chartdivfifth", {
+                    type: "serial",
+                    dataProvider: chartDataFifth,
+                    categoryField: "country",
+                    depth3D: 20,
+                    angle: 30,
+                    fontSize: 14,
+                    categoryAxis: {
+                        labelRotation: 0,
+                        gridPosition: "start",
+                        title: "Laudos Críticos em Atraso"
+                    },
+                    valueAxes: [{
+                            title: ""
+                        }],
+                    graphs: [{
+                            labelText: "[[value]]",
+                            balloonText: "[[category]]: [[value]]",
+                            valueField: "visits",
+                            lineColor: "#FF0F00",
+                            type: "column",
+                            lineAlpha: 0,
+                            fillAlphas: 1
+                        }],
+                    chartCursor: {
+                        cursorAlpha: 0,
+                        zoomable: false,
+                        categoryBalloonEnabled: false
+                    },
+                    "export": {
+                        "enabled": true
+                    }
+
+                });</script>
+        </h:panelGrid>
     </head>
 
     <h:body>      
@@ -207,6 +311,14 @@ and open the template in the editor.
                     </td>
                     <td style="width: 50%">
                         <div id="chartdivthirdpie" style="height: 350px;border: 1px solid #000;"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 50%">
+                        <div id="chartdivfourth" style="height: 350px;border: 1px solid #000;"></div>
+                    </td>
+                    <td style="width: 50%">
+                        <div id="chartdivfifth" style="height: 350px;border: 1px solid #000;"></div>
                     </td>
                 </tr>
             </table>

@@ -38,6 +38,10 @@ public class GraficoPorGerenciaBean implements Serializable {
     private String jsonContentThird;
     private String jsonContenThirdPie;
     private List<Object[]> listObjectsThird;
+    private String jsonContenFourth;
+    private List<Object[]> listObjectsFourth;
+    private String jsonContenFifth;
+    private List<Object[]> listObjectsFifth;
 
     @PostConstruct
     public void init() {
@@ -53,6 +57,18 @@ public class GraficoPorGerenciaBean implements Serializable {
             listObjects = gerenciaLogic.getLaudosPorGerencia(dataInicial, dataFinal);
             listObjectsSecond = gerenciaLogic.getLaudosPorGerenciaMesAtual();
             listObjectsThird = gerenciaLogic.getLaudosPorGerenciaByLimiteExecucao(dataInicial, dataFinal);
+            listObjectsFourth = gerenciaLogic.getLaudosPorGerenciaECondicao(dataInicial, dataFinal);
+            listObjectsFifth = gerenciaLogic.getLaudosPorGerenciaEmAtrasoECritico(dataInicial, dataFinal);
+
+            if (listObjectsFifth != null
+                    && !listObjectsFifth.isEmpty()) {
+                jsonContenFifth = getJSONLaudosPorGerencia(listObjectsFifth);
+            }
+
+            if (listObjectsFourth != null
+                    && !listObjectsFourth.isEmpty()) {
+                jsonContenFourth = getJSONColumnLaudosPorGerenciaLimiteExecucao(listObjectsFourth);
+            }
 
             if (listObjectsThird != null
                     && !listObjectsThird.isEmpty()) {
@@ -382,6 +398,62 @@ public class GraficoPorGerenciaBean implements Serializable {
      */
     public void setJsonContenThirdPie(String jsonContenThirdPie) {
         this.jsonContenThirdPie = jsonContenThirdPie;
+    }
+
+    /**
+     * @return the jsonContenFourth
+     */
+    public String getJsonContenFourth() {
+        return jsonContenFourth;
+    }
+
+    /**
+     * @param jsonContenFourth the jsonContenFourth to set
+     */
+    public void setJsonContenFourth(String jsonContenFourth) {
+        this.jsonContenFourth = jsonContenFourth;
+    }
+
+    /**
+     * @return the listObjectsFourth
+     */
+    public List<Object[]> getListObjectsFourth() {
+        return listObjectsFourth;
+    }
+
+    /**
+     * @param listObjectsFourth the listObjectsFourth to set
+     */
+    public void setListObjectsFourth(List<Object[]> listObjectsFourth) {
+        this.listObjectsFourth = listObjectsFourth;
+    }
+
+    /**
+     * @return the jsonContenFifth
+     */
+    public String getJsonContenFifth() {
+        return jsonContenFifth;
+    }
+
+    /**
+     * @param jsonContenFifth the jsonContenFifth to set
+     */
+    public void setJsonContenFifth(String jsonContenFifth) {
+        this.jsonContenFifth = jsonContenFifth;
+    }
+
+    /**
+     * @return the listObjectsFifth
+     */
+    public List<Object[]> getListObjectsFifth() {
+        return listObjectsFifth;
+    }
+
+    /**
+     * @param listObjectsFifth the listObjectsFifth to set
+     */
+    public void setListObjectsFifth(List<Object[]> listObjectsFifth) {
+        this.listObjectsFifth = listObjectsFifth;
     }
 
 }
