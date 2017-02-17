@@ -207,7 +207,7 @@ public class CadastroUsuarioBean implements Serializable {
         try {
             if (userLogic.deleteUsuario(usuarioSelected)) {
                 AbstractFacesContextUtils.redirectPage(PagesUrl.URL_USUARIO_LIST);
-                AbstractFacesContextUtils.addMessageInfo(Resources.getMessage("usuariodeletadocomsucesso"));
+                AbstractFacesContextUtils.addMessageInfo("Usuário removido com sucesso.");
                 setListUsers(userLogic.listAllUsers());
             }
         } catch (Exception e) {

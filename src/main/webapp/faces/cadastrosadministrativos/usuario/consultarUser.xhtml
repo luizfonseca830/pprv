@@ -23,7 +23,7 @@
                         <h:outputText  value="#{cadastroUsuarioBean.tbusuario.nmloginusuario}"/>
 
                         <h:outputText value="#{field.senha}" class="text-bold"/>
-                        <h:outputText  value="#{cadastroUsuarioBean.tbusuario.nmsenhausuario}"/>
+                        <h:outputText value="#{cadastroUsuarioBean.tbusuario.nmsenhausuario}"/>
 
                         <h:outputText value="#{field.cracha}" class="text-bold"/>
                         <h:outputText  value="#{cadastroUsuarioBean.tbusuario.nmcracha}"/>
@@ -53,15 +53,13 @@
                                      oncomplete="PF('statusDialog').hide()"/>
                 </p:fieldset>              
 
-                <p:fieldset>
-                    <h:outputText id="not-result" value="#{message.aindanaofoiadicionadonenhumacessoparaesseusuario}"  
-                                  rendered="#{empty cadastroUsuarioBean.listAcessos}"/>
+                <p:fieldset>                   
                     <p:dataTable id="id-datatable"  var="access" value="#{cadastroUsuarioBean.listAcessos}"
                                  rowKey="#{access.idacesso}" paginator="true"
                                  rows="5"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="10,15,20" emptyMessage="#{message.nenhumresultadoencontrado}"
-                                 rendered="#{not empty cadastroUsuarioBean.listAcessos}" >
+                                 rowsPerPageTemplate="10,15,20"
+                                 emptyMessage="#{message.aindanaofoiadicionadonenhumacessoparaesseusuario}">
 
                         <f:facet name="header">
                             <div style="text-align: left;">                                

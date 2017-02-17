@@ -73,18 +73,27 @@
                                 <f:setPropertyActionListener value="#{user}" target="#{cadastroUsuarioBean.usuarioSelected}" />  
                             </p:commandLink>
                         </p:column>
-                    </p:dataTable>
-
-                    <p:confirmDialog id="confirmDialog" message="#{message.desejadeletarusuario}" 
-                                     header="#{field.excluir} #{field.usuario}" severity="alert" widgetVar="confirmation"
-                                     appendTo="@(body)">  
-                        <p:commandButton id="confirm" value="#{field.sim}" onclick="PF('statusDialog').show();" update=":resultUser,:messages" action="#{cadastroUsuarioBean.deleteUsuario()}"/>  
-                        <p:commandButton id="decline" value="#{field.nao}" onclick="PF('confirmation').hide();" type="button" />   
-                    </p:confirmDialog>
+                    </p:dataTable>                   
 
 
                 </h:form>
             </p:fieldset>
+
+            <p:blockUI block=":resultUser:id-datatable" trigger=":resultUser:id-datatable">					
+                <p:graphicImage value="#{resource['images/ajaxloadingbar.gif']}"/>
+            </p:blockUI>
+
+            <p:confirmDialog id="confirmDialog" message="#{message.desejadeletarusuario}" 
+                             header="#{field.excluir} #{field.usuario}" severity="alert" widgetVar="confirmation"
+                             appendTo="@(body)">  
+                <h:form>
+                    <p:commandButton id="confirm" value="#{field.sim}" onclick="PF('statusDialog').show();" 
+                                     update=":resultUser,:messages" action="#{cadastroUsuarioBean.deleteUsuario()}"
+                                     icon="ui-icon-check" oncomplete="PF('statusDialog').hide();PF('confirmation').hide();"/>  
+                    <p:commandButton id="decline" value="#{field.nao}" onclick="PF('confirmation').hide();" 
+                                     type="button" icon="ui-icon-cancel"/>   
+                </h:form>
+            </p:confirmDialog>
 
         </h:body>
     </ui:define>
