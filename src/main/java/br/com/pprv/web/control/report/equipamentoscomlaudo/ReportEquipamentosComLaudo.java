@@ -71,9 +71,9 @@ public class ReportEquipamentosComLaudo extends AbstractReportActions {
 
             if (tbgerencia != null) {
                 if (isTbgerenciaNull) {
-                    filtro.append(" WHERE tbgerencia.idgerencia = ").append(tbgerencia.getIdgerencia());
+                    filtro.append(" WHERE tbequipamento.idgerencia = ").append(tbgerencia.getIdgerencia());
                 } else {
-                    filtro.append(" AND tbgerencia.idgerencia = ").append(tbgerencia.getIdgerencia());
+                    filtro.append(" AND tbequipamento.idgerencia = ").append(tbgerencia.getIdgerencia());
                 }
             }
         }
