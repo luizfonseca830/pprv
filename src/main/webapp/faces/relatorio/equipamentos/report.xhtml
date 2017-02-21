@@ -91,11 +91,14 @@ and open the template in the editor.
                         <p:column>
 
                             <p:graphicImage value="#{resource['images/QUADRADOVERDE.png']}" 
-                                            rendered="#{equipamento.condicao==1}" width="30" height="25"/>
+                                            rendered="#{equipamento.condicao==1}" width="30" height="25"
+                                            alt="#{equipamento.condicao}"/>
                             <p:graphicImage value="#{resource['images/QUADRADOAMARELO.png']}" 
-                                            rendered="#{equipamento.condicao==2}" width="30" height="25"/>
+                                            rendered="#{equipamento.condicao==2}" width="30" height="25"
+                                            alt="#{equipamento.condicao}"/>
                             <p:graphicImage value="#{resource['images/QUADRADOVERMELHO.png']}" 
-                                            rendered="#{equipamento.condicao==3}" width="30" height="25"/>
+                                            rendered="#{equipamento.condicao==3}" width="30" height="25"
+                                            alt="#{equipamento.condicao}"/>
 
                         </p:column>
 
