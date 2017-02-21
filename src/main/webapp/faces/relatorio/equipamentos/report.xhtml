@@ -55,9 +55,14 @@ and open the template in the editor.
 
                         <h:commandLink styleClass="tooltip" style="padding:5px;" 
                                        action="#{relEquipamentosBean.printToPdf()}">                            
-                            <p:graphicImage value="#{resource['images/pdf.png']}" onclick="target='_blank'"/>                            
-                        </h:commandLink> 
-                        <pe:tooltip global="true" atPosition="top center" myPosition="bottom center" showEffect="fadeIn" hideEffect="fadeIn"/>  
+                            <p:graphicImage value="#{resource['images/pdf.png']}" onclick="target = '_blank'"/>                            
+                        </h:commandLink>                         
+
+                        <h:commandLink styleClass="tooltip" style="padding:5px;">                        
+                            <p:graphicImage value="#{resource['images/excel.png']}" id="xls"/>
+                            <pe:exporter type="xlsx" target="equipamentosComLaudos" fileName="#{field.exportar}#{field.amostragem}" 
+                                         facetBackground="#bed6f8" />   
+                        </h:commandLink>
                     </h:panelGrid>
 
                     <p:dataTable id="equipamentosComLaudos" value="#{relEquipamentosBean.listTbequipamentosComLaudos}" var="equipamento"
