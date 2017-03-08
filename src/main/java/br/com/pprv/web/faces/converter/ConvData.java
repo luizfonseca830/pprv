@@ -30,7 +30,7 @@ public final class ConvData {
     private static final SimpleDateFormat formatBra1 = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
     private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm:ss");
     private static final SimpleDateFormat formatHH = new SimpleDateFormat("HH");
-    private static final SimpleDateFormat formatDtBr = new SimpleDateFormat("dd/MM/yyy");
+    private static final SimpleDateFormat formatDtBr = new SimpleDateFormat("dd/MM/yyyy");
     private static final SimpleDateFormat formatHHmm = new SimpleDateFormat("HH:mm");
     private static final DateFormat formatForParser = new SimpleDateFormat("EEE MMM dd HH:mm:ss ZZZZ yyyy", Locale.ENGLISH);
     private static final SimpleDateFormat formatLn = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

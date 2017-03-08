@@ -65,6 +65,21 @@ public class RelHistoricoLaudoBean implements Serializable {
         }
     }
 
+    public void printFile() {
+        reportHistoricoLaudo.setTbtecnica(tbtecnica);
+        reportHistoricoLaudo.setTbgerencia(tbgerencia);
+        reportHistoricoLaudo.setCondicaoEquipamento(condicaoEquipamento);
+        reportHistoricoLaudo.setDtAnalysisBegin(dtAnalysisBegin);
+        reportHistoricoLaudo.setDtAnalysisEnd(dtAnalysisEnd);
+        if (tbtecnica != null || tbgerencia != null || condicaoEquipamento != null || (dtAnalysisBegin != null && dtAnalysisEnd != null)) {
+            if (reportHistoricoLaudo.preparaParam()) {
+                reportHistoricoLaudo.createPdfReport();
+            }
+        } else {
+            AbstractFacesContextUtils.addMessageWarn("É necessário preecher pelo menos um parâmetro de pesquisa.");
+        }
+    }
+
     /**
      * @return the listTbgerencias
      */

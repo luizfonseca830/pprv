@@ -99,6 +99,11 @@
 
                     <h:panelGrid columns="3" rendered="#{not empty relHistoricoLaudoBean.listTblaudos}">                                                                                         
 
+                        <h:commandLink styleClass="tooltip" style="padding:5px;" 
+                                       action="#{relHistoricoLaudoBean.printFile()}">                            
+                            <p:graphicImage value="#{resource['images/pdf.png']}" onclick="target = '_blank'"/>                            
+                        </h:commandLink> 
+                        
                         <h:commandLink styleClass="tooltip" style="padding:5px;">                        
                             <p:graphicImage value="#{resource['images/excel.png']}" id="xls"/>
                             <pe:exporter type="xlsx" target="historicoLaudos" fileName="historicoLaudo" 

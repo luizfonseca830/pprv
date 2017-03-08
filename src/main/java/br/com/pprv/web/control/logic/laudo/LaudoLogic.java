@@ -110,8 +110,6 @@ public class LaudoLogic extends AbstractModuleCore {
             }
         }
 
-        System.out.println("filtroSQL " + filtro.toString());
-
         TypedQuery t = em.createQuery(filtro.toString(), Tblaudo.class);
 
         return t.getResultList();
