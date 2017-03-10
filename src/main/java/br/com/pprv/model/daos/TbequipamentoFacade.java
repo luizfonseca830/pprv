@@ -45,9 +45,8 @@ public class TbequipamentoFacade extends AbstractFacade<Tbequipamento> {
         return entityManager.createNativeQuery(sql.toString(), Tbequipamento.class).getResultList();
     }
 
-    public List<Tbequipamento> findAllTbequipamentosByCondicao(final Integer condicao, final EntityManager entityManager) {
-        return entityManager.createQuery("SELECT t FROM Tbequipamento t WHERE t.condicao = :condicao", Tbequipamento.class)
-                .setParameter("condicao", condicao)
+    public List<Tbequipamento> findAllTbequipamentosByCondicaoOrTecnicaOrGerencia(String filtro, final EntityManager entityManager) {
+        return entityManager.createQuery(filtro, Tbequipamento.class)
                 .getResultList();
     }
 
@@ -68,8 +67,8 @@ public class TbequipamentoFacade extends AbstractFacade<Tbequipamento> {
         StringBuilder sql = new StringBuilder();
         sql.append("select distinct tbequipamento.*")
                 .append(" from tblaudo inner join tbequipamento on (tblaudo.idequipamento = tbequipamento.idequipamento)")
-                .append(filtro);        
-        
+                .append(filtro);
+
         return em.createNativeQuery(sql.toString(), Tbequipamento.class).getResultList();
     }
 }

@@ -22,6 +22,10 @@ a, .ui-widget-content a {text-decoration: none;}
 .ui-toolbar-group-left {padding-left: 10px;padding-top:4px;}
 .ui-toolbar-group-right {padding-left: 10px;padding-top:4px;}
 
+.ui-fieldset .ui-fieldset-legend{
+    color: black !important;
+}
+
 .ui-column-title{
     color: black !important;
 }
