@@ -32,6 +32,7 @@ public class ReportEquipamentos extends AbstractReportActions {
     private Tbgerencia tbgerencia;
     private StringBuilder filtro;
     private StringBuilder params;
+    private StringBuilder paramCondicao;
 
     public List<Tbequipamento> findAllTbequipamentosByCondicaoOrTecnicaOrGerencia(final Integer condicao, final Tbtecnica tbtecnica, final Tbgerencia tbgerencia) {
 
@@ -71,7 +72,6 @@ public class ReportEquipamentos extends AbstractReportActions {
         }
 
         filtro.append(" ORDER BY t.nmequipamenta ");
-        System.out.println("filtro: " + filtro.toString());
 
         return tbequipamentoFacade.findAllTbequipamentosByCondicaoOrTecnicaOrGerencia(filtro.toString(), super.getEM());
     }
@@ -84,6 +84,7 @@ public class ReportEquipamentos extends AbstractReportActions {
         map.put("SUBREPORT_DIR", getSubReportPath());
         map.put("FILTRO", filtro.toString());
         map.put("PARAMS", params.toString());
+        map.put("PARAM_CONDICAO", paramCondicao.toString());
 
         return map;
     }
@@ -106,6 +107,7 @@ public class ReportEquipamentos extends AbstractReportActions {
 
         params = new StringBuilder();
         filtro = new StringBuilder();
+        paramCondicao = new StringBuilder();
 
         if (tbtecnica != null) {
             filtro.append(" WHERE tbequipamento.idtecnica = ").append(tbtecnica.getIdtecnica());
@@ -129,6 +131,20 @@ public class ReportEquipamentos extends AbstractReportActions {
             } else {
                 filtro.append(" AND tbequipamento.condicao = ").append(condicaoEquipamento);
             }
+            switch (condicaoEquipamento) {
+                case 1:
+                    paramCondicao.append("Condição: Normal");
+                    break;
+                case 2:
+                    paramCondicao.append("Condição: Alerta");
+                    break;
+                case 3:
+                    paramCondicao.append("Condição: Critico");
+                    break;
+                case 4:
+                    paramCondicao.append("Condição: Executado");
+                    break;
+            }
         }
 
         if (condicaoEquipamento != null && condicaoEquipamento == 5) {
@@ -137,6 +153,7 @@ public class ReportEquipamentos extends AbstractReportActions {
             } else {
                 filtro.append(" AND tbequipamento.condicao in (2,3) ");
             }
+            paramCondicao.append("Condição: Alerta + Critico");
         }
 
         return true;

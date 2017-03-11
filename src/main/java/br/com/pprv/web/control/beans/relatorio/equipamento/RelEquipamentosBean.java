@@ -86,6 +86,8 @@ public class RelEquipamentosBean implements Serializable {
                 case 4:
                     return "Executado";
             }
+        }else{
+            return "não preenchida";
         }
 
         return "";
