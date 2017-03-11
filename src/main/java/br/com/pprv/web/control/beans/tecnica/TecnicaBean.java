@@ -21,13 +21,16 @@ import br.com.pprv.web.control.logic.equipamento_subconjunto.EquipamentoSubconju
 import br.com.pprv.web.control.logic.gerencia.GerenciaLogic;
 import br.com.pprv.web.control.logic.laudo.LaudoLogic;
 import br.com.pprv.web.control.logic.tecnica.TecnicaLogic;
+import br.com.pprv.web.faces.constants.Resources;
 import br.com.pprv.web.faces.constants.StatusConstants;
 import br.com.pprv.web.faces.utils.AbstractFacesContextUtils;
 import br.com.pprv.web.faces.utils.Shareds;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.text.Normalizer;
 import java.text.SimpleDateFormat;
@@ -39,6 +42,8 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import org.apache.commons.io.IOUtils;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 
 /**
@@ -85,6 +90,7 @@ public class TecnicaBean implements Serializable {
     private List<Tbgerencia> listTbgerencias;
 
     private UploadedFile uploadedFile;
+    private StreamedContent file;
 
     @PostConstruct
     public void init() {
@@ -265,6 +271,23 @@ public class TecnicaBean implements Serializable {
             AbstractFacesContextUtils.addMessageWarn("Falha ao criar laudos.");
         }
 
+    }
+
+    //Metodo que carrega o arquivo para ser feito o download
+    public void fileDownload(String fileName) {              
+        
+        try {
+            if (tbarquivosEquipamentoSelected != null) {
+                InputStream stream = new FileInputStream(new File(CAMINHO + tbarquivosEquipamentoSelected.getNmarquivo()));
+                file = new DefaultStreamedContent(stream, "application/pdf", tbarquivosEquipamentoSelected.getNmarquivo());
+            }else if (fileName != null){
+                InputStream stream = new FileInputStream(new File(CAMINHO + fileName));
+                file = new DefaultStreamedContent(stream, "application/pdf", fileName);
+            }
+        } catch (FileNotFoundException ex) {
+            AbstractFacesContextUtils.addMessageWarn(Resources.getMessage("erroaofazerodownloaddoarquivo"));
+            ex.printStackTrace();            
+        }
     }
 
     /**
@@ -637,5 +660,19 @@ public class TecnicaBean implements Serializable {
      */
     public void setListTbgerencias(List<Tbgerencia> listTbgerencias) {
         this.listTbgerencias = listTbgerencias;
+    }
+
+    /**
+     * @return the file
+     */
+    public StreamedContent getFile() {
+        return file;
+    }
+
+    /**
+     * @param file the file to set
+     */
+    public void setFile(StreamedContent file) {
+        this.file = file;
     }
 }

@@ -21,11 +21,11 @@
             <h:form id="resultLaudo">
                 <p:fieldset legend="#{field.parametrodepesquisa}" toggleable="false" toggleSpeed="500">
 
-                    <h:panelGrid columns="2" cellspacing="10">
+                    <h:panelGrid columns="4" cellspacing="10">
                         <h:outputText value="#{field.tecnica}" class="text-bold"/>
                         <p:selectOneMenu id="autoComplete" value="#{tecnicaBean.tbtecnica}"
                                          filter="true" filterMatchMode="contains" converter="converterEntity">
-                            <f:selectItem itemLabel="Selecione uma técnica"/>
+                            <f:selectItem itemLabel=""/>
                             <f:selectItems value="#{tecnicaBean.listTbtecnica}" var="tecnica" 
                                            itemValue="#{tecnica}" itemLabel="#{tecnica.nmtecnica}" >
                             </f:selectItems>
@@ -34,7 +34,7 @@
                         <h:outputText value="Gerência" class="text-bold"/>
                         <p:selectOneMenu id="autoCompleteGerencia" value="#{tecnicaBean.tbgerencia}"
                                          filter="true" filterMatchMode="contains" converter="converterEntity">
-                            <f:selectItem itemLabel="Selecione uma gerência"/>
+                            <f:selectItem itemLabel=""/>
                             <f:selectItems value="#{tecnicaBean.listTbgerencias}" var="gerencia" 
                                            itemValue="#{gerencia}" itemLabel="#{gerencia.nmgerencia}" >
                             </f:selectItems>
@@ -188,7 +188,9 @@
                                 <h:outputText id="prazoExecucao" value="Prazo de  Execução:" class="text-bold"/>                               
 
                                 <p:selectOneMenu id="autoCompletePrazo" value="#{equipamentosubcojunto.prazoExecucao}"
-                                                 filter="true" filterMatchMode="contains">
+                                                 filter="true" filterMatchMode="contains"
+                                                 valueChangeListener="#{equipamentosubcojunto.turmaExecutanteChangeListener}">
+                                    <f:selectItem itemLabel="" itemValue="0"/>
                                     <f:selectItem itemLabel="7" itemValue="7"/>
                                     <f:selectItem itemLabel="15" itemValue="15"/>
                                     <f:selectItem itemLabel="30" itemValue="30"/>
@@ -197,6 +199,8 @@
                                     <f:selectItem itemLabel="90" itemValue="90"/>
                                     <f:selectItem itemLabel="120" itemValue="120"/>
                                     <f:selectItem itemLabel="180" itemValue="180"/>
+                                    <p:ajax event="change" listener="#{equipamentosubcojunto.turmaExecutanteListener}"
+                                            update="calendarLimiteExecucao" />
                                 </p:selectOneMenu>
                             </h:panelGrid>    
 
@@ -254,11 +258,18 @@
                                     </f:facet>
 
                                     <p:panel header="#{arquivo.nmarquivo}" style="text-align:center">
-                                        <h:panelGrid columns="1" style="width:100%">
+                                        <h:panelGrid columns="2" style="width:100%">
                                             <p:commandLink action="#{tecnicaBean.deleteTbarquivosEquipamento()}" update="arquivosList">
                                                 <p:graphicImage id="delete" value="#{resource['images/delete.gif']}"/>
                                                 <f:setPropertyActionListener value="#{arquivo}" target="#{tecnicaBean.tbarquivosEquipamentoSelected}"/>
                                             </p:commandLink>
+                                            <p:commandLink actionListener="#{tecnicaBean.fileDownload(arquivo.nmarquivo)}" ajax="false"
+                                                             rendered="#{arquivo.nmarquivo != null}">
+                                                <p:graphicImage id="downloadFile" value="#{resource['images/file_download.png']}"
+                                                                width="30" height="30" alt="Baixar arquivo"/>
+                                                <f:setPropertyActionListener value="#{arquivo}" target="#{tecnicaBean.tbarquivosEquipamentoSelected}"/>
+                                                <p:fileDownload value="#{tecnicaBean.file}"/>  
+                                            </p:commandLink>                                            
                                         </h:panelGrid>
                                     </p:panel>
 

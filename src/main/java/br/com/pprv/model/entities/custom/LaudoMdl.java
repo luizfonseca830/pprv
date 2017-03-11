@@ -8,13 +8,15 @@ package br.com.pprv.model.entities.custom;
 import br.com.pprv.model.entities.TbequipamentoSubconjunto;
 import br.com.pprv.model.entities.Tbgerencia;
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
+import javax.faces.event.ValueChangeEvent;
 
 /**
  *
  * @author ioliveira
  */
-public class LaudoMdl implements Serializable {
+public class LaudoMdl implements Serializable{
 
     private Integer idEquipamentoSubconjunto;
     private String nmDiagnostico;
@@ -37,6 +39,34 @@ public class LaudoMdl implements Serializable {
         dtDataCadastro = new Date();
         naoPreencherOmSap = false;
         situation = 1;
+    }
+
+    /**
+     * Listener called when the turma executante is changed on drop-down list.
+     *
+     * @param e The data related to the event.
+     */
+    public void turmaExecutanteChangeListener(ValueChangeEvent e) {
+        Integer prazoExecucaoNew = (Integer) e.getNewValue();
+        Integer prazoExecucaoOld = (Integer) e.getOldValue();
+        System.out.println("prazoExecucao: " + prazoExecucaoNew);
+        System.out.println("prazoExecucao: " + prazoExecucaoOld);
+
+        if (prazoExecucaoNew != null
+                && prazoExecucaoNew > 0) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.DAY_OF_MONTH, (calendar.get(Calendar.DAY_OF_MONTH) + prazoExecucaoNew));
+
+            dtDatalimiteExecucao = calendar.getTime();
+            System.out.println("calendar.getTime(): " + calendar.getTime());
+        }
+    }
+
+    /**
+     * Listener called when the turma executante is changed on drop-down list.
+     */
+    public void turmaExecutanteListener() {
+
     }
 
     /**
