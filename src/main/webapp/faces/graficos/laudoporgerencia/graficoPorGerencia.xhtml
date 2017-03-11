@@ -6,7 +6,8 @@ and open the template in the editor.
 -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html">
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
 
     <head>                        
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>        
@@ -112,7 +113,8 @@ and open the template in the editor.
                     fontSize: 14,
                     categoryAxis: {
                         labelRotation: 0,
-                        gridPosition: "start"
+                        gridPosition: "start",
+                        title: "Quantidade de Laudos por Gerência"
                     },
                     valueAxes: [{
                             title: ""
@@ -170,7 +172,8 @@ and open the template in the editor.
                         "position": "top",
                         "marginRight": 100,
                         "autoMargins": false,
-                        "marginTop": 10
+                        "marginTop": 10,
+                        "title": "Total Laudos por Prazo"
                     },
                     "dataProvider": chartDataThirdPie,
                     "valueField": "litres",
@@ -206,7 +209,8 @@ and open the template in the editor.
                     fontSize: 14,
                     categoryAxis: {
                         labelRotation: 0,
-                        gridPosition: "start"
+                        gridPosition: "start",
+                        title: "Quantidade de Laudos por Gerência"
                     },
                     valueAxes: [{
                             title: ""
@@ -296,6 +300,14 @@ and open the template in the editor.
 
     <h:body>      
         <h:panelGrid rendered="#{graficoPorGerenciaBean.result}" style="width: 100%">
+            <h:outputText value="Quantidade de Laudos por Gerência - Até #{webBeanUtils.formatDtBr(graficoPorGerenciaBean.dataInicial)}" class="text-bold"/>
+            <h:outputText value="Técnica: #{graficoPorGerenciaBean.tbtecnica.nmtecnica}" 
+                          rendered="#{graficoPorGerenciaBean.tbtecnica.idtecnica != null}"
+                          class="text-bold"/>
+            <h:outputText value="Gerência: #{graficoPorGerenciaBean.tbgerencia.nmgerencia}" 
+                          rendered="#{graficoPorGerenciaBean.tbgerencia.idgerencia != null}"
+                          class="text-bold"/>
+            <p:spacer height="10"/>
             <table style="width: 100%">
                 <tr>
                     <td style="width: 50%">

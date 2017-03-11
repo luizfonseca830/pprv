@@ -5,7 +5,12 @@
  */
 package br.com.pprv.web.control.beans.graficos.laudosporgerencia;
 
+import br.com.pprv.model.entities.Tbgerencia;
+import br.com.pprv.model.entities.Tbtecnica;
+import br.com.pprv.web.control.logic.gerencia.GerenciaLogic;
 import br.com.pprv.web.control.logic.graficos.porgerencia.GraficoPorGerenciaLogic;
+import br.com.pprv.web.control.logic.tecnica.TecnicaLogic;
+import br.com.pprv.web.faces.converter.ConvData;
 import br.com.pprv.web.faces.converter.TimeControl;
 import br.com.pprv.web.faces.utils.AbstractFacesContextUtils;
 import java.io.Serializable;
@@ -27,6 +32,10 @@ public class GraficoPorGerenciaBean implements Serializable {
 
     @EJB
     private GraficoPorGerenciaLogic gerenciaLogic;
+    @EJB
+    private TecnicaLogic tecnicaLogic;
+    @EJB
+    private GerenciaLogic managerLogic;
 
     private Date dataInicial;
     private Date dataFinal;
@@ -43,52 +52,67 @@ public class GraficoPorGerenciaBean implements Serializable {
     private String jsonContenFifth;
     private List<Object[]> listObjectsFifth;
 
+    private List<Tbgerencia> listTbgerencias;
+    private List<Tbtecnica> listTbtecnica;
+
+    private Tbtecnica tbtecnica;
+    private Tbgerencia tbgerencia;
+
     @PostConstruct
     public void init() {
-        optionSelected = 2;
-        if (dataInicial == null || dataFinal == null) {
-            carregaDataPorOpcao();
-        }
+
+        dataInicial = new Date();
+
+        listTbgerencias = managerLogic.findAllTbgerencia();
+        listTbtecnica = tecnicaLogic.getListTbtecnica();
     }
 
     public void geraGrafico() {
 
         if (dataInicial != null) {
-            listObjects = gerenciaLogic.getLaudosPorGerencia(dataInicial, dataFinal);
-            listObjectsSecond = gerenciaLogic.getLaudosPorGerenciaMesAtual();
-            listObjectsThird = gerenciaLogic.getLaudosPorGerenciaByLimiteExecucao(dataInicial, dataFinal);
-            listObjectsFourth = gerenciaLogic.getLaudosPorGerenciaECondicao(dataInicial, dataFinal);
-            listObjectsFifth = gerenciaLogic.getLaudosPorGerenciaEmAtrasoECritico(dataInicial, dataFinal);
+            listObjects = gerenciaLogic.getLaudosPorGerencia(dataInicial, dataFinal, tbtecnica, tbgerencia);
+            listObjectsSecond = gerenciaLogic.getLaudosPorGerenciaMesAtual(tbtecnica, tbgerencia);
+            listObjectsThird = gerenciaLogic.getLaudosPorGerenciaByLimiteExecucao(dataInicial, dataFinal, tbtecnica, tbgerencia);
+            listObjectsFourth = gerenciaLogic.getLaudosPorGerenciaECondicao(dataInicial, dataFinal, tbtecnica, tbgerencia);
+            listObjectsFifth = gerenciaLogic.getLaudosPorGerenciaEmAtrasoECritico(dataInicial, dataFinal, tbtecnica, tbgerencia);
 
             if (listObjectsFifth != null
                     && !listObjectsFifth.isEmpty()) {
                 jsonContenFifth = getJSONLaudosPorGerencia(listObjectsFifth);
+            }else{
+                AbstractFacesContextUtils.addMessageInfo("Nenhum resultado encontrado laudos críticos em atraso.");
             }
 
             if (listObjectsFourth != null
                     && !listObjectsFourth.isEmpty()) {
                 jsonContenFourth = getJSONColumnLaudosPorGerenciaLimiteExecucao(listObjectsFourth);
+            }else{
+                AbstractFacesContextUtils.addMessageInfo("Nenhum resultado encontrado laudos por condição.");
             }
 
             if (listObjectsThird != null
                     && !listObjectsThird.isEmpty()) {
                 jsonContentThird = getJSONColumnLaudosPorGerenciaLimiteExecucao(listObjectsThird);
                 jsonContenThirdPie = getJSONPieLaudosPorGerenciaLimiteExecucao(listObjectsThird);
+            }else{
+                AbstractFacesContextUtils.addMessageInfo("Nenhum resultado encontrado laudos por prazo.");
             }
 
             if (listObjectsSecond != null
                     && !listObjectsSecond.isEmpty()) {
                 jsonContentSecond = getJSONLaudosPorGerencia(listObjectsSecond);
+            }else{
+                AbstractFacesContextUtils.addMessageInfo("Nenhum resultado encontrado laudos mês atual.");
             }
 
             if (listObjects != null
                     && !listObjects.isEmpty()) {
                 jsonContent = getJSONLaudosPorGerencia(listObjects);
             } else {
-                AbstractFacesContextUtils.addMessageWarn("Nenhum resultado encontrado.");
+                AbstractFacesContextUtils.addMessageInfo("Nenhum resultado encontrado.");
             }
         } else {
-            AbstractFacesContextUtils.addMessageWarn("É necessário informar pelo menos a data inicial.");
+            AbstractFacesContextUtils.addMessageInfo("É necessário informar pelo menos a data inicial.");
         }
     }
 
@@ -258,6 +282,10 @@ public class GraficoPorGerenciaBean implements Serializable {
     private void carregaDataPorPeriodo() {
         dataInicial = TimeControl.getDateIni();
         dataFinal = null;
+    }
+
+    public String getTitle() {
+        return "Quantidade de Laudos por Gerência" + ConvData.parseDatatoIsoEn(dataInicial);
     }
 
     /**
@@ -454,6 +482,62 @@ public class GraficoPorGerenciaBean implements Serializable {
      */
     public void setListObjectsFifth(List<Object[]> listObjectsFifth) {
         this.listObjectsFifth = listObjectsFifth;
+    }
+
+    /**
+     * @return the listTbgerencias
+     */
+    public List<Tbgerencia> getListTbgerencias() {
+        return listTbgerencias;
+    }
+
+    /**
+     * @param listTbgerencias the listTbgerencias to set
+     */
+    public void setListTbgerencias(List<Tbgerencia> listTbgerencias) {
+        this.listTbgerencias = listTbgerencias;
+    }
+
+    /**
+     * @return the listTbtecnica
+     */
+    public List<Tbtecnica> getListTbtecnica() {
+        return listTbtecnica;
+    }
+
+    /**
+     * @param listTbtecnica the listTbtecnica to set
+     */
+    public void setListTbtecnica(List<Tbtecnica> listTbtecnica) {
+        this.listTbtecnica = listTbtecnica;
+    }
+
+    /**
+     * @return the tbtecnica
+     */
+    public Tbtecnica getTbtecnica() {
+        return tbtecnica;
+    }
+
+    /**
+     * @param tbtecnica the tbtecnica to set
+     */
+    public void setTbtecnica(Tbtecnica tbtecnica) {
+        this.tbtecnica = tbtecnica;
+    }
+
+    /**
+     * @return the tbgerencia
+     */
+    public Tbgerencia getTbgerencia() {
+        return tbgerencia;
+    }
+
+    /**
+     * @param tbgerencia the tbgerencia to set
+     */
+    public void setTbgerencia(Tbgerencia tbgerencia) {
+        this.tbgerencia = tbgerencia;
     }
 
 }
