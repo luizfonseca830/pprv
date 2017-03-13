@@ -291,7 +291,7 @@
 
                     <p:commandButton value="Gerar novos laudos" ajax="false" icon="ui-icon-check"
                                      action="#{tecnicaBean.gerarNovosLaudos()}"
-                                     rendered="false" onclick="PF('statusDialog').show();"
+                                     rendered="true" onclick="PF('statusDialog').show();"
                                      oncomplete="PF('dlgLaudo').hide();PF('statusDialog').hide();
                                      PF('equipamentoLaudos').clearFilters();PF('equipamentoLaudos').update();"/>
 

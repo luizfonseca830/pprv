@@ -54,7 +54,7 @@ import org.primefaces.model.UploadedFile;
 @ViewScoped
 public class TecnicaBean implements Serializable {
 
-    private static final boolean FLAG = true;
+    private static final boolean FLAG = false;
     private static final String CAMINHO_LINUX = "/upload/arquivos/";
     private static final String CAMINHO_WINDOWS = "C:\\upload\\arquivos";
     private static final String CAMINHO = FLAG ? CAMINHO_LINUX : CAMINHO_WINDOWS;
@@ -220,73 +220,81 @@ public class TecnicaBean implements Serializable {
     public void gerarNovosLaudos() {
 
         boolean result = false;
+        final Tbusuario user = Shareds.getUser();
 
-        for (LaudoMdl laudoMdl : listLaudoMdl) {
-
-            if (laudoMdl.getNmDiagnostico() != null
-                    && !laudoMdl.getNmDiagnostico().trim().isEmpty()
-                    && laudoMdl.getNmRecomendacao() != null
-                    && !laudoMdl.getNmRecomendacao().trim().isEmpty()) {
-
-                Tblaudo tblaudo = new Tblaudo();
-                tblaudo.setNmdiagnostico(laudoMdl.getNmDiagnostico());
-                tblaudo.setNmrecomendacao(laudoMdl.getNmRecomendacao());
-                tblaudo.setNmobservacao(laudoMdl.getNmObservacao());
-                tblaudo.setNmrisco(laudoMdl.getNmRisco());
-                tblaudo.setIdgerencia(laudoMdl.getTbgerencia());
-                tblaudo.setLimiteexecucao(laudoMdl.getDtDatalimiteExecucao());
-                tblaudo.setDtdatacadastro(laudoMdl.getDtDataCadastro());
-                tblaudo.setBoolomsap(laudoMdl.isNaoPreencherOmSap());
-                tblaudo.setPrazoexecucao(laudoMdl.getPrazoExecucao());
-                tblaudo.setCondicao(laudoMdl.getSituation());
-
-                if (!laudoMdl.isNaoPreencherOmSap()) {
-                    tblaudo.setOmsap(laudoMdl.getStrOmSap());
-                }
-
-                tblaudo.setIdsubconjunto(laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
-                tblaudo.setIdequipamento(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento());
-                tblaudo.setDtdatalaudo(new Date());
-                tblaudo.setTmdatalaudo(new Date());
-
-                if (laudoLogic.createTblaudo(tblaudo)) {
-                    final Integer condition = tblaudo.getCondicao();
-                    tbequipamentoSelected = laudoMdl.getTbequipamentoSubconjunto().getIdequipamento();
-                    tbequipamentoSelected.setCondicao(condition);
-                    equipamentoLogic.editEquipamento(tbequipamentoSelected);
-                    result = true;
-                }
-            }
-        }
-
-        if (result) {
-            if (uploadedFile != null && uploadedFile.getFileName() != null && !uploadedFile.getFileName().isEmpty()) {
-                doUpload(uploadedFile);
-                equipamentoLogic.editEquipamento(tbequipamentoSelected);
-            }
-            filterequipamento = null;
-            listTbequipamento = null;
-            AbstractFacesContextUtils.addMessageInfo("Laudos criado com sucesso.");
+        if (user == null
+                || user.getIdperfil() == null
+                || user.getIdperfil().getNivelacessoperfil() != 1
+                || validaCondicaoExecutado()) {
+            AbstractFacesContextUtils.addMessageWarn("É necessário ter o perfil de Operador nível 1 para este tipo de operação.");
         } else {
-            AbstractFacesContextUtils.addMessageWarn("Falha ao criar laudos.");
+            for (LaudoMdl laudoMdl : listLaudoMdl) {
+
+                if (laudoMdl.getNmDiagnostico() != null
+                        && !laudoMdl.getNmDiagnostico().trim().isEmpty()
+                        && laudoMdl.getNmRecomendacao() != null
+                        && !laudoMdl.getNmRecomendacao().trim().isEmpty()) {
+
+                    Tblaudo tblaudo = new Tblaudo();
+                    tblaudo.setNmdiagnostico(laudoMdl.getNmDiagnostico());
+                    tblaudo.setNmrecomendacao(laudoMdl.getNmRecomendacao());
+                    tblaudo.setNmobservacao(laudoMdl.getNmObservacao());
+                    tblaudo.setNmrisco(laudoMdl.getNmRisco());
+                    tblaudo.setIdgerencia(laudoMdl.getTbgerencia());
+                    tblaudo.setLimiteexecucao(laudoMdl.getDtDatalimiteExecucao());
+                    tblaudo.setDtdatacadastro(laudoMdl.getDtDataCadastro());
+                    tblaudo.setBoolomsap(laudoMdl.isNaoPreencherOmSap());
+                    tblaudo.setPrazoexecucao(laudoMdl.getPrazoExecucao());
+                    tblaudo.setCondicao(laudoMdl.getSituation());
+
+                    if (!laudoMdl.isNaoPreencherOmSap()) {
+                        tblaudo.setOmsap(laudoMdl.getStrOmSap());
+                    }
+
+                    tblaudo.setIdsubconjunto(laudoMdl.getTbequipamentoSubconjunto().getIdsubconjunto());
+                    tblaudo.setIdequipamento(laudoMdl.getTbequipamentoSubconjunto().getIdequipamento());
+                    tblaudo.setDtdatalaudo(new Date());
+                    tblaudo.setTmdatalaudo(new Date());
+
+                    if (laudoLogic.createTblaudo(tblaudo)) {
+                        final Integer condition = tblaudo.getCondicao();
+                        tbequipamentoSelected = laudoMdl.getTbequipamentoSubconjunto().getIdequipamento();
+                        tbequipamentoSelected.setCondicao(condition);
+                        equipamentoLogic.editEquipamento(tbequipamentoSelected);
+                        result = true;
+                    }
+                }
+            }
+
+            if (result) {
+                if (uploadedFile != null && uploadedFile.getFileName() != null && !uploadedFile.getFileName().isEmpty()) {
+                    doUpload(uploadedFile);
+                    equipamentoLogic.editEquipamento(tbequipamentoSelected);
+                }
+                filterequipamento = null;
+                listTbequipamento = null;
+                AbstractFacesContextUtils.addMessageInfo("Laudos criado com sucesso.");
+            } else {
+                AbstractFacesContextUtils.addMessageWarn("Falha ao criar laudos.");
+            }
         }
 
     }
 
     //Metodo que carrega o arquivo para ser feito o download
-    public void fileDownload(String fileName) {              
-        
+    public void fileDownload(String fileName) {
+
         try {
             if (tbarquivosEquipamentoSelected != null) {
                 InputStream stream = new FileInputStream(new File(CAMINHO + tbarquivosEquipamentoSelected.getNmarquivo()));
                 file = new DefaultStreamedContent(stream, "application/pdf", tbarquivosEquipamentoSelected.getNmarquivo());
-            }else if (fileName != null){
+            } else if (fileName != null) {
                 InputStream stream = new FileInputStream(new File(CAMINHO + fileName));
                 file = new DefaultStreamedContent(stream, "application/pdf", fileName);
             }
         } catch (FileNotFoundException ex) {
             AbstractFacesContextUtils.addMessageWarn(Resources.getMessage("erroaofazerodownloaddoarquivo"));
-            ex.printStackTrace();            
+            ex.printStackTrace();
         }
     }
 
