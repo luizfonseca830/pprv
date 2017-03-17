@@ -90,6 +90,10 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
     @ManyToOne(optional = false, fetch = FetchType.EAGER)
     private Tbequipamento idequipamento;
 
+    @JoinColumn(name = "idusuario", referencedColumnName = "idusuario")
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    private Tbusuario idusuario;
+
     public Tblaudo() {
     }
 
@@ -345,6 +349,20 @@ public class Tblaudo implements Serializable, Identificador<Integer> {
      */
     public void setTmdataexecucao(Date tmdataexecucao) {
         this.tmdataexecucao = tmdataexecucao;
+    }
+
+    /**
+     * @return the idusuario
+     */
+    public Tbusuario getIdusuario() {
+        return idusuario;
+    }
+
+    /**
+     * @param idusuario the idusuario to set
+     */
+    public void setIdusuario(Tbusuario idusuario) {
+        this.idusuario = idusuario;
     }
 
 }

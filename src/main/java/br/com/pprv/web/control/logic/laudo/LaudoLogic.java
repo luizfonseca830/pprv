@@ -61,6 +61,31 @@ public class LaudoLogic extends AbstractModuleCore {
         return tblaudoFacade.findAllTblaudoByEquipamento(tbequipamento, super.getEM());
     }
 
+    public List<Tblaudo> findAllTbequipamentosComLaudos() {
+        return tblaudoFacade.findAllTbequipamentosComLaudos(super.getEM());
+    }
+
+    public List<Tblaudo> findAllTbequipamentoWithLaudoByTecnicaAndGerencia(final Tbtecnica tbtecnica, final Tbgerencia tbgerencia) {
+
+        StringBuilder filtro = new StringBuilder();
+        boolean isTbtecnicaNull = true;
+
+        if (tbtecnica != null) {
+            filtro.append(" WHERE tbequipamento.idtecnica = ").append(tbtecnica.getIdtecnica());
+            isTbtecnicaNull = false;
+        }
+
+        if (tbgerencia != null) {
+            if (isTbtecnicaNull) {
+                filtro.append(" WHERE tblaudo.idgerencia = ").append(tbgerencia.getIdgerencia());
+            } else {
+                filtro.append(" AND tblaudo.idgerencia = ").append(tbgerencia.getIdgerencia());
+            }
+        }
+
+        return tblaudoFacade.findAllTbequipamentoWithLaudoByTecnicaAndGerencia(filtro.toString(), super.getEM());
+    }
+
     public List<Tblaudo> getHistoricLaudo(final Tbtecnica tbtecnica, final Tbgerencia tbgerencia,
             final Integer condition, final Date dtAnalysisBegin, final Date dtAnalysisEnd, final EntityManager em) {
 

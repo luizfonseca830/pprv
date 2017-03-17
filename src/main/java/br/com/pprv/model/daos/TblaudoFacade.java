@@ -307,4 +307,24 @@ public class TblaudoFacade extends AbstractFacade<Tblaudo> {
 
         return em.createNativeQuery(builder.toString()).getResultList();
     }
+
+    public List<Tblaudo> findAllTbequipamentosComLaudos(final EntityManager entityManager) {
+
+        StringBuilder sql = new StringBuilder();
+        sql.append("select distinct tblaudo.*")
+                .append("from tblaudo inner join tbequipamento on (tblaudo.idequipamento = tbequipamento.idequipamento)");
+
+        return entityManager.createNativeQuery(sql.toString(), Tblaudo.class).getResultList();
+    }
+
+    public List<Tblaudo> findAllTbequipamentoWithLaudoByTecnicaAndGerencia(String filtro, final EntityManager em) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("select distinct tblaudo.*")
+                .append(" from tblaudo inner join tbequipamento on (tblaudo.idequipamento = tbequipamento.idequipamento)")
+                .append(filtro);
+
+        System.out.println("filtro: " + sql.toString());
+
+        return em.createNativeQuery(sql.toString(), Tblaudo.class).getResultList();
+    }
 }

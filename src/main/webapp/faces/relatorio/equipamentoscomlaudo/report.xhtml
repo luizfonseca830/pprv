@@ -28,7 +28,7 @@ and open the template in the editor.
                         <h:outputText value="#{field.tecnica}" class="text-bold"/>
                         <p:selectOneMenu id="autoComplete" value="#{relEquipamentosComLaudoBean.tbtecnica}"
                                          filter="true" filterMatchMode="contains" converter="converterEntity">
-                            <f:selectItem itemLabel="Selecione uma técnica"/>
+                            <f:selectItem itemLabel=""/>
                             <f:selectItems value="#{relEquipamentosComLaudoBean.listTbtecnica}" var="tecnica" 
                                            itemValue="#{tecnica}" itemLabel="#{tecnica.nmtecnica}" >
                             </f:selectItems>
@@ -37,7 +37,7 @@ and open the template in the editor.
                         <h:outputText value="Gerência" class="text-bold"/>
                         <p:selectOneMenu id="autoCompleteGerencia" value="#{relEquipamentosComLaudoBean.tbgerencia}"
                                          filter="true" filterMatchMode="contains" converter="converterEntity">
-                            <f:selectItem itemLabel="Selecione uma gerência"/>
+                            <f:selectItem itemLabel=""/>
                             <f:selectItems value="#{relEquipamentosComLaudoBean.listTbgerencias}" var="gerencia" 
                                            itemValue="#{gerencia}" itemLabel="#{gerencia.nmgerencia}" >
                             </f:selectItems>
@@ -54,38 +54,64 @@ and open the template in the editor.
             </p:fieldset>
 
             <div class="space"/>
-            
+
             <p:fieldset id="fieldResult" legend="Lista de equipamentos com laudo">
 
                 <h:form>
 
-                    <h:panelGrid columns="3" rendered="#{not empty relEquipamentosComLaudoBean.listTbequipamentosComLaudos}">                       
+                    <h:panelGrid columns="3" rendered="#{not empty relEquipamentosComLaudoBean.listTblaudos}">                       
 
-                        <h:commandLink styleClass="tooltip" style="padding:5px;" 
+                        <h:commandLink styleClass="tooltip" style="padding:5px;" rendered="false"
                                        action="#{relEquipamentosComLaudoBean.printToPdf()}">                            
                             <p:graphicImage value="#{resource['images/pdf.png']}" onclick="target = '_blank'"/>                            
                         </h:commandLink> 
-                        <pe:tooltip global="true" atPosition="top center" myPosition="bottom center" showEffect="fadeIn" hideEffect="fadeIn"/>  
+                        <h:commandLink styleClass="tooltip" style="padding:5px;">                        
+                            <p:graphicImage value="#{resource['images/excel.png']}" id="xls"/>
+                            <pe:exporter type="xlsx" target="equipamentosComLaudos" fileName="equipamentoComLaudos" 
+                                         facetBackground="#bed6f8" />   
+                        </h:commandLink>                        
                     </h:panelGrid>
 
-                    <p:dataTable id="equipamentosComLaudos" value="#{relEquipamentosComLaudoBean.listTbequipamentosComLaudos}" var="equipamento"
+                    <p:dataTable id="equipamentosComLaudos" value="#{relEquipamentosComLaudoBean.listTblaudos}" var="equipamento"
                                  paginator="true" widgetVar="equipmentReport"
                                  paginatorPosition="bottom"
+                                 scrollable="true" scrollWidth="1500"
                                  paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10,15,20" emptyMessage="#{message.nenhumresultadoencontrado}">
 
                         <p:columnGroup type="header">
 
                             <p:row>
-                                <p:column colspan="5" headerText="Lista de equipamentos com laudo"/>
+                                <p:column colspan="15" headerText="Lista de equipamentos com laudo"/>
                             </p:row>
 
+                            <p:row rendered="#{relEquipamentosComLaudoBean.tbtecnica.idtecnica != null}">
+                                <p:column colspan="15" headerText="Técnica: #{relEquipamentosComLaudoBean.tbtecnica.idtecnica != null?relEquipamentosComLaudoBean.tbtecnica.nmtecnica:'não preenchida'}"
+                                          rendered="#{relEquipamentosComLaudoBean.tbtecnica.idtecnica != null}"
+                                          exportable="#{relEquipamentosComLaudoBean.tbtecnica.idtecnica != null}"/>
+                            </p:row>                           
+                            <p:row rendered="#{relEquipamentosComLaudoBean.tbgerencia.idgerencia != null}">
+                                <p:column colspan="15" headerText="Gerência: #{relEquipamentosComLaudoBean.tbgerencia.idgerencia != null?relEquipamentosComLaudoBean.tbgerencia.nmgerencia:'não preenchida'}"
+                                          rendered="#{relEquipamentosComLaudoBean.tbgerencia.idgerencia != null}"
+                                          exportable="#{relEquipamentosComLaudoBean.tbgerencia.idgerencia != null}"/>
+                            </p:row>                           
+
                             <p:row>
-                                <p:column headerText="Condição" exportable="false"/> 
+                                <p:column headerText="Condição"/> 
                                 <p:column headerText="Equipamento"/> 
                                 <p:column headerText="Descrição"/>                                
                                 <p:column headerText="Criticidade"/>
                                 <p:column headerText="Técnica"/>
+                                <p:column headerText="Usuário"/>
+                                <p:column headerText="Data cadastro"/>
+                                <p:column headerText="N° OS"/>
+                                <p:column headerText="Data análise"/>                                
+                                <p:column headerText="Data execução"/>
+                                <p:column headerText="Prazo execução"/>
+                                <p:column headerText="Diagnóstico"/>
+                                <p:column headerText="Recomendação"/>
+                                <p:column headerText="Observação"/>
+                                <p:column headerText="Risco"/>
                             </p:row>
 
                         </p:columnGroup>
@@ -93,31 +119,74 @@ and open the template in the editor.
                         <p:column exportable="false">
 
                             <p:graphicImage value="#{resource['images/QUADRADOVERDE.png']}" 
-                                            rendered="#{equipamento.condicao==1}" width="30" height="25"/>
+                                            rendered="#{equipamento.condicao==1}" width="30" height="25"
+                                            alt="Normal"/>
                             <p:graphicImage value="#{resource['images/QUADRADOAMARELO.png']}" 
-                                            rendered="#{equipamento.condicao==2}" width="30" height="25"/>
+                                            rendered="#{equipamento.condicao==2}" width="30" height="25"
+                                            alt="Alerta"/>
                             <p:graphicImage value="#{resource['images/QUADRADOVERMELHO.png']}" 
-                                            rendered="#{equipamento.condicao==3}" width="30" height="25"/>
+                                            rendered="#{equipamento.condicao==3}" width="30" height="25"
+                                            alt="Critico"/>
                             <p:graphicImage value="#{resource['images/QUADRADOAZUL.png']}" rendered="#{equipamento.condicao==4}"
-                                            width="30" height="25"/>
+                                            width="30" height="25" alt="Executado"/>                            
 
                         </p:column>
 
                         <p:column>
-                            <h:outputText value="#{equipamento.nmequipamenta}"/>
+                            <h:outputText value="#{equipamento.idequipamento.nmequipamenta}"/>
                         </p:column>
 
                         <p:column>
-                            <h:outputText value="#{equipamento.descequipamento}"/>
+                            <h:outputText value="#{equipamento.idequipamento.descequipamento}"/>
                         </p:column>
 
                         <p:column>
-                            <h:outputText value="#{equipamento.criticidade}"/>
+                            <h:outputText value="#{equipamento.idequipamento.criticidade}"/>
                         </p:column>                        
 
                         <p:column>
-                            <h:outputText value="#{equipamento.idtecnica.nmtecnica}"/>
-                        </p:column>                        
+                            <h:outputText value="#{equipamento.idequipamento.idtecnica.nmtecnica}"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{equipamento.idusuario.nmnomeusuario}"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{equipamento.dtdatacadastro}"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{equipamento.omsap}"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{equipamento.dtdatalaudo}"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{equipamento.dtdataexecucao}"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{equipamento.prazoexecucao}"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{equipamento.nmdiagnostico}"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{equipamento.nmrecomendacao}"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{equipamento.nmobservacao}"/>
+                        </p:column>
+
+                        <p:column>
+                            <h:outputText value="#{equipamento.nmrisco}"/>
+                        </p:column>
 
                     </p:dataTable>
 

@@ -5,8 +5,8 @@
  */
 package br.com.pprv.web.control.beans.relatorio.equipamentoscomlaudo;
 
-import br.com.pprv.model.entities.Tbequipamento;
 import br.com.pprv.model.entities.Tbgerencia;
+import br.com.pprv.model.entities.Tblaudo;
 import br.com.pprv.model.entities.Tbtecnica;
 import br.com.pprv.web.control.logic.gerencia.GerenciaLogic;
 import br.com.pprv.web.control.logic.tecnica.TecnicaLogic;
@@ -34,7 +34,7 @@ public class RelEquipamentosComLaudoBean implements Serializable {
     @EJB
     private GerenciaLogic gerenciaLogic;
 
-    private List<Tbequipamento> listTbequipamentosComLaudos;
+    private List<Tblaudo> listTblaudos;
     private List<Tbgerencia> listTbgerencias;
     private List<Tbtecnica> listTbtecnica;
 
@@ -43,9 +43,10 @@ public class RelEquipamentosComLaudoBean implements Serializable {
 
     @PostConstruct
     public void init() {
-        listTbequipamentosComLaudos = reportEquipamentosComLaudo.findAllTbequipamentosComLaudos();
+        listTblaudos = reportEquipamentosComLaudo.findAllTbequipamentosComLaudo();
         listTbgerencias = gerenciaLogic.findAllTbgerencia();
         listTbtecnica = tecnicaLogic.getListTbtecnica();
+        printToPdf();
     }
 
     public void printToPdf() {
@@ -54,31 +55,18 @@ public class RelEquipamentosComLaudoBean implements Serializable {
         reportEquipamentosComLaudo.setTbtecnica(tbtecnica);
 
         if (reportEquipamentosComLaudo.preparaParam()) {
-            reportEquipamentosComLaudo.createPdfReport();
+//            reportEquipamentosComLaudo.createPdfReport();
         }
     }
 
     public void search() {
 
-        listTbequipamentosComLaudos = reportEquipamentosComLaudo.findAllTbequipamentoWithLaudoByTecnicaAndGerencia(tbtecnica, tbgerencia);
-        if (listTbequipamentosComLaudos == null || listTbequipamentosComLaudos.isEmpty()) {
-            listTbequipamentosComLaudos = null;
+        listTblaudos = reportEquipamentosComLaudo.findTbequipamentoWithLaudoByTecnicaAndGerencia(tbtecnica, tbgerencia);
+
+        if (listTblaudos == null || listTblaudos.isEmpty()) {
+            listTblaudos = null;
             AbstractFacesContextUtils.addMessageWarn("Nenhum resultado encontrado.");
         }
-    }
-
-    /**
-     * @return the listTbequipamentosComLaudos
-     */
-    public List<Tbequipamento> getListTbequipamentosComLaudos() {
-        return listTbequipamentosComLaudos;
-    }
-
-    /**
-     * @param listTbequipamentosComLaudos the listTbequipamentosComLaudos to set
-     */
-    public void setListTbequipamentosComLaudos(List<Tbequipamento> listTbequipamentosComLaudos) {
-        this.listTbequipamentosComLaudos = listTbequipamentosComLaudos;
     }
 
     /**
@@ -135,6 +123,20 @@ public class RelEquipamentosComLaudoBean implements Serializable {
      */
     public void setTbgerencia(Tbgerencia tbgerencia) {
         this.tbgerencia = tbgerencia;
+    }
+
+    /**
+     * @return the listTblaudos
+     */
+    public List<Tblaudo> getListTblaudos() {
+        return listTblaudos;
+    }
+
+    /**
+     * @param listTblaudos the listTblaudos to set
+     */
+    public void setListTblaudos(List<Tblaudo> listTblaudos) {
+        this.listTblaudos = listTblaudos;
     }
 
 }
