@@ -45,8 +45,7 @@ public class RelEquipamentosComLaudoBean implements Serializable {
     public void init() {
         listTblaudos = reportEquipamentosComLaudo.findAllTbequipamentosComLaudo();
         listTbgerencias = gerenciaLogic.findAllTbgerencia();
-        listTbtecnica = tecnicaLogic.getListTbtecnica();
-        printToPdf();
+        listTbtecnica = tecnicaLogic.getListTbtecnica();       
     }
 
     public void printToPdf() {
@@ -55,7 +54,7 @@ public class RelEquipamentosComLaudoBean implements Serializable {
         reportEquipamentosComLaudo.setTbtecnica(tbtecnica);
 
         if (reportEquipamentosComLaudo.preparaParam()) {
-//            reportEquipamentosComLaudo.createPdfReport();
+            reportEquipamentosComLaudo.createPdfReport();
         }
     }
 

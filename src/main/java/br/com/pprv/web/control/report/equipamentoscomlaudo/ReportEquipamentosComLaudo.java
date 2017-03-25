@@ -13,20 +13,12 @@ import br.com.pprv.model.entities.Tbtecnica;
 import br.com.pprv.web.control.logic.equipamento.EquipamentoLogic;
 import br.com.pprv.web.control.logic.laudo.LaudoLogic;
 import br.com.pprv.web.control.report.AbstractReportActions;
-import java.io.File;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.faces.context.FacesContext;
-import net.sf.jasperreports.engine.JRException;
-import net.sf.jasperreports.engine.JRPrintPage;
-import net.sf.jasperreports.engine.JasperExportManager;
-import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.JasperPrint;
 
 /**
  *
@@ -45,7 +37,8 @@ public class ReportEquipamentosComLaudo extends AbstractReportActions {
     private Tbtecnica tbtecnica;
     private Tbgerencia tbgerencia;
     private StringBuilder filtro;
-    private Object tes;
+    private StringBuilder params;
+    private StringBuilder paramsDate;
 
     @Override
     protected Map<String, Object> getParams() {
@@ -53,6 +46,8 @@ public class ReportEquipamentosComLaudo extends AbstractReportActions {
 
         map.put("FILTRO", filtro.toString());
         map.put("SUBREPORT_DIR", getSubReportPath());
+        map.put("PARAMS", params.toString());
+        map.put("PARAM_DATE", paramsDate.toString());
 
         return map;
     }
@@ -73,21 +68,25 @@ public class ReportEquipamentosComLaudo extends AbstractReportActions {
         boolean isTbgerenciaNull = true;
 
         filtro = new StringBuilder();
+        params = new StringBuilder();
+        paramsDate = new StringBuilder();
 
         if (tbtecnica == null && tbgerencia == null) {
             filtro.append("");
         } else {
             if (tbtecnica != null) {
-                filtro.append(" WHERE tbtecnica.idtecnica = ").append(tbtecnica.getIdtecnica());
+                filtro.append(" WHERE tbequipamento.idtecnica = ").append(tbtecnica.getIdtecnica());
                 isTbgerenciaNull = false;
+                params.append("Técnica:  ").append(tbtecnica.getNmtecnica());
             }
 
             if (tbgerencia != null) {
                 if (isTbgerenciaNull) {
-                    filtro.append(" WHERE tbequipamento.idgerencia = ").append(tbgerencia.getIdgerencia());
+                    filtro.append(" WHERE tblaudo.idgerencia = ").append(tbgerencia.getIdgerencia());
                 } else {
-                    filtro.append(" AND tbequipamento.idgerencia = ").append(tbgerencia.getIdgerencia());
+                    filtro.append(" AND tblaudo.idgerencia = ").append(tbgerencia.getIdgerencia());
                 }
+                paramsDate.append("Gerência:  ").append(tbgerencia.getNmgerencia());
             }
         }
 
